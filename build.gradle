@@ -1,0 +1,45 @@
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: "jetty"
+
+ext.springVersion='4.2.5.RELEASE'
+ext.hibernateVersion='4.3.11.Final'
+ext.hibernateValidatorVersion='5.2.2.Final'
+ext.springDataVersion='1.9.2.RELEASE'
+ext.mySqlConnectorJavaVersion='5.1.38'
+ext.jtaVersion='1.1'
+
+dependencies {
+    compile 'javax:javaee-api:7.0'
+    compile "javax.transaction:jta:$jtaVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework:spring-orm:$springVersion"
+
+    // hibernate
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
+
+    // mysql db
+    compile 'mysql:mysql-connector-java:5.1.38'
+}
+
+war {
+    baseName = 'quizz'
+    version =  '0.1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+httpPort = 8090
+stopPort = 9090
+stopKey = "stopKey"
+
