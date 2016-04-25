@@ -1,9 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title></title>
-  </head>
-  <body>
-    <h1>Hello World</h1>
-  </body>
+<head>
+    <meta charset="utf-8">
+    <title>Online Quiz Creator</title>
+</head>
+<body>
+
+</body>
 </html>
