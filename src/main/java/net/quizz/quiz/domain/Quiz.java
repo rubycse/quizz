@@ -1,7 +1,4 @@
-package net.quizz.domain;
-
-import java.beans.Transient;
-import java.util.List;
+package net.quizz.quiz.domain;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

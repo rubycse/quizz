@@ -1,9 +1,8 @@
-package net.quizz.controller;
+package net.quizz.quiz.controller;
 
-import net.quizz.domain.Quiz;
-import net.quizz.repository.QuizDao;
+import net.quizz.quiz.domain.Quiz;
+import net.quizz.quiz.repository.QuizDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
-package net.quizz.repository;
+package net.quizz.quiz.repository;
 
-import net.quizz.domain.Quiz;
+import net.quizz.quiz.domain.Quiz;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

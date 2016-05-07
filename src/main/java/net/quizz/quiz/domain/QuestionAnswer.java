@@ -1,4 +1,4 @@
-package net.quizz.domain;
+package net.quizz.quiz.domain;
 
 import java.util.List;
 

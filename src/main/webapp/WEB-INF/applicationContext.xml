@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="net.quizz.common"/>
 
     <!-- This resolves messages from resource bundles for different locales -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -13,7 +19,7 @@
     <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- This makes /META-INF/persistence.xml is no longer necessary -->
-        <property name="packagesToScan" value="net.quizz.domain" />
+        <property name="packagesToScan" value="net.quizz.quiz.domain" />
         <!-- JpaVendorAdapter implementation for Hibernate EntityManager.
              Exposes Hibernate's persistence provider and EntityManager extension interface -->
         <property name="jpaVendorAdapter">
@@ -43,11 +49,11 @@
     </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.host') }"/>
+        <property name="host" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.host') }"/>
         <property name="protocol" value="smtp"/>
-        <property name="username" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.user.name') }"/>
-        <property name="password" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.user.password') }"/>
-        <property name="port" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.port') }"/>
+        <property name="username" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.user.name') }"/>
+        <property name="password" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.user.password') }"/>
+        <property name="port" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.port') }"/>
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -57,8 +63,8 @@
     </bean>
 
     <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.from') }"/>
-        <property name="to" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.to') }"/>
+        <property name="from" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.from') }"/>
+        <property name="to" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.to') }"/>
     </bean>
 
 </beans>

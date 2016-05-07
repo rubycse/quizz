@@ -1,4 +1,4 @@
-package net.quizz.utils;
+package net.quizz.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,6 @@ public class PropertyReader {
             String value = (String) props.get(key);
             resolvedProps.put(key, value);
         }
-
     }
 
     public static String getProperty(String key) {

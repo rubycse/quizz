@@ -8,7 +8,7 @@
 
     <tx:annotation-driven/>
 
-    <context:component-scan base-package="net.quizz"/>
+    <context:component-scan base-package="net.quizz.quiz"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
