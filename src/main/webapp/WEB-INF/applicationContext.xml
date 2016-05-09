@@ -42,5 +42,23 @@
         <property name="entityManagerFactory" ref="entityManagerFactoryBean" />
     </bean>
 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.host') }"/>
+        <property name="protocol" value="smtp"/>
+        <property name="username" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.user.name') }"/>
+        <property name="password" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.user.password') }"/>
+        <property name="port" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.port') }"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.from') }"/>
+        <property name="to" value="#{ T(net.quizz.utils.PropertyReader).getProperty('mail.to') }"/>
+    </bean>
 
 </beans>

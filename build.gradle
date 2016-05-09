@@ -20,6 +20,7 @@ dependencies {
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-tx:$springVersion"
     compile "org.springframework:spring-orm:$springVersion"
+    compile "org.springframework:spring-context-support:$springVersion"
 
     // hibernate
     compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
