@@ -19,7 +19,7 @@
     <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- This makes /META-INF/persistence.xml is no longer necessary -->
-        <property name="packagesToScan" value="net.quizz.quiz.domain" />
+        <property name="packagesToScan" value="net.quizz.quiz.domain, net.quizz.auth.domain" />
         <!-- JpaVendorAdapter implementation for Hibernate EntityManager.
              Exposes Hibernate's persistence provider and EntityManager extension interface -->
         <property name="jpaVendorAdapter">

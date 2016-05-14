@@ -23,4 +23,11 @@ public class MailService {
         mailMessage.setText(text);
         mailSender.send(mailMessage);
     }
+
+    public void sendMail(String to, String subject, String text) {
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(text);
+        mailSender.send(mailMessage);
+    }
 }

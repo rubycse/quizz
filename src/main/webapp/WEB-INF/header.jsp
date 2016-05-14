@@ -12,12 +12,21 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
-                <li><a href="<c:url value='/quiz/create'/>">Create</a></li>
-                <li><a href="<c:url value='/quiz/list'/>">List</a></li>
+                <c:if test="${sessionScope.USER != null}">
+                    <li><a href="<c:url value='/quiz/create'/>">Create</a></li>
+                    <li><a href="<c:url value='/quiz/list'/>">List</a></li>
+                </c:if>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Account</a></li>
+                <c:choose>
+                    <c:when test="${sessionScope.USER == null}">
+                        <li><a href="<c:url value='/auth/signin'/>">Sign In</a></li>
+                        <li><a href="<c:url value='/auth/signup'/>">Sign Up</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="<c:url value='/auth/signout'/>">Sign Out</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>
