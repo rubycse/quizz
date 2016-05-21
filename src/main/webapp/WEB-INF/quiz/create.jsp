@@ -7,6 +7,13 @@
     </title>
 </head>
 <body>
+<div class="page-header" id="banner">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Create Quiz</h1>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="well bs-component">
 

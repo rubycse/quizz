@@ -2,9 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Quizzes</title>
+    <title>My Quizzes</title>
 </head>
 <body>
+<div class="page-header" id="banner">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>My Quizzes</h1>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="bs-component">

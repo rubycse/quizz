@@ -8,24 +8,32 @@
     </title>
 </head>
 <body>
+<div class="page-header" id="banner">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Show Quiz</h1>
+        </div>
+    </div>
+</div>
 <fieldset>
-    <div class="form-group">
-        <label for="name" class="col-lg-2 control-label">Name</label>
-        <div class="col-lg-6">
-            <c:out value="${quiz.name}"/>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-6">
+                <h1><c:out value="${quiz.name}"/></h1>
+                <br/>(Duration: <c:out value="${quiz.maxDurationInMin}"/> Minute)
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="maxDurationInMin" class="col-lg-2 control-label">Duration (Min)</label>
-        <div class="col-lg-4">
-            <c:out value="${quiz.maxDurationInMin}"/>
-        </div>
+    <div id="questions">
+
     </div>
 
-    <div class="form-group">
-        <div class="col-lg-6 col-lg-offset-2">
-            <button type="reset" class="btn btn-default">Cancel</button>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-6">
+                <button type="reset" class="btn btn-sm">Add Question</button>
+            </div>
         </div>
     </div>
 </fieldset>

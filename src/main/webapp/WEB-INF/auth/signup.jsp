@@ -2,10 +2,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Create Your Account</title>
+    <title>Create Your Quizz Account</title>
 </head>
 <body>
-
+<div class="page-header" id="banner">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Create Your Quizz Account</h1>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="well bs-component">
 
