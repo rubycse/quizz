@@ -25,16 +25,13 @@ public class User {
     @Transient
     private String confirmPassword;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
     private String email;
 
     @Past
-    @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
@@ -43,10 +40,8 @@ public class User {
 
     private String phone;
 
-    @Column(name = "email_verification_id")
     private String emailVerificationId;
 
-    @Column(name = "email_verified")
     private boolean emailVerified;
 
     public int getId() {

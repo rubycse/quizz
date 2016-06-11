@@ -16,10 +16,8 @@ public class Quiz {
     @GeneratedValue
     private int id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "max_duration_in_min")
     private int maxDurationInMin;
 
     public int getId() {
