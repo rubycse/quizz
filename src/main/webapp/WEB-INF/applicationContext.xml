@@ -37,10 +37,10 @@
     <!-- Simple implementation of the standard JDBC DataSource interface,
          configuring the plain old JDBC DriverManager via bean properties -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/quizz" />
-        <property name="username" value="root" />
-        <property name="password" value="root" />
+        <property name="driverClassName" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('jdbc.driver') }" />
+        <property name="url" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('jdbc.url') }" />
+        <property name="username" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('jdbc.userName') }" />
+        <property name="password" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('jdbc.password') }" />
     </bean>
 
     <!-- This transaction manager is appropriate for applications that use a single JPA EntityManagerFactory for transactional data access.
