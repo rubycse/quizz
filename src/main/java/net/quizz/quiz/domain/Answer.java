@@ -1,27 +1,74 @@
 package net.quizz.quiz.domain;
 
+import javax.persistence.*;
+
 /**
  * @author lutfun
  * @since 3/17/16
  */
+
+@Entity
+@Table(name = "answer")
 public class Answer {
 
-    private String val;
-    private boolean right;
+    @Id
+    @GeneratedValue
+    private int id;
 
-    public String getVal() {
-        return val;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
+
+    private String label;
+
+    private boolean rightAnswer;
+
+    private boolean answered;
+
+    public Answer() {
     }
 
-    public void setVal(String val) {
-        this.val = val;
+    public Question getQuestion() {
+        return question;
     }
 
-    public boolean isRight() {
-        return right;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
-    public void setRight(boolean right) {
-        this.right = right;
+    public Answer(String label) {
+        this.label = label;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public boolean isRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(boolean rightAnswer) {
+        this.rightAnswer = rightAnswer;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 }

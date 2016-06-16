@@ -1,0 +1,30 @@
+.question {
+    padding-bottom: 20px;
+}
+
+.questionLabel {
+    padding-top: 5px;
+    padding-left: 2px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.option {
+    padding-top: 10px;
+    padding-left: 5px;
+    font-size: 12px;
+}
+
+.optionLabel {
+    padding-left: 5px;
+    height: 30px;
+}
+
+.addOption {
+    font-size: 12px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    cursor: pointer;
+    display: block;
+}

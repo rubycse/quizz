@@ -1,5 +1,8 @@
 package net.quizz.quiz.repository;
 
+import net.quizz.auth.domain.User;
+import net.quizz.quiz.domain.Answer;
+import net.quizz.quiz.domain.Question;
 import net.quizz.quiz.domain.Quiz;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +24,45 @@ public class QuizDao {
     private EntityManager em;
 
     public void save(Quiz quiz) {
-        em.persist(quiz);
+        if (quiz.getId() == 0) {
+            em.persist(quiz);
+        } else {
+            em.merge(quiz);
+        }
     }
 
     public Quiz getQuiz(int quizId) {
         return em.find(Quiz.class, quizId);
     }
 
-    public List<Quiz> getAllQuizzes() {
-        Query query = em.createQuery("SELECT q FROM Quiz q");
-        return (List<Quiz>) query.getResultList();
+    @SuppressWarnings("unchecked")
+    public List<Quiz> getUserQuizzes(User user) {
+        return (List<Quiz>) em.createQuery("SELECT q FROM Quiz q WHERE q.createdBy = :user").
+                setParameter("user", user)
+                .getResultList();
+    }
+
+    public Question getQuestion(int id) {
+        return em.find(Question.class, id);
+    }
+
+    public void save(Question question) {
+        if (question.getId() == 0) {
+            em.persist(question);
+        } else {
+            em.merge(question);
+        }
+    }
+
+    public void save(Answer answer) {
+        if (answer.getId() == 0) {
+            em.persist(answer);
+        } else {
+            em.merge(answer);
+        }
+    }
+
+    public Answer getAnswer(int id) {
+        return em.find(Answer.class, id);
     }
 }

@@ -1,10 +1,33 @@
 CREATE TABLE quiz
 (
-id int NOT NULL AUTO_INCREMENT,
-name varchar(255) NOT NULL,
-max_duration_in_min int,
-PRIMARY KEY (ID)
-)
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(255) NOT NULL,
+max_duration_in_min INT,
+created_by_id INT NOT NULL,
+PRIMARY KEY (ID),
+FOREIGN KEY (created_by_id) REFERENCES user(id)
+);
+
+CREATE TABLE question
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255) NOT NULL,
+  max_duration_in_min INT,
+  quiz_id INT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (quiz_id) REFERENCES quiz(id)
+);
+
+CREATE TABLE answer
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255) NOT NULL,
+  right_answer BOOLEAN NOT NULL,
+  answered BOOLEAN NOT NULL,
+  question_id INT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (question_id) REFERENCES question(id)
+);
 
 CREATE TABLE user
 (

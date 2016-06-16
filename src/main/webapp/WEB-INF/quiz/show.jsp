@@ -6,36 +6,64 @@
     <title>
         Show Quiz
     </title>
+    <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
+    <script src="<c:url value="/js/jquery-1.11.3.min.js"/>" type="text/javascript"></script>
 </head>
 <body>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-12">
-            <h1>Show Quiz</h1>
+            <h1><b class="quizName" id="${quiz.id}" style="display: inline"><c:out value="${quiz.name}"/></b></h1>
+            (Duration: <c:out value="${quiz.maxDurationInMin}"/> Minute)
         </div>
     </div>
 </div>
 <fieldset>
+    <div class="well bs-component">
+    <div id="questions" style="margin-bottom: 20px;">
+        <c:forEach items="${quiz.questions}" var="question">
+            <div class="question">
+                <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
+                <br/>
+                <div id="options-${question.id}">
+                <c:forEach items="${question.answerOptions}" var="option">
+                    <div class="option">
+                        <input type="radio"/>
+                        <span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                    </div>
+                </c:forEach>
+                </div>
+                <a class="addOption" onclick="addOption(${question.id});">Add Option</a>
+            </div>
+        </c:forEach>
+    </div>
+    </div>
+
     <div class="row">
         <div class="form-group">
             <div class="col-lg-6">
-                <h1><c:out value="${quiz.name}"/></h1>
-                <br/>(Duration: <c:out value="${quiz.maxDurationInMin}"/> Minute)
+                <button class="btn btn-sm" onclick="addQuestion();">Add Question</button>
+                <script type="text/javascript">
+                    function addQuestion() {
+                        $.post('<c:url value="addQuestion"/>',
+                                {quizId: "${quiz.id}"}, function (data) {
+                                }).done(function (data, status, error) {
+                                    $("#questions").append(data);
+                                });
+                    }
+
+                    function addOption(questionId) {
+                        $.post('<c:url value="addOption"/>',
+                                {questionId: questionId}, function (data) {
+                                }).done(function (data, status, error) {
+                                    $("#options-" + questionId).append(data);
+                                });
+                    }
+                </script>
             </div>
         </div>
     </div>
 
-    <div id="questions">
-
-    </div>
-
-    <div class="row">
-        <div class="form-group">
-            <div class="col-lg-6">
-                <button type="reset" class="btn btn-sm">Add Question</button>
-            </div>
-        </div>
-    </div>
 </fieldset>
 </body>
 </html>
