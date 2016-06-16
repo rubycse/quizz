@@ -20,6 +20,19 @@
     height: 30px;
 }
 
+.optionLabel .editable input, input:focus {
+    width: 90%;
+}
+
+.editable input, input:focus {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid yellowgreen;
+    font-weight: bold;
+    background-color: inherit;
+    outline: none;
+}
+
 .addOption {
     font-size: 12px;
     padding-top: 15px;

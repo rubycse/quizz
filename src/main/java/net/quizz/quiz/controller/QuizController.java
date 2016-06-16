@@ -81,6 +81,33 @@ public class QuizController {
         return getHtml(answer);
     }
 
+    @RequestMapping(path = "/updateQuizName", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String updateQuizName(@RequestParam int id, @RequestParam String value, HttpServletResponse response) {
+        Quiz quiz = quizDao.getQuiz(id);
+        quiz.setName(value);
+        quizDao.save(quiz);
+        return quiz.getName();
+    }
+
+    @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String updateQuestionLabel(@RequestParam int id, @RequestParam String value) {
+        Question question = quizDao.getQuestion(id);
+        question.setLabel(value);
+        quizDao.save(question);
+        return question.getLabel();
+    }
+
+    @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String updateOptionLabel(@RequestParam int id, @RequestParam String value) {
+        Answer answer = quizDao.getAnswer(id);
+        answer.setLabel(value);
+        quizDao.save(answer);
+        return answer.getLabel();
+    }
+
     private String getHtml(Question question) {
         String questionHtml =
                 "<div class=\"question\">\n" +

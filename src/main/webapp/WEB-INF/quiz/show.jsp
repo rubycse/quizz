@@ -8,6 +8,22 @@
     </title>
     <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
     <script src="<c:url value="/js/jquery-1.11.3.min.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/js/jquery.jeditable-1.7.3.js"/>" type="text/javascript"></script>
+    <script type="application/javascript">
+        $(document).ready(function() {
+            makeQuizNameEditable();
+            makeQuestionsEditable();
+        });
+
+        function makeQuizNameEditable() {
+            $('.quizName').editable('<c:url value="updateQuizName"/>', {style  : "inherit", cssclass : 'editable'});
+        }
+
+        function makeQuestionsEditable() {
+            $('.questionLabel').editable('<c:url value="updateQuestionLabel"/>', {style: "inherit", cssclass: 'editable'});
+            $('.optionLabel').editable('<c:url value="updateOptionLabel"/>', {style: "inherit", cssclass: 'editable'});
+        }
+    </script>
 </head>
 <body>
 <div class="page-header" id="banner">
@@ -49,6 +65,7 @@
                                 {quizId: "${quiz.id}"}, function (data) {
                                 }).done(function (data, status, error) {
                                     $("#questions").append(data);
+                                    makeQuestionsEditable();
                                 });
                     }
 
@@ -57,6 +74,7 @@
                                 {questionId: questionId}, function (data) {
                                 }).done(function (data, status, error) {
                                     $("#options-" + questionId).append(data);
+                                    makeQuestionsEditable();
                                 });
                     }
                 </script>
