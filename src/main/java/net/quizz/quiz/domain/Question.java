@@ -1,5 +1,8 @@
 package net.quizz.quiz.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,6 +21,7 @@ public class Question {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "quiz_id", nullable = false)
+    @JsonIgnore
     private Quiz quiz;
 
     private String label;

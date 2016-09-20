@@ -1,5 +1,7 @@
 package net.quizz.quiz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -15,6 +17,7 @@ public class Answer {
     @GeneratedValue
     private int id;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;

@@ -20,11 +20,11 @@
     height: 30px;
 }
 
-.optionLabel .editable input, input:focus {
+.optionLabel .editable input[type=text], input[type=text]:focus {
     width: 90%;
 }
 
-.editable input, input:focus {
+.editable input[type=text], input[type=text]:focus {
     width: 100%;
     border: 0;
     border-bottom: 1px solid yellowgreen;
@@ -40,4 +40,9 @@
     padding-left: 5px;
     cursor: pointer;
     display: block;
+}
+
+.removeOption {
+    color: transparent;
+    margin-right: 5px;
 }
