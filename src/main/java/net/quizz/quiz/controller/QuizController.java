@@ -59,7 +59,7 @@ public class QuizController {
 
     @RequestMapping(path = "/addQuestion", method = RequestMethod.POST)
     @ResponseBody
-    public String addQuestion(@RequestParam int quizId, ModelMap model, HttpSession session) throws IllegalAccessException {
+    public Question addQuestion(@RequestParam int quizId, HttpSession session) throws IllegalAccessException {
         Quiz quiz = quizDao.getQuiz(quizId);
         if (quiz.getCreatedBy().getId() != getUser(session).getId()) {
             throw new IllegalAccessException();
@@ -68,17 +68,17 @@ public class QuizController {
         Question question = addQuestion(quiz);
         quizDao.save(question);
 
-        return getHtml(question);
+        return question;
     }
 
     @RequestMapping(path = "/addOption", method = RequestMethod.POST)
     @ResponseBody
-    public String addQuestion(@RequestParam int questionId) throws IllegalAccessException {
+    public Answer addQuestion(@RequestParam int questionId) throws IllegalAccessException {
         Question question = quizDao.getQuestion(questionId);
         Answer answer = addAnswer(question);
         quizDao.save(answer);
 
-        return getHtml(answer);
+        return answer;
     }
 
     @RequestMapping(path = "/updateQuizName", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
@@ -108,32 +108,6 @@ public class QuizController {
         return answer.getLabel();
     }
 
-    private String getHtml(Question question) {
-        String questionHtml =
-                "<div class=\"question\">\n" +
-                        "   <div id=\"" + question.getId() + "\" class=\"questionLabel\" style=\"display: inline\">" + question.getLabel() + "</div>\n" +
-                        "   <br/>\n" +
-                        "   <div id=\"options-" + question.getId() + "\">\n";
-
-        for (Answer answer : question.getAnswerOptions()) {
-            questionHtml += getHtml(answer);
-        }
-
-        questionHtml +=
-                "   </div>\n" +
-                        "   <a class=\"addOption\" onclick=\"addOption(" + question.getId() + ");\">Add Option</a>\n" +
-                        "</div>";
-
-        return questionHtml;
-    }
-
-    private String getHtml(Answer answer) {
-        return "<div class=\"option\">\n" +
-                "   <input type=\"radio\"/>\n" +
-                "   <span id=\"" + answer.getId() + "\" class=\"optionLabel\" style=\"display: inline\">" + answer.getLabel() + "</span>\n" +
-                "</div>";
-
-    }
 
     private Question addQuestion(Quiz quiz) {
         int questionSize = quiz.getQuestions().size();

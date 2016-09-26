@@ -23,6 +23,34 @@
             $('.questionLabel').editable('<c:url value="updateQuestionLabel"/>', {style: "inherit", cssclass: 'editable'});
             $('.optionLabel').editable('<c:url value="updateOptionLabel"/>', {style: "inherit", cssclass: 'editable'});
         }
+
+        var optionTemplate = '<div class=\"option\">'
+                + '<input type="radio"/>'
+                + '<span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
+                + '</div>'
+
+        var questionTemplate = '<div class="question">'
+                + '<div id="#QUESTION_ID#" class="questionLabel" style="display: inline">#QUESTION_LABEL#</div><br/>'
+                + '<div id="options-#QUESTION_ID#">'
+                + '#OPTIONS#'
+                + '</div>'
+                + '<a class="addOption" onclick="addOption(\'#QUESTION_ID#\');">Add Option</a>'
+                + '</div>'
+
+        function getOptionHtml(option) {
+            return optionTemplate.replace('#OPTION_ID#', option.id).replace("#OPTION_LABEL#", option.label);
+        }
+
+        function getQuestionHtml(question) {
+            var quesHtml = questionTemplate.replace(/#QUESTION_ID#/g, question.id).replace('#QUESTION_LABEL#', question.label);
+            var optionHtml = "";
+            for (var index in question.answerOptions) {
+                var option = question.answerOptions[index];
+                optionHtml += getOptionHtml(option);
+            }
+
+            return quesHtml.replace("#OPTIONS#", optionHtml);
+        }
     </script>
 </head>
 <body>
@@ -43,10 +71,7 @@
                 <br/>
                 <div id="options-${question.id}">
                 <c:forEach items="${question.answerOptions}" var="option">
-                    <div class="option">
-                        <input type="radio"/>
-                        <span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
-                    </div>
+                    <div class="option"><input type="radio"/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span></div>
                 </c:forEach>
                 </div>
                 <a class="addOption" onclick="addOption(${question.id});">Add Option</a>
@@ -63,8 +88,8 @@
                     function addQuestion() {
                         $.post('<c:url value="addQuestion"/>',
                                 {quizId: "${quiz.id}"}, function (data) {
-                                }).done(function (data, status, error) {
-                                    $("#questions").append(data);
+                                }).success(function (data, status, error) {
+                                    $("#questions").append(getQuestionHtml(data));
                                     makeQuestionsEditable();
                                 });
                     }
@@ -72,8 +97,8 @@
                     function addOption(questionId) {
                         $.post('<c:url value="addOption"/>',
                                 {questionId: questionId}, function (data) {
-                                }).done(function (data, status, error) {
-                                    $("#options-" + questionId).append(data);
+                                }).success(function (data, status, error) {
+                                    $("#options-" + questionId).append(getOptionHtml(data));
                                     makeQuestionsEditable();
                                 });
                     }
