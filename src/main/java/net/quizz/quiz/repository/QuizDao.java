@@ -65,4 +65,12 @@ public class QuizDao {
     public Answer getAnswer(int id) {
         return em.find(Answer.class, id);
     }
+
+    public void deleteQuestion(int id) {
+        em.remove(getQuestion(id));
+    }
+
+    public void deleteAnswer(int id) {
+        em.remove(getAnswer(id));
+    }
 }

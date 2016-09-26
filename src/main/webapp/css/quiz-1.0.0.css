@@ -33,16 +33,40 @@
     outline: none;
 }
 
-.addOption {
-    font-size: 12px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+.questionFooter {
+    margin-top: 10px;
+    /*border-top: 1px solid #F7EFE1;*/
+    border-top: 1px solid #DFD7CA;
     padding-left: 5px;
     cursor: pointer;
     display: block;
+    font-size: 16px;
+    min-height: 36px;
 }
 
 .removeOption {
     color: transparent;
     margin-right: 5px;
+}
+
+.addOption {
+    cursor: pointer;
+}
+
+.grey {
+    color: #9d9d9d;
+}
+
+.questionDelete {
+    margin-top: 10px;
+}
+
+.questionRequired {
+    margin-top: 8px;
+}
+
+.verticalBar {
+    border-left: 1px solid #DFD7CA;
+    margin: 4px 12px 4px 15px;
+    height: 30px;
 }

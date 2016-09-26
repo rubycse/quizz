@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * @author lutfun
@@ -99,7 +98,16 @@ public class QuizController {
         return question.getLabel();
     }
 
-    @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(path = "/toggleRequired", method = RequestMethod.POST)
+    @ResponseBody
+    public String toggleRequired(@RequestParam int questionId) {
+        Question question = quizDao.getQuestion(questionId);
+        question.setRequired(!question.isRequired());
+        quizDao.save(question);
+        return "SUCCESS";
+    }
+
+    @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST)
     @ResponseBody
     public String updateOptionLabel(@RequestParam int id, @RequestParam String value) {
         Answer answer = quizDao.getAnswer(id);
@@ -108,6 +116,19 @@ public class QuizController {
         return answer.getLabel();
     }
 
+    @RequestMapping(path = "/deleteQuestion", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteQuestion(@RequestParam int id) {
+        quizDao.deleteQuestion(id);
+        return "SUCCESS";
+    }
+
+    @RequestMapping(path = "/deleteOption", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteOption(@RequestParam int id) {
+        quizDao.deleteAnswer(id);
+        return "SUCCESS";
+    }
 
     private Question addQuestion(Quiz quiz) {
         int questionSize = quiz.getQuestions().size();

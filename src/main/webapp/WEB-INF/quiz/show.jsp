@@ -10,6 +10,14 @@
     <script src="<c:url value="/js/jquery-1.11.3.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/js/jquery.jeditable-1.7.3.js"/>" type="text/javascript"></script>
     <script type="application/javascript">
+        function showRemove(id) {
+            $('#' + id).css('color', '#9d9d9d');
+        }
+
+        function hideRemove(id) {
+            $('#' + id).css('color', 'transparent');
+        }
+
         $(document).ready(function() {
             makeQuizNameEditable();
             makeQuestionsEditable();
@@ -24,25 +32,39 @@
             $('.optionLabel').editable('<c:url value="updateOptionLabel"/>', {style: "inherit", cssclass: 'editable'});
         }
 
-        var optionTemplate = '<div class=\"option\">'
-                + '<input type="radio"/>'
-                + '<span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
-                + '</div>'
+        var optionTemplate = '    <div class="option" onmouseover="showRemove(\'removeOption-#OPTION_ID#\')" onmouseout="hideRemove(\'removeOption-#OPTION_ID#\')" id="option-#OPTION_ID#">'
+                + '      <span id="removeOption-#OPTION_ID#" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(\'#OPTION_ID#\')"></span>'
+                + '      <input type="radio"/><span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
+                + '    </div>';
 
-        var questionTemplate = '<div class="question">'
-                + '<div id="#QUESTION_ID#" class="questionLabel" style="display: inline">#QUESTION_LABEL#</div><br/>'
-                + '<div id="options-#QUESTION_ID#">'
-                + '#OPTIONS#'
-                + '</div>'
-                + '<a class="addOption" onclick="addOption(\'#QUESTION_ID#\');">Add Option</a>'
-                + '</div>'
+        var questionTemplate = '<div class="question" id="question-#QUESTION_ID#">'
+                + '  <div id="#QUESTION_ID#" class="questionLabel" style="display: inline">#QUESTION_LABEL#</div><br/>'
+                + '  <div id="options-#QUESTION_ID#">'
+                + '  #OPTIONS#'
+                + '  </div>'
+                + '  <div class="option">'
+                + '    <span class="removeOption glyphicon glyphicon-remove" aria-hidden="true"></span>'
+                + '    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(\'#QUESTION_ID#\');">Add Option</a>'
+                + '  </div>'
+                + '  <div class="questionFooter">'
+                + '    <span class="questionRequired pull-right">'
+                + '      <input type="checkbox" onclick="toggleRequired(\'#QUESTION_ID#\')" #CHECKED#/>&nbsp;Required'
+                + '    </span>'
+                + '    <span class="verticalBar pull-right">&nbsp;</span>'
+                + '    <span class="questionDelete pull-right">'
+                + '      <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(\'#QUESTION_ID#\');"></a>'
+                + '    </span>'
+                + '  </div>'
+                + '</div>';
 
         function getOptionHtml(option) {
-            return optionTemplate.replace('#OPTION_ID#', option.id).replace("#OPTION_LABEL#", option.label);
+            return optionTemplate.replace(/#OPTION_ID#/g, option.id).replace("#OPTION_LABEL#", option.label);
         }
 
         function getQuestionHtml(question) {
-            var quesHtml = questionTemplate.replace(/#QUESTION_ID#/g, question.id).replace('#QUESTION_LABEL#', question.label);
+            var quesHtml = questionTemplate.replace(/#QUESTION_ID#/g, question.id)
+                    .replace('#QUESTION_LABEL#', question.label)
+                    .replace("#CHECKED#", question.required ? 'checked' : '');
             var optionHtml = "";
             for (var index in question.answerOptions) {
                 var option = question.answerOptions[index];
@@ -66,15 +88,30 @@
     <div class="well bs-component">
     <div id="questions" style="margin-bottom: 20px;">
         <c:forEach items="${quiz.questions}" var="question">
-            <div class="question">
+            <div class="question" id="question-${question.id}">
                 <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
                 <br/>
                 <div id="options-${question.id}">
                 <c:forEach items="${question.answerOptions}" var="option">
-                    <div class="option"><input type="radio"/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span></div>
+                    <div class="option" onmouseover="showRemove('removeOption-${option.id}')" onmouseout="hideRemove('removeOption-${option.id}')" id="option-${option.id}">
+                        <span id="removeOption-${option.id}" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(${option.id})"></span>
+                        <input type="radio"/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                    </div>
                 </c:forEach>
                 </div>
-                <a class="addOption" onclick="addOption(${question.id});">Add Option</a>
+                <div class="option">
+                    <span class="removeOption glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(${question.id});">Add Option</a>
+                </div>
+                <div class="questionFooter">
+                    <span class="questionRequired pull-right">
+                        <input type="checkbox" onclick="toggleRequired(${question.id})" <c:if test="${question.required}">checked</c:if> />&nbsp;Required
+                    </span>
+                    <span class="verticalBar pull-right">&nbsp;</span>
+                    <span class="questionDelete pull-right">
+                        <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(${question.id});"></a>
+                    </span>
+                </div>
             </div>
         </c:forEach>
     </div>
@@ -100,6 +137,33 @@
                                 }).success(function (data, status, error) {
                                     $("#options-" + questionId).append(getOptionHtml(data));
                                     makeQuestionsEditable();
+                                });
+                    }
+
+                    function toggleRequired(questionId) {
+                        $.post('<c:url value="toggleRequired"/>',
+                                {questionId: questionId}, function (data) {
+                                }).success(function (data, status, error) {
+                                });
+                    }
+
+                    function deleteQuestion(questionId) {
+                        $.post('<c:url value="deleteQuestion"/>',
+                                {id: questionId},function (data) {
+                                }).success(function (data, status, error) {
+                                    if (data === "SUCCESS") {
+                                        $("#question-" + questionId).remove();
+                                    }
+                                });
+                    }
+
+                    function deleteOption(optionId) {
+                        $.post('<c:url value="deleteOption"/>',
+                                {id: optionId},function (data) {
+                                }).success(function (data, status, error) {
+                                    if (data === "SUCCESS") {
+                                        $("#option-" + optionId).remove();
+                                    }
                                 });
                     }
                 </script>

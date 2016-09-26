@@ -19,7 +19,7 @@ public class Question {
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     @JsonIgnore
     private Quiz quiz;
@@ -30,6 +30,7 @@ public class Question {
     private List<Answer> answerOptions;
 
     private int maxDurationInMin;
+    private boolean required;
 
     public Question() {
     }
@@ -76,5 +77,13 @@ public class Question {
 
     public void setMaxDurationInMin(int maxDurationInMin) {
         this.maxDurationInMin = maxDurationInMin;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 }

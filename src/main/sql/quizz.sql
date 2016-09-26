@@ -13,6 +13,7 @@ CREATE TABLE question
   id INT NOT NULL AUTO_INCREMENT,
   label VARCHAR(255) NOT NULL,
   max_duration_in_min INT,
+  required BOOLEAN NOT NULL,
   quiz_id INT NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (quiz_id) REFERENCES quiz(id)
