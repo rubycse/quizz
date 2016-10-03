@@ -44,7 +44,6 @@
 
             <div class="form-group">
                 <div class="col-lg-6 col-lg-offset-2">
-                    <button type="reset" class="btn btn-default">Cancel</button>
                     <input type="submit" class="btn btn-primary" name="save" value="Save"/>
                 </div>
             </div>

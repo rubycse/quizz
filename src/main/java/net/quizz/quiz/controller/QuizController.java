@@ -7,10 +7,7 @@ import net.quizz.quiz.repository.QuizDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -44,8 +41,9 @@ public class QuizController {
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model) {
-        model.put("quiz", quizDao.getQuiz(id));
-        return "quiz/show";
+        Quiz quiz = quizDao.getQuiz(id);
+        model.put("quiz", quiz);
+        return quiz.isPublished() ? "quiz/show" : "quiz/edit";
     }
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)

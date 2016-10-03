@@ -23,6 +23,8 @@ public class Quiz {
 
     private int maxDurationInMin;
 
+    private boolean published;
+
     @ManyToOne
     @JoinColumn(name = "created_by_id")
     private User createdBy;
@@ -52,6 +54,14 @@ public class Quiz {
 
     public void setMaxDurationInMin(int maxDurationInMin) {
         this.maxDurationInMin = maxDurationInMin;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
     }
 
     public User getCreatedBy() {

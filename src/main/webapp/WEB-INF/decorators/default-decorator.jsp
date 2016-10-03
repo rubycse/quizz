@@ -12,6 +12,8 @@
     <link href='<c:url value="/images/favicon.ico"/>' rel="icon" type="image/x-icon">
 
     <link href='<c:url value="/bootstrap/3.3.6/standstone/bootstrap.min.css"/>' rel="stylesheet" type="text/css">
+    <script src="<c:url value="/js/jquery-1.11.3.min.js"/>" type="text/javascript"></script>
+
     <decorator:head/>
 </head>
 
