@@ -42,6 +42,7 @@ CREATE TABLE user
   birth_date DATE NOT NULL,
   gender VARCHAR(16) NOT NULL,
   phone VARCHAR(16),
+  student BOOLEAN NOT NULL,
   email_verification_id VARCHAR(38) NOT NULL,
   email_verified BOOLEAN NOT NULL,
   PRIMARY KEY (ID)

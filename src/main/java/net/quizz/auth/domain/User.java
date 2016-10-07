@@ -44,6 +44,8 @@ public class User {
 
     private boolean emailVerified;
 
+    private boolean student;
+
     public int getId() {
         return id;
     }
@@ -138,5 +140,13 @@ public class User {
 
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public boolean isStudent() {
+        return student;
+    }
+
+    public void setStudent(boolean student) {
+        this.student = student;
     }
 }

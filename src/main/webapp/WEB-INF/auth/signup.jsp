@@ -87,6 +87,23 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="student" class="col-lg-2 control-label">I am a</label>
+                    <div class="col-lg-6">
+                        <div class="radio">
+                            <label>
+                                <form:radiobutton path="student" id="student" label="Student" value="true"/>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <form:radiobutton path="student" id="student" label="Teacher" value="false"/>
+                            </label>
+                        </div>
+                        <form:errors path="student" cssClass="ferror"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-lg-6 col-lg-offset-2">
                         <button type="reset" class="btn btn-default">Cancel</button>
                         <input type="submit" class="btn btn-primary" name="save" value="Save"/>
