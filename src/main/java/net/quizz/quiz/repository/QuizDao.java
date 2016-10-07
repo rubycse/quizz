@@ -1,10 +1,7 @@
 package net.quizz.quiz.repository;
 
 import net.quizz.auth.domain.User;
-import net.quizz.quiz.domain.Answer;
-import net.quizz.quiz.domain.Publication;
-import net.quizz.quiz.domain.Question;
-import net.quizz.quiz.domain.Quiz;
+import net.quizz.quiz.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +86,18 @@ public class QuizDao {
                 .getResultList();
 
         return publications.size() == 0 ? null : publications.get(0);
+    }
+
+    public List<Publication> getPublicationsSharedWithMe(User user) {
+        return em.createQuery("FROM Publication p WHERE :email IN elements(p.publishToEmails)", Publication.class)
+                .setParameter("email", user.getEmail())
+                .getResultList();
+    }
+
+    public List<Publication> getAllPublicPublications() {
+        return em.createQuery("FROM Publication p WHERE p.publishFor = :publishFor", Publication.class)
+                .setParameter("publishFor", PublishFor.EVERYBODY)
+                .getResultList();
     }
 
     public Set<String> getUserContacts(User user) {

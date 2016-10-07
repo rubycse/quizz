@@ -149,4 +149,8 @@ public class User {
     public void setStudent(boolean student) {
         this.student = student;
     }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
 }

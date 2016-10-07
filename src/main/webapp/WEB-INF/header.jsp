@@ -20,10 +20,10 @@
                         </c:when>
                         <c:when test="${sessionScope.USER.student}">
                             <li><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
-                            <li><a href="<c:url value='/quiz/list?public=true'/>">Public</a></li>
+                            <li><a href="<c:url value='/quiz/list'/>">Public</a></li>
                         </c:when>
                         <c:when test="${!sessionScope.USER.student}">
-                            <li><a href="<c:url value='/quiz/list'/>">My Quizzes</a></li>
+                            <li><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
                         </c:when>
                     </c:choose>
                 </ul>
