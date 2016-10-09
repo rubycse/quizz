@@ -54,6 +54,7 @@ public class QuizController {
     public String list(ModelMap model, HttpSession session) {
         User user = authService.getUser(session);
         model.put("quizzes", quizDao.getUserQuizzes(user));
+        model.put("myQuizzes", true);
         return "quiz/myQuizzes";
     }
 
@@ -63,6 +64,11 @@ public class QuizController {
         List<Publication> publications = sharedWithMe ? quizDao.getPublicationsSharedWithMe(user)
                 : quizDao.getAllPublicPublications();
         model.put("publications", publications);
+        if (sharedWithMe) {
+            model.put("sharedWithMe", true);
+        } else {
+            model.put("public", true);
+        }
         return "quiz/list";
     }
 }

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -13,20 +14,17 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <ul class="nav navbar-nav">
-                    <c:choose>
-                        <c:when test="${sessionScope.USER == null}">
-
-                        </c:when>
-                        <c:when test="${sessionScope.USER.student}">
-                            <li><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
-                            <li><a href="<c:url value='/quiz/list'/>">Public</a></li>
-                        </c:when>
-                        <c:when test="${!sessionScope.USER.student}">
-                            <li><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
-                        </c:when>
-                    </c:choose>
-                </ul>
+                <c:if test="${sessionScope.USER != null}">
+                    <li class="${public ? 'active' : ''}"><a href="<c:url value='/quiz/list'/>">Public</a></li>
+                </c:if>
+                <c:choose>
+                    <c:when test="${sessionScope.USER.student}">
+                        <li class="${sharedWithMe ? 'active' : ''}"><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
+                    </c:when>
+                    <c:when test="${!sessionScope.USER.student}">
+                        <li class="${myQuizzes ? 'active' : ''}"><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
+                    </c:when>
+                </c:choose>
             </ul>
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
