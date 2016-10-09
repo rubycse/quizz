@@ -30,7 +30,7 @@
                         <label for="username" class="col-md-4 control-label">Username</label>
                         <div class="col-md-7">
                             <form:input path="username" cssClass="form-control" id="username" placeholder="Username"/>
-                            <form:errors path="username" cssClass="ferror"/>
+                            <form:errors path="username" cssClass="text-danger"/>
                         </div>
                     </div>
 
@@ -38,7 +38,7 @@
                         <label for="password" class="col-md-4 control-label">Password</label>
                         <div class="col-md-7">
                             <form:input path="password" type="password" cssClass="form-control" id="password"/>
-                            <form:errors path="password" cssClass="ferror"/>
+                            <form:errors path="password" cssClass="text-danger"/>
                         </div>
                     </div>
 

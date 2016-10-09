@@ -29,8 +29,8 @@
             <div class="form-group">
                 <label for="name" class="col-lg-2 control-label">Name</label>
                 <div class="col-lg-6">
-                    <form:input path="name" cssClass="form-control" id="name" placeholder="Name"/>
-                    <form:errors path="name" cssClass="ferror"/>
+                    <form:input path="name" cssClass="form-control" id="name"/>
+                    <form:errors path="name" cssClass="text-danger"/>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                 <label for="maxDurationInMin" class="col-lg-2 control-label">Duration (Min)</label>
                 <div class="col-lg-4">
                     <form:input path="maxDurationInMin" cssClass="form-control" id="maxDurationInMin"/>
-                    <form:errors path="maxDurationInMin" cssClass="ferror"/>
+                    <form:errors path="maxDurationInMin" cssClass="text-danger"/>
                 </div>
             </div>
 

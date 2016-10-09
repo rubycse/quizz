@@ -6,11 +6,16 @@ import net.quizz.quiz.domain.Publication;
 import net.quizz.quiz.domain.Quiz;
 import net.quizz.quiz.repository.QuizDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -27,13 +32,22 @@ public class QuizController {
     @Autowired
     private AuthService authService;
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        binder.registerCustomEditor(Integer.class, null, new CustomNumberEditor(Integer.class, true));
+    }
+
     @RequestMapping(path = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute Quiz quiz) {
         return "quiz/create";
     }
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public String save(@ModelAttribute Quiz quiz, ModelMap model, HttpSession session) {
+    public String save(@Valid @ModelAttribute Quiz quiz, BindingResult result, ModelMap model, HttpSession session) {
+        if (result.hasErrors()) {
+            return "quiz/create";
+        }
         User user = authService.getUser(session);
         quiz.setCreatedBy(user);
         quizDao.save(quiz);

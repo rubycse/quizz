@@ -6,9 +6,11 @@ import net.quizz.quiz.domain.Question;
 import net.quizz.quiz.domain.Quiz;
 import net.quizz.quiz.repository.QuizDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
@@ -49,11 +51,19 @@ public class QuizRestController {
     }
 
     @RequestMapping(path = "/updateQuizName", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-    public String updateQuizName(@RequestParam int id, @RequestParam String value, HttpServletResponse response) {
+    public String updateQuizName(@RequestParam int id, @RequestParam String value) {
         Quiz quiz = quizDao.getQuiz(id);
         quiz.setName(value);
         quizDao.save(quiz);
         return quiz.getName();
+    }
+
+    @RequestMapping(path = "/updateQuizDuration", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    public String updateQuizDuration(@RequestParam int id, @RequestParam String value) {
+        Quiz quiz = quizDao.getQuiz(id);
+        quiz.setMaxDurationInMin(Integer.parseInt(value));
+        quizDao.save(quiz);
+        return quiz.getMaxDurationInMin().toString();
     }
 
     @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")

@@ -25,6 +25,7 @@
 
         function makeQuizNameEditable() {
             $('.quizName').editable('<c:url value="updateQuizName"/>', {style  : "inherit", cssclass : 'editable'});
+            $('.quizDuration').editable('<c:url value="updateQuizDuration"/>', {style  : "inherit", cssclass : 'editable'});
         }
 
         function makeQuestionsEditable() {
@@ -83,7 +84,7 @@
     <div class="row">
         <div class="col-sm-10">
             <h1><b class="quizName" id="${quiz.id}" style="display: inline"><c:out value="${quiz.name}"/></b></h1>
-            (Duration: <c:out value="${quiz.maxDurationInMin}"/> Minute)
+            Duration: <b class="quizDuration" id="${quiz.id}" style="display: inline"><c:out value="${quiz.maxDurationInMin}"/></b> Minute
         </div>
         <div class="col-sm-2">
             <div class="verticalSpace">&nbsp;</div>

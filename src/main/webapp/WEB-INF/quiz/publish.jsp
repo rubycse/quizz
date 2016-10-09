@@ -65,7 +65,7 @@
                             <form:option value=""/>
                             <form:options items="${publishOptions}" itemLabel="label"/>
                         </form:select>
-                        <form:errors path="publishFor" cssClass="ferror"/>
+                        <form:errors path="publishFor" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                         <form:select id="publishToEmails" path="publishToEmails" cssClass="form-control" multiple="multiple">
                             <form:options items="${contacts}"/>
                         </form:select>
-                        <form:errors path="publishToEmails" cssClass="ferror"/>
+                        <form:errors path="publishToEmails" cssClass="text-danger"/>
                     </div>
                 </div>
 

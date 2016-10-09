@@ -28,11 +28,11 @@
                     <label for="firstName" class="col-lg-2 control-label">Name</label>
                     <div class="col-lg-3">
                         <form:input path="firstName" cssClass="form-control" id="firstName" placeholder="First"/>
-                        <form:errors path="firstName" cssClass="ferror"/>
+                        <form:errors path="firstName" cssClass="text-danger"/>
                     </div>
                     <div class="col-lg-3">
                         <form:input path="lastName" cssClass="form-control" id="lastName" placeholder="Last"/>
-                        <form:errors path="lastName" cssClass="ferror"/>
+                        <form:errors path="lastName" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                     <label for="username" class="col-lg-2 control-label">Username</label>
                     <div class="col-lg-6">
                         <form:input path="username" cssClass="form-control" id="username" placeholder="Username"/>
-                        <form:errors path="username" cssClass="ferror"/>
+                        <form:errors path="username" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     <label for="password" class="col-lg-2 control-label">Password</label>
                     <div class="col-lg-6">
                         <form:input path="password" type="password" cssClass="form-control" id="password" placeholder="Password"/>
-                        <form:errors path="password" cssClass="ferror"/>
+                        <form:errors path="password" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                     <label for="email" class="col-lg-2 control-label">Email</label>
                     <div class="col-lg-6">
                         <form:input path="email" cssClass="form-control" id="email" placeholder="Email"/>
-                        <form:errors path="email" cssClass="ferror"/>
+                        <form:errors path="email" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@
                     <label for="birthDate" class="col-lg-2 control-label">Birth Date</label>
                     <div class="col-lg-6">
                         <form:input path="birthDate" cssClass="form-control" id="birthDate" placeholder="Birth Date"/>
-                        <form:errors path="birthDate" cssClass="ferror"/>
+                        <form:errors path="birthDate" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                     <label for="phone" class="col-lg-2 control-label">Phone</label>
                     <div class="col-lg-6">
                         <form:input path="phone" cssClass="form-control" id="phone" placeholder="Phone"/>
-                        <form:errors path="phone" cssClass="ferror"/>
+                        <form:errors path="phone" cssClass="text-danger"/>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@
                                 <form:radiobutton path="student" id="student" label="Teacher" value="false"/>
                             </label>
                         </div>
-                        <form:errors path="student" cssClass="ferror"/>
+                        <form:errors path="student" cssClass="text-danger"/>
                     </div>
                 </div>
 
