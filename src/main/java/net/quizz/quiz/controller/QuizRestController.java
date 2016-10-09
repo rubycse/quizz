@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -29,9 +28,9 @@ public class QuizRestController {
     private AuthService authService;
 
     @RequestMapping(path = "/addQuestion", method = RequestMethod.POST)
-    public Question addQuestion(@RequestParam int quizId, HttpSession session) throws IllegalAccessException {
+    public Question addQuestion(@RequestParam int quizId) throws IllegalAccessException {
         Quiz quiz = quizDao.getQuiz(quizId);
-        if (quiz.getCreatedBy().getId() != authService.getUser(session).getId()) {
+        if (quiz.getCreatedBy().getId() != authService.getUser().getId()) {
             throw new IllegalAccessException();
         }
 
@@ -42,7 +41,7 @@ public class QuizRestController {
     }
 
     @RequestMapping(path = "/addOption", method = RequestMethod.POST)
-    public Answer addQuestion(@RequestParam int questionId) throws IllegalAccessException {
+    public Answer addOption(@RequestParam int questionId) throws IllegalAccessException {
         Question question = quizDao.getQuestion(questionId);
         Answer answer = addAnswer(question);
         quizDao.save(answer);

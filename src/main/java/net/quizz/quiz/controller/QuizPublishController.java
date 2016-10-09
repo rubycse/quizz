@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Set;
 
@@ -60,7 +59,7 @@ public class QuizPublishController {
     }
 
     @ModelAttribute("contacts")
-    public Set<String> getContacts(HttpSession session) {
-        return quizDao.getUserContacts(authService.getUser(session));
+    public Set<String> getContacts() {
+        return quizDao.getUserContacts(authService.getUser());
     }
 }
