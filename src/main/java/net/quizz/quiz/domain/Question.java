@@ -86,4 +86,10 @@ public class Question {
     public void setRequired(boolean required) {
         this.required = required;
     }
+
+    public void clearAnswer() {
+        for (Answer answer : getAnswerOptions()) {
+            answer.setRightAnswer(false);
+        }
+    }
 }

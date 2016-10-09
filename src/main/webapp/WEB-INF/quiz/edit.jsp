@@ -34,7 +34,7 @@
 
         var optionTemplate = '    <div class="option" onmouseover="showRemove(\'removeOption-#OPTION_ID#\')" onmouseout="hideRemove(\'removeOption-#OPTION_ID#\')" id="option-#OPTION_ID#">'
                 + '      <span id="removeOption-#OPTION_ID#" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(\'#OPTION_ID#\')"></span>'
-                + '      <input type="radio"/><span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
+                + '      <input type="radio" name="#QUESTION_ID#" onclick="updateAnswer(\#OPTION_ID\#)" #CHECKED#/><span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
                 + '    </div>';
 
         var questionTemplate = '<div class="question" id="question-#QUESTION_ID#">'
@@ -57,8 +57,11 @@
                 + '  </div>'
                 + '</div>';
 
-        function getOptionHtml(option) {
-            return optionTemplate.replace(/#OPTION_ID#/g, option.id).replace("#OPTION_LABEL#", option.label);
+        function getOptionHtml(questionId, option) {
+            return optionTemplate.replace(/#QUESTION_ID#/g, questionId)
+                    .replace(/#OPTION_ID#/g, option.id)
+                    .replace("#OPTION_LABEL#", option.label)
+                    .replace("#CHECKED#", option.rightAnswer? 'checked' : '');
         }
 
         function getQuestionHtml(question) {
@@ -68,7 +71,7 @@
             var optionHtml = "";
             for (var index in question.answerOptions) {
                 var option = question.answerOptions[index];
-                optionHtml += getOptionHtml(option);
+                optionHtml += getOptionHtml(question.id, option);
             }
 
             return quesHtml.replace("#OPTIONS#", optionHtml);
@@ -102,7 +105,7 @@
                 <c:forEach items="${question.answerOptions}" var="option">
                     <div class="option" onmouseover="showRemove('removeOption-${option.id}')" onmouseout="hideRemove('removeOption-${option.id}')" id="option-${option.id}">
                         <span id="removeOption-${option.id}" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(${option.id})"></span>
-                        <input type="radio"/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                        <input type="radio" name="${question.id}" onclick="updateAnswer(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                     </div>
                 </c:forEach>
                 </div>
@@ -142,7 +145,7 @@
                         $.post('<c:url value="addOption"/>',
                                 {questionId: questionId}, function (data) {
                                 }).success(function (data, status, error) {
-                                    $("#options-" + questionId).append(getOptionHtml(data));
+                                    $("#options-" + questionId).append(getOptionHtml(questionId, data));
                                     makeQuestionsEditable();
                                 });
                     }
@@ -170,6 +173,15 @@
                                 }).success(function (data, status, error) {
                                     if (data === "SUCCESS") {
                                         $("#option-" + optionId).remove();
+                                    }
+                                });
+                    }
+
+                    function updateAnswer(optionId) {
+                        $.post('<c:url value="updateAnswer"/>',
+                                {id: optionId},function (data) {
+                                }).success(function (data, status, error) {
+                                    if (data === "SUCCESS") {
                                     }
                                 });
                     }

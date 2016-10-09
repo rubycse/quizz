@@ -92,6 +92,16 @@ public class QuizRestController {
         return "SUCCESS";
     }
 
+    @RequestMapping(path = "/updateAnswer", method = RequestMethod.POST)
+    public String updateAnswer(@RequestParam int id) {
+        Answer answer = quizDao.getAnswer(id);
+        Question question = answer.getQuestion();
+        question.clearAnswer();
+        answer.setRightAnswer(true);
+        quizDao.save(question);
+        return "SUCCESS";
+    }
+
     private Question addQuestion(Quiz quiz) {
         int questionSize = quiz.getQuestions().size();
         Question question = new Question("Question " + (questionSize + 1));

@@ -34,7 +34,7 @@
                 <div>
                     <c:forEach items="${question.answerOptions}" var="option">
                         <div class="option">
-                            <input type="radio"/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                            <input type="radio" <c:if test="${option.rightAnswer}">checked</c:if> disabled/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                         </div>
                     </c:forEach>
                 </div>
