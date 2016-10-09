@@ -95,7 +95,7 @@ public class QuizRestController {
     private Question addQuestion(Quiz quiz) {
         int questionSize = quiz.getQuestions().size();
         Question question = new Question("Question " + (questionSize + 1));
-        question.setAnswerOptions(new ArrayList<>());
+        question.setAnswerOptions(new ArrayList<Answer>());
         addAnswer(question);
         addAnswer(question);
         question.setQuiz(quiz);

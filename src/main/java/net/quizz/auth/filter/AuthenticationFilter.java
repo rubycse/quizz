@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * @author lutfun
@@ -21,9 +20,7 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         String excludeUrlPatternsStr = filterConfig.getInitParameter("exclude-url-patterns");
-        excludeUrlPatterns = Pattern.compile(",")
-                .splitAsStream(excludeUrlPatternsStr)
-                .collect(Collectors.toList());
+        excludeUrlPatterns = Arrays.asList(Pattern.compile(",").split(excludeUrlPatternsStr));
     }
 
     @Override
@@ -33,14 +30,9 @@ public class AuthenticationFilter implements Filter {
 
         String contextPath = request.getContextPath();
         int contextPathLen = (contextPath != null) ? contextPath.length() : 0;
-        final String relativeUri = request.getRequestURI().substring(contextPathLen);
+        String relativeUri = request.getRequestURI().substring(contextPathLen);
 
-        List<String> startWiths = Arrays.asList("/css", "/images");
-        List<String> endsWiths = Arrays.asList(".css", ".js");
-
-        if (excludeUrlPatterns.stream().anyMatch(relativeUri::startsWith)
-                || startWiths.stream().anyMatch(relativeUri::startsWith)
-                || endsWiths.stream().anyMatch(relativeUri::endsWith)) {
+        if (skipFilter(relativeUri)) {
             chain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -51,6 +43,29 @@ public class AuthenticationFilter implements Filter {
         } else {
             chain.doFilter(servletRequest, servletResponse);
         }
+    }
+
+    private boolean skipFilter(String relativeUri) {
+        List<String> startWiths = Arrays.asList("/css", "/images");
+        List<String> endsWiths = Arrays.asList(".css", ".js");
+
+        for (String excludeUrlPattern : excludeUrlPatterns) {
+            if (relativeUri.startsWith(excludeUrlPattern)) {
+                return true;
+            }
+        }
+        for (String startsWith : startWiths) {
+            if (relativeUri.startsWith(startsWith)) {
+                return true;
+            }
+        }
+        for (String endsWith : endsWiths) {
+            if (relativeUri.endsWith(endsWith)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
