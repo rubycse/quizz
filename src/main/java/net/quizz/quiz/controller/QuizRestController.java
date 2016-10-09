@@ -5,6 +5,7 @@ import net.quizz.quiz.domain.Answer;
 import net.quizz.quiz.domain.Question;
 import net.quizz.quiz.domain.Quiz;
 import net.quizz.quiz.repository.QuizDao;
+import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,13 +28,13 @@ public class QuizRestController {
     @Autowired
     private AuthService authService;
 
-    @RequestMapping(path = "/addQuestion", method = RequestMethod.POST)
-    public Question addQuestion(@RequestParam int quizId) throws IllegalAccessException {
-        Quiz quiz = quizDao.getQuiz(quizId);
-        if (quiz.getCreatedBy().getId() != authService.getUser().getId()) {
-            throw new IllegalAccessException();
-        }
+    @Autowired
+    private QuizAccessManager quizAccessManager;
 
+    @RequestMapping(path = "/addQuestion", method = RequestMethod.POST)
+    public Question addQuestion(@RequestParam int quizId) {
+        Quiz quiz = quizDao.getQuiz(quizId);
+        quizAccessManager.canEdit(quiz);
         Question question = addQuestion(quiz);
         quizDao.save(question);
 
@@ -41,8 +42,10 @@ public class QuizRestController {
     }
 
     @RequestMapping(path = "/addOption", method = RequestMethod.POST)
-    public Answer addOption(@RequestParam int questionId) throws IllegalAccessException {
+    public Answer addOption(@RequestParam int questionId) {
         Question question = quizDao.getQuestion(questionId);
+        quizAccessManager.canEdit(question.getQuiz());
+
         Answer answer = addAnswer(question);
         quizDao.save(answer);
 
@@ -52,6 +55,8 @@ public class QuizRestController {
     @RequestMapping(path = "/updateQuizName", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuizName(@RequestParam int id, @RequestParam String value) {
         Quiz quiz = quizDao.getQuiz(id);
+        quizAccessManager.canEdit(quiz);
+
         quiz.setName(value);
         quizDao.save(quiz);
         return quiz.getName();
@@ -60,6 +65,8 @@ public class QuizRestController {
     @RequestMapping(path = "/updateQuizDuration", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuizDuration(@RequestParam int id, @RequestParam String value) {
         Quiz quiz = quizDao.getQuiz(id);
+        quizAccessManager.canEdit(quiz);
+
         quiz.setMaxDurationInMin(Integer.parseInt(value));
         quizDao.save(quiz);
         return quiz.getMaxDurationInMin().toString();
@@ -68,6 +75,7 @@ public class QuizRestController {
     @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuestionLabel(@RequestParam int id, @RequestParam String value) {
         Question question = quizDao.getQuestion(id);
+        quizAccessManager.canEdit(question.getQuiz());
         question.setLabel(value);
         quizDao.save(question);
         return question.getLabel();
@@ -76,6 +84,7 @@ public class QuizRestController {
     @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateOptionLabel(@RequestParam int id, @RequestParam String value) {
         Answer answer = quizDao.getAnswer(id);
+        quizAccessManager.canEdit(answer.getQuestion().getQuiz());
         answer.setLabel(value);
         quizDao.save(answer);
         return answer.getLabel();
@@ -84,6 +93,7 @@ public class QuizRestController {
     @RequestMapping(path = "/toggleRequired", method = RequestMethod.POST)
     public String toggleRequired(@RequestParam int questionId) {
         Question question = quizDao.getQuestion(questionId);
+        quizAccessManager.canEdit(question.getQuiz());
         question.setRequired(!question.isRequired());
         quizDao.save(question);
         return "SUCCESS";
@@ -91,12 +101,15 @@ public class QuizRestController {
 
     @RequestMapping(path = "/deleteQuestion", method = RequestMethod.POST)
     public String deleteQuestion(@RequestParam int id) {
+        Question question = quizDao.getQuestion(id);
+        quizAccessManager.canEdit(question.getQuiz());
         quizDao.deleteQuestion(id);
         return "SUCCESS";
     }
 
     @RequestMapping(path = "/deleteOption", method = RequestMethod.POST)
     public String deleteOption(@RequestParam int id) {
+        quizAccessManager.canEdit(quizDao.getAnswer(id).getQuestion().getQuiz());
         quizDao.deleteAnswer(id);
         return "SUCCESS";
     }
@@ -104,6 +117,7 @@ public class QuizRestController {
     @RequestMapping(path = "/updateAnswer", method = RequestMethod.POST)
     public String updateAnswer(@RequestParam int id) {
         Answer answer = quizDao.getAnswer(id);
+        quizAccessManager.canEdit(answer.getQuestion().getQuiz());
         Question question = answer.getQuestion();
         question.clearAnswer();
         answer.setRightAnswer(true);

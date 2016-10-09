@@ -5,6 +5,7 @@ import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.Publication;
 import net.quizz.quiz.domain.Quiz;
 import net.quizz.quiz.repository.QuizDao;
+import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -31,6 +32,9 @@ public class QuizController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private QuizAccessManager quizAccessManager;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -39,11 +43,13 @@ public class QuizController {
 
     @RequestMapping(path = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute Quiz quiz) {
+        quizAccessManager.canCreate();
         return "quiz/create";
     }
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public String save(@Valid @ModelAttribute Quiz quiz, BindingResult result, ModelMap model) {
+        quizAccessManager.canCreate();
         if (result.hasErrors()) {
             return "quiz/create";
         }
@@ -65,6 +71,7 @@ public class QuizController {
 
     @RequestMapping(path = "/myQuizzes", method = RequestMethod.GET)
     public String list(ModelMap model) {
+        quizAccessManager.canCreate();
         User user = authService.getUser();
         model.put("quizzes", quizDao.getUserQuizzes(user));
         model.put("myQuizzes", true);

@@ -23,13 +23,18 @@
             });
 
 
+            showHidePublishTo();
             $("#publishFor").on("change", function() {
+                showHidePublishTo();
+            });
+
+            function showHidePublishTo() {
                 if ($("#publishFor").val() == 'SELECTED_USER') {
                     $("#publishToEmailsDiv").show();
                 } else {
                     $("#publishToEmailsDiv").hide();
                 }
-            })
+            }
         });
     </script>
 </head>
