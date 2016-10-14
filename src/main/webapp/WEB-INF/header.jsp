@@ -16,15 +16,13 @@
             <ul class="nav navbar-nav">
                 <c:if test="${sessionScope.USER != null}">
                     <li class="${public ? 'active' : ''}"><a href="<c:url value='/quiz/list'/>">Public</a></li>
-                </c:if>
-                <c:choose>
-                    <c:when test="${sessionScope.USER.student}">
+                    <c:if test="${sessionScope.USER.student}">
                         <li class="${sharedWithMe ? 'active' : ''}"><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
-                    </c:when>
-                    <c:when test="${!sessionScope.USER.student}">
+                    </c:if>
+                    <c:if test="${!sessionScope.USER.student}">
                         <li class="${myQuizzes ? 'active' : ''}"><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
-                    </c:when>
-                </c:choose>
+                    </c:if>
+                </c:if>
             </ul>
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">

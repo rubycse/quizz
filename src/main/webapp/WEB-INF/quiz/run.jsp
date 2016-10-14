@@ -1,10 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>
-        Show Quiz
+        <c:out value="${quiz.name}"/>
     </title>
     <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
 </head>
@@ -19,8 +17,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="well bs-component">
-            This quiz contains ${fn:length(quiz.questions)} multiple choice questions and should be completed within ${quiz.maxDurationInMin} minutes.
-            <br/><br/><a class="btn btn-md btn-success" href="<c:url value="run?id=${quiz.id}"/>">Start Quiz</a>
+            <h2>Under Construction</h2>
         </div>
     </div>
 </div>

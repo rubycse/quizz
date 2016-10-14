@@ -91,4 +91,11 @@ public class QuizController {
         }
         return "quiz/list";
     }
+
+    @RequestMapping(path = "/run", method = RequestMethod.GET)
+    public String run(@RequestParam int id, ModelMap model) {
+        Quiz quiz = quizDao.getQuiz(id);
+        model.put("quiz", quiz);
+        return "quiz/run";
+    }
 }
