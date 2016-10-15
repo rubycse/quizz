@@ -15,11 +15,11 @@ import java.util.Properties;
  */
 public class PropertyReader {
 
-    private static String FILE_LOC_PROP = "prop.loc";
+    private static String FILE_LOC_PROP = "PROP_LOC";
     private static Map<String, String> resolvedProps = new HashMap<String, String>();
 
     static {
-        String fileName = System.getProperty(FILE_LOC_PROP);
+        String fileName = System.getenv(FILE_LOC_PROP);
         File file = fileName != null ? new File(fileName) : null;
         Properties props = new Properties();
 
