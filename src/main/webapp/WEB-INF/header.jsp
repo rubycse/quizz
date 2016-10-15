@@ -15,12 +15,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <c:if test="${sessionScope.USER != null}">
-                    <li class="${public ? 'active' : ''}"><a href="<c:url value='/quiz/list'/>">Public</a></li>
+                    <li><a href="<c:url value='/quiz/list'/>">Public</a></li>
                     <c:if test="${sessionScope.USER.student}">
-                        <li class="${sharedWithMe ? 'active' : ''}"><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
+                        <li><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
                     </c:if>
                     <c:if test="${!sessionScope.USER.student}">
-                        <li class="${myQuizzes ? 'active' : ''}"><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
+                        <li><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
                     </c:if>
                 </c:if>
             </ul>
