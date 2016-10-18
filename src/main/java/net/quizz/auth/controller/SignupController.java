@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class SignupController {
     }
 
     @RequestMapping(path = "/signup", method = RequestMethod.POST)
-    public String saveUser(@Valid @ModelAttribute User user, BindingResult result, ModelMap model) {
+    public String saveUser(@Valid @ModelAttribute User user, BindingResult result, ModelMap model, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "signup";
         }
@@ -46,7 +47,7 @@ public class SignupController {
         user.setEmailVerificationId(uuid);
         user.setEmailVerified(false);
         userDao.save(user);
-        sendEmail(user, uuid);
+        sendEmail(user, uuid, getURLWithServletPath(request));
         model.put("email", user.getEmail());
 
         return "verifyEmail";
@@ -61,10 +62,10 @@ public class SignupController {
         return "emailVerified";
     }
 
-    private void sendEmail(User user, String emailVerificationId) {
+    private void sendEmail(User user, String emailVerificationId, String urlWithServletPath) {
         String mailText = "Hi " + user.getFirstName() +
                 "\n\nHelp us secure your Quizz account by verifying your email address (" + user.getEmail() + ") by clicking following link:" +
-                "\n\nhttp://localhost:8090/quizz/auth/verify-email/" + emailVerificationId +
+                "\n\n" + urlWithServletPath + "/verify-email/" + emailVerificationId +
                 "\n\nThis lets you access all of Quizz's features.\n";
         mailService.sendMail(user.getEmail(), "[Quizz] Please verify your email address", mailText);
     }
@@ -72,5 +73,10 @@ public class SignupController {
     @ModelAttribute("genders")
     public List<Gender> getGenders() {
         return Arrays.asList(Gender.values());
+    }
+
+    public static String getURLWithServletPath(HttpServletRequest request) {
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath() + request.getServletPath();
     }
 }
