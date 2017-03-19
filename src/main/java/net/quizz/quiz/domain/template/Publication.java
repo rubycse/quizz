@@ -1,4 +1,4 @@
-package net.quizz.quiz.domain;
+package net.quizz.quiz.domain.template;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ public class Publication {
     private int id;
 
     @OneToOne
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
+    @JoinColumn(name = "quiz_template_id")
+    private QuizTemplate quizTemplate;
 
     @Enumerated(EnumType.STRING)
     private PublishFor publishFor;
@@ -44,12 +44,12 @@ public class Publication {
         this.id = id;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
+    public QuizTemplate getQuizTemplate() {
+        return quizTemplate;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuizTemplate(QuizTemplate quizTemplate) {
+        this.quizTemplate = quizTemplate;
     }
 
     public PublishFor getPublishFor() {

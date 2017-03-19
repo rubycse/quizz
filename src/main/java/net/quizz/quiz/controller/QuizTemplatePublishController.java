@@ -1,9 +1,9 @@
 package net.quizz.quiz.controller;
 
 import net.quizz.common.service.AuthService;
-import net.quizz.quiz.domain.Publication;
-import net.quizz.quiz.domain.PublishFor;
-import net.quizz.quiz.domain.Quiz;
+import net.quizz.quiz.domain.template.Publication;
+import net.quizz.quiz.domain.template.PublishFor;
+import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,8 @@ import java.util.Set;
 
 @Controller
 @SessionAttributes("publication")
-public class QuizPublishController {
+@RequestMapping(path = "/template/publish")
+public class QuizTemplatePublishController {
 
     @Autowired
     private QuizDao quizDao;
@@ -32,32 +33,32 @@ public class QuizPublishController {
     @Autowired
     private QuizAccessManager quizAccessManager;
 
-    @RequestMapping(path = "/publish", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String show(ModelMap model, @RequestParam int quizId) {
-        Quiz quiz = quizDao.getQuiz(quizId);
-        quizAccessManager.canEdit(quiz);
-        Publication publication = quizDao.getPublicationByQuiz(quiz);
+        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizId);
+        quizAccessManager.canEdit(quizTemplate);
+        Publication publication = quizDao.getPublicationByQuiz(quizTemplate);
 
         if (publication == null) {
             publication = new Publication();
-            publication.setQuiz(quiz);
+            publication.setQuizTemplate(quizTemplate);
         }
 
         model.put("publication", publication);
         model.put("publishOptions", PublishFor.values());
 
-        return "quiz/publish";
+        return "quizTemplate/publish";
     }
 
-    @RequestMapping(path = "/publish", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String publish(@ModelAttribute Publication publication) {
-        Quiz quiz = publication.getQuiz();
-        quizAccessManager.canEdit(quiz);
+        QuizTemplate quizTemplate = publication.getQuizTemplate();
+        quizAccessManager.canEdit(quizTemplate);
         publication.setPublishedOn(new Date());
 
-        if (!quiz.isPublished()) {
-            quiz.setPublished(true);
-            quizDao.save(quiz);
+        if (!quizTemplate.isPublished()) {
+            quizTemplate.setPublished(true);
+            quizDao.save(quizTemplate);
         }
         quizDao.save(publication);
 

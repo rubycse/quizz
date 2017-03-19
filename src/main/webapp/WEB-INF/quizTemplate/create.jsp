@@ -17,7 +17,7 @@
 <div class="row">
     <div class="well bs-component">
 
-    <form:form method="post" commandName="quiz" cssClass="form-horizontal">
+    <form:form method="post" commandName="quizTemplate" cssClass="form-horizontal">
         <form:errors path="*">
             <div id="div_global_error" align="center">
                 <h1><s:message code="error.title"/></h1>

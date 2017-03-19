@@ -1,88 +1,113 @@
 package net.quizz.quiz.domain;
 
 import net.quizz.auth.domain.User;
+import net.quizz.quiz.domain.template.QuestionTemplate;
+import net.quizz.quiz.domain.template.QuizTemplate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author lutfun
- * @since 3/17/16
+ * @since 4/21/17
  */
-@Entity
-@Table(name = "quiz")
+
+//@Entity
+//@Table(name = "quiz")
 public class Quiz {
 
-    @Id
-    @GeneratedValue
-    private int id;
+//    @Id
+//    @GeneratedValue
+    private long id;
 
-    @NotNull
-    @Size(max = 250)
-    private String name;
+//    @ManyToOne
+//    @JoinColumn(name = "quiz_id")
+    private QuizTemplate quizTemplate;
 
-    @NotNull
-    @Min(1)
-    private Integer maxDurationInMin;
+//    @ManyToOne
+//    @JoinColumn(name = "answered_by_id")
+    private User answeredBy;
 
-    private boolean published;
+//    @NotNull
+//    @Min(1)
+    private Integer durationSpentInMin;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by_id")
-    private User createdBy;
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "question_id")
+    private List<QuestionTemplate> questionTemplates;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "quiz_id", nullable = false)
-    private List<Question> questions;
+    private Date startTime;
 
-    public int getId() {
+    private Date endTime;
+
+    public Quiz() {
+    }
+
+    public Quiz(QuizTemplate quizTemplate) {
+        this.setQuizTemplate(quizTemplate);
+        this.setQuestionTemplates(new ArrayList<QuestionTemplate>(quizTemplate.getQuestionTemplates().size()));
+        for (QuestionTemplate questionTemplate : quizTemplate.getQuestionTemplates()) {
+            this.getQuestionTemplates().add(new QuestionTemplate(questionTemplate));
+        }
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public QuizTemplate getQuizTemplate() {
+        return quizTemplate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuizTemplate(QuizTemplate quizTemplate) {
+        this.quizTemplate = quizTemplate;
     }
 
-    public Integer getMaxDurationInMin() {
-        return maxDurationInMin;
+    public User getAnsweredBy() {
+        return answeredBy;
     }
 
-    public void setMaxDurationInMin(Integer maxDurationInMin) {
-        this.maxDurationInMin = maxDurationInMin;
+    public void setAnsweredBy(User answeredBy) {
+        this.answeredBy = answeredBy;
     }
 
-    public boolean isPublished() {
-        return published;
+    public Integer getDurationSpentInMin() {
+        return durationSpentInMin;
     }
 
-    public void setPublished(boolean published) {
-        this.published = published;
+    public void setDurationSpentInMin(Integer durationSpentInMin) {
+        this.durationSpentInMin = durationSpentInMin;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+    public List<QuestionTemplate> getQuestionTemplates() {
+        return questionTemplates;
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public void setQuestionTemplates(List<QuestionTemplate> questionTemplates) {
+        this.questionTemplates = questionTemplates;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

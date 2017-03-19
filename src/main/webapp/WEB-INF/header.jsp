@@ -15,12 +15,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <c:if test="${sessionScope.USER != null}">
-                    <li><a href="<c:url value='/quiz/list'/>">Public</a></li>
+                    <li><a href="<c:url value='/quiz/template/list'/>">Public</a></li>
                     <c:if test="${sessionScope.USER.student}">
-                        <li><a href="<c:url value='/quiz/list?sharedWithMe=true'/>">Shared With Me</a></li>
+                        <li><a href="<c:url value='/quiz/template/list?sharedWithMe=true'/>">Shared With Me</a></li>
                     </c:if>
                     <c:if test="${!sessionScope.USER.student}">
-                        <li><a href="<c:url value='/quiz/myQuizzes'/>">My Quizzes</a></li>
+                        <li><a href="<c:url value='/quiz/template/myTemplates'/>">My Quizzes</a></li>
                     </c:if>
                 </c:if>
             </ul>
@@ -52,7 +52,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="<c:url value='/quiz/create'/>">Create Quiz</a></li>
+                                <li><a href="<c:url value='/quiz/template/create'/>">Create Quiz</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<c:url value='/auth/myProfile'/>">My Profile</a></li>
                                 <li><a href="<c:url value='/auth/changePassword'/>">Change Password</a></li>

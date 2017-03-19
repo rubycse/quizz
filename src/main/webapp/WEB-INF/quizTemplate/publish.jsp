@@ -44,9 +44,9 @@
         <div class="col-sm-12">
             <h1>Publish Quiz</h1>
             <c:url var="quizUrl" value="show">
-                <c:param name="id" value="${publication.quiz.id}"/>
+                <c:param name="id" value="${publication.quizTemplate.id}"/>
             </c:url>
-            <strong>Quiz:</strong>&nbsp;<a href="${quizUrl}"><c:out value="${publication.quiz.name}"/></a>
+            <strong>Quiz:</strong>&nbsp;<a href="${quizUrl}"><c:out value="${publication.quizTemplate.name}"/></a>
         </div>
     </div>
 </div>

@@ -2,12 +2,13 @@ package net.quizz.quiz.repository;
 
 import net.quizz.auth.domain.User;
 import net.quizz.quiz.domain.*;
+import net.quizz.quiz.domain.template.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,54 +24,54 @@ public class QuizDao {
     @PersistenceContext
     private EntityManager em;
 
-    public void save(Quiz quiz) {
-        if (quiz.getId() == 0) {
-            em.persist(quiz);
+    public void save(QuizTemplate quizTemplate) {
+        if (quizTemplate.getId() == 0) {
+            em.persist(quizTemplate);
         } else {
-            em.merge(quiz);
+            em.merge(quizTemplate);
         }
     }
 
-    public Quiz getQuiz(int quizId) {
-        return em.find(Quiz.class, quizId);
+    public QuizTemplate getQuizTemplate(int quizId) {
+        return em.find(QuizTemplate.class, quizId);
     }
 
-    public List<Quiz> getUserQuizzes(User user) {
-        return em.createQuery("SELECT q FROM Quiz q WHERE q.createdBy = :user", Quiz.class)
+    public List<QuizTemplate> getUserQuizzes(User user) {
+        return em.createQuery("SELECT q FROM QuizTemplate q WHERE q.createdBy = :user", QuizTemplate.class)
                 .setParameter("user", user)
                 .getResultList();
     }
 
-    public Question getQuestion(int id) {
-        return em.find(Question.class, id);
+    public QuestionTemplate getQuestion(int id) {
+        return em.find(QuestionTemplate.class, id);
     }
 
-    public void save(Question question) {
-        if (question.getId() == 0) {
-            em.persist(question);
+    public void save(QuestionTemplate questionTemplate) {
+        if (questionTemplate.getId() == 0) {
+            em.persist(questionTemplate);
         } else {
-            em.merge(question);
+            em.merge(questionTemplate);
         }
     }
 
-    public void save(Answer answer) {
-        if (answer.getId() == 0) {
-            em.persist(answer);
+    public void save(OptionTemplate optionTemplate) {
+        if (optionTemplate.getId() == 0) {
+            em.persist(optionTemplate);
         } else {
-            em.merge(answer);
+            em.merge(optionTemplate);
         }
     }
 
-    public Answer getAnswer(int id) {
-        return em.find(Answer.class, id);
+    public OptionTemplate getOption(int id) {
+        return em.find(OptionTemplate.class, id);
     }
 
     public void deleteQuestion(int id) {
         em.remove(getQuestion(id));
     }
 
-    public void deleteAnswer(int id) {
-        em.remove(getAnswer(id));
+    public void deleteOption(int id) {
+        em.remove(getOption(id));
     }
 
     public void save(Publication publication) {
@@ -81,9 +82,9 @@ public class QuizDao {
         }
     }
 
-    public Publication getPublicationByQuiz(Quiz quiz) {
-        List<Publication> publications = em.createQuery("FROM Publication p WHERE p.quiz = :quiz", Publication.class)
-                .setParameter("quiz", quiz)
+    public Publication getPublicationByQuiz(QuizTemplate quizTemplate) {
+        List<Publication> publications = em.createQuery("FROM Publication p WHERE p.quizTemplate = :quizTemplate", Publication.class)
+                .setParameter("quizTemplate", quizTemplate)
                 .getResultList();
 
         return publications.size() == 0 ? null : publications.get(0);
@@ -102,7 +103,7 @@ public class QuizDao {
     }
 
     public Set<String> getUserContacts(User user) {
-        List<Publication> publications = em.createQuery("FROM Publication p WHERE p.quiz.createdBy = :user", Publication.class)
+        List<Publication> publications = em.createQuery("FROM Publication p WHERE p.quizTemplate.createdBy = :user", Publication.class)
                 .setParameter("user", user)
                 .getResultList();
 
@@ -114,17 +115,29 @@ public class QuizDao {
         return contacts;
     }
 
-    public Quiz getQuiz(Question question) {
-        Integer quizId = (Integer) em.createNativeQuery("SELECT quiz_id FROM question ques WHERE ques.id = :questionId")
-                .setParameter("questionId", question.getId())
+    public QuizTemplate getQuizTemplate(QuestionTemplate questionTemplate) {
+        Integer quizTemplateId = (Integer) em.createNativeQuery("SELECT quiz_template_id FROM question_template ques WHERE ques.id = :questionId")
+                .setParameter("questionId", questionTemplate.getId())
                 .getSingleResult();
-        return getQuiz(quizId);
+        return getQuizTemplate(quizTemplateId);
     }
 
-    public Question getQuestion(Answer answer) {
-        Integer questionId = (Integer) em.createNativeQuery("SELECT question_id FROM answer ans WHERE ans.id = :answerId")
-                .setParameter("answerId", answer.getId())
+    public QuestionTemplate getQuestion(OptionTemplate optionTemplate) {
+        Integer questionId = (Integer) em.createNativeQuery("SELECT question_template_id FROM option_template op WHERE op.id = :optionId")
+                .setParameter("optionId", optionTemplate.getId())
                 .getSingleResult();
         return getQuestion(questionId);
+    }
+
+    public Quiz getQuizAnswer(QuizTemplate quizTemplate, User answeredBy) {
+        try {
+            String sql = "FROM QuizAnswer qa WHERE qa.quiz = :quiz AND qa.answeredBy = :answeredBy";
+            return em.createQuery(sql, Quiz.class)
+                    .setParameter("quizTemplate", quizTemplate)
+                    .setParameter("answeredBy", answeredBy)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 }

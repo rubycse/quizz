@@ -1,6 +1,4 @@
-package net.quizz.quiz.domain;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package net.quizz.quiz.domain.template;
 
 import javax.persistence.*;
 
@@ -10,8 +8,8 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "answer")
-public class Answer {
+@Table(name = "option_template")
+public class OptionTemplate {
 
     @Id
     @GeneratedValue
@@ -23,11 +21,16 @@ public class Answer {
 
     private boolean answered;
 
-    public Answer() {
+    public OptionTemplate() {
     }
 
-    public Answer(String label) {
+    public OptionTemplate(String label) {
         this.label = label;
+    }
+
+    public OptionTemplate(OptionTemplate optionTemplate) {
+        this.setLabel(optionTemplate.getLabel());
+        this.setRightAnswer(optionTemplate.isRightAnswer());
     }
 
     public int getId() {

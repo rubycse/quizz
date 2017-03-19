@@ -33,12 +33,12 @@
             $('.optionLabel').editable('<c:url value="updateOptionLabel"/>', {style: "inherit", cssclass: 'editable'});
         }
 
-        var optionTemplate = '    <div class="option" onmouseover="showRemove(\'removeOption-#OPTION_ID#\')" onmouseout="hideRemove(\'removeOption-#OPTION_ID#\')" id="option-#OPTION_ID#">'
+        var optionViewTemplate = '    <div class="option" onmouseover="showRemove(\'removeOption-#OPTION_ID#\')" onmouseout="hideRemove(\'removeOption-#OPTION_ID#\')" id="option-#OPTION_ID#">'
                 + '      <span id="removeOption-#OPTION_ID#" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(\'#OPTION_ID#\')"></span>'
-                + '      <input type="radio" name="#QUESTION_ID#" onclick="updateAnswer(\#OPTION_ID\#)" #CHECKED#/><span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
+                + '      <input type="radio" name="#QUESTION_ID#" onclick="updateOption(\#OPTION_ID\#)" #CHECKED#/><span id="#OPTION_ID#" class="optionLabel" style="display: inline">#OPTION_LABEL#</span>'
                 + '    </div>';
 
-        var questionTemplate = '<div class="question" id="question-#QUESTION_ID#">'
+        var questionViewTemplate = '<div class="question" id="question-#QUESTION_ID#">'
                 + '  <div id="#QUESTION_ID#" class="questionLabel" style="display: inline">#QUESTION_LABEL#</div><br/>'
                 + '  <div id="options-#QUESTION_ID#">'
                 + '  #OPTIONS#'
@@ -59,19 +59,19 @@
                 + '</div>';
 
         function getOptionHtml(questionId, option) {
-            return optionTemplate.replace(/#QUESTION_ID#/g, questionId)
+            return optionViewTemplate.replace(/#QUESTION_ID#/g, questionId)
                     .replace(/#OPTION_ID#/g, option.id)
                     .replace("#OPTION_LABEL#", option.label)
                     .replace("#CHECKED#", option.rightAnswer? 'checked' : '');
         }
 
         function getQuestionHtml(question) {
-            var quesHtml = questionTemplate.replace(/#QUESTION_ID#/g, question.id)
+            var quesHtml = questionViewTemplate.replace(/#QUESTION_ID#/g, question.id)
                     .replace('#QUESTION_LABEL#', question.label)
                     .replace("#CHECKED#", question.required ? 'checked' : '');
             var optionHtml = "";
-            for (var index in question.answerOptions) {
-                var option = question.answerOptions[index];
+            for (var index in question.options) {
+                var option = question.options[index];
                 optionHtml += getOptionHtml(question.id, option);
             }
 
@@ -83,13 +83,13 @@
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-10">
-            <h1><b class="quizName" id="${quiz.id}" style="display: inline"><c:out value="${quiz.name}"/></b></h1>
-            Duration: <b class="quizDuration" id="${quiz.id}" style="display: inline"><c:out value="${quiz.maxDurationInMin}"/></b> Minute
+            <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
+            Duration: <b class="quizDuration" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.maxDurationInMin}"/></b> Minute
         </div>
         <div class="col-sm-2">
             <div class="verticalSpace">&nbsp;</div>
             <c:url var="publishUrl" value='publish'>
-                <c:param name="quizId" value="${quiz.id}"/>
+                <c:param name="quizId" value="${quizTemplate.id}"/>
             </c:url>
             <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>
         </div>
@@ -98,29 +98,29 @@
 <fieldset>
     <div class="well bs-component">
     <div id="questions" style="margin-bottom: 20px;">
-        <c:forEach items="${quiz.questions}" var="question">
-            <div class="question" id="question-${question.id}">
-                <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
+        <c:forEach items="${quizTemplate.questionTemplates}" var="questionTemplate">
+            <div class="question" id="question-${questionTemplate.id}">
+                <div id="${questionTemplate.id}" class="questionLabel" style="display: inline">${questionTemplate.label}</div>
                 <br/>
-                <div id="options-${question.id}">
-                <c:forEach items="${question.answerOptions}" var="option">
+                <div id="options-${questionTemplate.id}">
+                <c:forEach items="${questionTemplate.options}" var="option">
                     <div class="option" onmouseover="showRemove('removeOption-${option.id}')" onmouseout="hideRemove('removeOption-${option.id}')" id="option-${option.id}">
                         <span id="removeOption-${option.id}" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(${option.id})"></span>
-                        <input type="radio" name="${question.id}" onclick="updateAnswer(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                        <input type="radio" name="${questionTemplate.id}" onclick="updateAnswer(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                     </div>
                 </c:forEach>
                 </div>
                 <div class="option">
                     <span class="removeOption glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(${question.id});">Add Option</a>
+                    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(${questionTemplate.id});">Add Option</a>
                 </div>
                 <div class="questionFooter">
                     <span class="questionRequired pull-right">
-                        <input type="checkbox" onclick="toggleRequired(${question.id})" <c:if test="${question.required}">checked</c:if> />&nbsp;Required
+                        <input type="checkbox" onclick="toggleRequired(${questionTemplate.id})" <c:if test="${questionTemplate.required}">checked</c:if> />&nbsp;Required
                     </span>
                     <span class="verticalBar pull-right">&nbsp;</span>
                     <span class="questionDelete pull-right">
-                        <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(${question.id});"></a>
+                        <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(${questionTemplate.id});"></a>
                     </span>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                 <script type="text/javascript">
                     function addQuestion() {
                         $.post('<c:url value="addQuestion"/>',
-                                {quizId: "${quiz.id}"}, function (data) {
+                                {quizId: "${quizTemplate.id}"}, function (data) {
                                 }).success(function (data, status, error) {
                                     $("#questions").append(getQuestionHtml(data));
                                     makeQuestionsEditable();
@@ -178,11 +178,13 @@
                                 });
                     }
 
-                    function updateAnswer(optionId) {
-                        $.post('<c:url value="updateAnswer"/>',
+                    function updateOption(optionId) {
+                        $.post('<c:url value="updateOption"/>',
                                 {id: optionId},function (data) {
                                 }).success(function (data, status, error) {
                                     if (data === "SUCCESS") {
+                                    } else {
+                                        alert('Can not be updated');
                                     }
                                 });
                     }

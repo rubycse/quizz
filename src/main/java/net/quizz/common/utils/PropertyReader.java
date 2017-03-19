@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class PropertyReader {
 
-    private static String FILE_LOC_PROP = "PROP_LOC";
+    private static String FILE_LOC_PROP = "QUIZZ_PROP_LOC";
     private static Map<String, String> resolvedProps = new HashMap<String, String>();
 
     static {

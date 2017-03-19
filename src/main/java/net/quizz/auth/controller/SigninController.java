@@ -47,7 +47,7 @@ public class SigninController {
         HttpSession session = request.getSession(true);
         session.setAttribute("USER", user);
 
-        return "redirect:/quiz/list";
+        return "redirect:/quiz/template/list";
     }
 
     @RequestMapping(path = "/signout", method = RequestMethod.GET)

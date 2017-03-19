@@ -25,18 +25,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${quizzes}" var="quiz">
+                <c:forEach items="${quizzes}" var="quizTemplate">
                     <tr>
                         <c:url var="quizUrl" value="show">
-                            <c:param name="id" value="${quiz.id}"/>
+                            <c:param name="id" value="${quizTemplate.id}"/>
                         </c:url>
-                        <td><a href="${quizUrl}"><c:out value="${quiz.name}"/></a></td>
-                        <td><c:out value="${quiz.maxDurationInMin}"/></td>
-                        <td><c:out value="${quiz.published ? 'Yes' : 'No'}"/></td>
+                        <td><a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a></td>
+                        <td><c:out value="${quizTemplate.maxDurationInMin}"/></td>
+                        <td><c:out value="${quizTemplate.published ? 'Yes' : 'No'}"/></td>
                         <td>
-                            <c:if test="${quiz.published}">
+                            <c:if test="${quizTemplate.published}">
                                 <c:url var="publishUrl" value='publish'>
-                                    <c:param name="quizId" value="${quiz.id}"/>
+                                    <c:param name="quizId" value="${quizTemplate.id}"/>
                                 </c:url>
                                 <a href="${publishUrl}">Publication</a>
                             </c:if>

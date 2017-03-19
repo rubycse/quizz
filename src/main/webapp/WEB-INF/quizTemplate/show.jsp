@@ -12,13 +12,13 @@
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-10">
-            <h1><b class="quizName" id="${quiz.id}" style="display: inline"><c:out value="${quiz.name}"/></b></h1>
-            Duration: <c:out value="${quiz.maxDurationInMin}"/> Minute
+            <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
+            Duration: <c:out value="${quizTemplate.maxDurationInMin}"/> Minute
         </div>
         <div class="col-sm-2">
             <div class="verticalSpace">&nbsp;</div>
             <c:url var="publishUrl" value='publish'>
-                <c:param name="quizId" value="${quiz.id}"/>
+                <c:param name="quizId" value="${quizTemplate.id}"/>
             </c:url>
             <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>
         </div>
@@ -26,13 +26,13 @@
 </div>
 <fieldset>
     <div class="well bs-component">
-    <div id="questions" style="margin-bottom: 20px;">
-        <c:forEach items="${quiz.questions}" var="question">
-            <div class="question" id="question-${question.id}">
-                <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
+    <div id="questionTemplates" style="margin-bottom: 20px;">
+        <c:forEach items="${quizTemplate.questionTemplates}" var="questionTemplate">
+            <div class="question">
+                <div id="${questionTemplate.id}" class="questionLabel" style="display: inline">${questionTemplate.label}</div>
                 <br/>
                 <div>
-                    <c:forEach items="${question.answerOptions}" var="option">
+                    <c:forEach items="${questionTemplate.options}" var="option">
                         <div class="option">
                             <input type="radio" <c:if test="${option.rightAnswer}">checked</c:if> disabled/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                         </div>

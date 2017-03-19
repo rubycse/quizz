@@ -12,15 +12,15 @@
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-10">
-            <h1><c:out value="${quiz.name}"/></h1>
+            <h1><c:out value="${quizTemplate.name}"/></h1>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
         <div class="well bs-component">
-            This quiz contains ${fn:length(quiz.questions)} multiple choice questions and should be completed within ${quiz.maxDurationInMin} minutes.
-            <br/><br/><a class="btn btn-md btn-success" href="<c:url value="run?id=${quiz.id}"/>">Start Quiz</a>
+            This quizTemplate contains ${fn:length(quizTemplate.questionTemplates)} multiple choice questionTemplates and should be completed within ${quizTemplate.maxDurationInMin} minutes.
+            <br/><br/><a class="btn btn-md btn-success" href="<c:url value="/quiz/quiz/run?id=${quizTemplate.id}"/>">Start Quiz</a>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-package net.quizz.quiz.domain;
+package net.quizz.quiz.domain.template;
 
 /**
  * @author lutfun
