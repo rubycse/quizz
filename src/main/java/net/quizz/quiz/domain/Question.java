@@ -19,14 +19,10 @@ public class Question {
     @GeneratedValue
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id", nullable = false)
-    @JsonIgnore
-    private Quiz quiz;
-
     private String label;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "question_id", nullable = false)
     private List<Answer> answerOptions;
 
     private int maxDurationInMin;
@@ -45,14 +41,6 @@ public class Question {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
     }
 
     public String getLabel() {

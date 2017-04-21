@@ -34,7 +34,8 @@ public class Quiz {
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "quiz")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "quiz_id", nullable = false)
     private List<Question> questions;
 
     public int getId() {

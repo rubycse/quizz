@@ -17,11 +17,6 @@ public class Answer {
     @GeneratedValue
     private int id;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
-
     private String label;
 
     private boolean rightAnswer;
@@ -29,14 +24,6 @@ public class Answer {
     private boolean answered;
 
     public Answer() {
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
     }
 
     public Answer(String label) {

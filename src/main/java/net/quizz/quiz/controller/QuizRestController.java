@@ -44,7 +44,7 @@ public class QuizRestController {
     @RequestMapping(path = "/addOption", method = RequestMethod.POST)
     public Answer addOption(@RequestParam int questionId) {
         Question question = quizDao.getQuestion(questionId);
-        quizAccessManager.canEdit(question.getQuiz());
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
 
         Answer answer = addAnswer(question);
         quizDao.save(answer);
@@ -75,7 +75,7 @@ public class QuizRestController {
     @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuestionLabel(@RequestParam int id, @RequestParam String value) {
         Question question = quizDao.getQuestion(id);
-        quizAccessManager.canEdit(question.getQuiz());
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
         question.setLabel(value);
         quizDao.save(question);
         return question.getLabel();
@@ -84,7 +84,7 @@ public class QuizRestController {
     @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateOptionLabel(@RequestParam int id, @RequestParam String value) {
         Answer answer = quizDao.getAnswer(id);
-        quizAccessManager.canEdit(answer.getQuestion().getQuiz());
+        quizAccessManager.canEdit(quizDao.getQuiz(quizDao.getQuestion(answer)));
         answer.setLabel(value);
         quizDao.save(answer);
         return answer.getLabel();
@@ -93,7 +93,7 @@ public class QuizRestController {
     @RequestMapping(path = "/toggleRequired", method = RequestMethod.POST)
     public String toggleRequired(@RequestParam int questionId) {
         Question question = quizDao.getQuestion(questionId);
-        quizAccessManager.canEdit(question.getQuiz());
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
         question.setRequired(!question.isRequired());
         quizDao.save(question);
         return "SUCCESS";
@@ -102,14 +102,16 @@ public class QuizRestController {
     @RequestMapping(path = "/deleteQuestion", method = RequestMethod.POST)
     public String deleteQuestion(@RequestParam int id) {
         Question question = quizDao.getQuestion(id);
-        quizAccessManager.canEdit(question.getQuiz());
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
         quizDao.deleteQuestion(id);
         return "SUCCESS";
     }
 
     @RequestMapping(path = "/deleteOption", method = RequestMethod.POST)
     public String deleteOption(@RequestParam int id) {
-        quizAccessManager.canEdit(quizDao.getAnswer(id).getQuestion().getQuiz());
+        Answer answer = quizDao.getAnswer(id);
+        Question question = quizDao.getQuestion(answer);
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
         quizDao.deleteAnswer(id);
         return "SUCCESS";
     }
@@ -117,8 +119,8 @@ public class QuizRestController {
     @RequestMapping(path = "/updateAnswer", method = RequestMethod.POST)
     public String updateAnswer(@RequestParam int id) {
         Answer answer = quizDao.getAnswer(id);
-        quizAccessManager.canEdit(answer.getQuestion().getQuiz());
-        Question question = answer.getQuestion();
+        Question question = quizDao.getQuestion(answer);
+        quizAccessManager.canEdit(quizDao.getQuiz(question));
         question.clearAnswer();
         answer.setRightAnswer(true);
         quizDao.save(question);
@@ -131,7 +133,6 @@ public class QuizRestController {
         question.setAnswerOptions(new ArrayList<Answer>());
         addAnswer(question);
         addAnswer(question);
-        question.setQuiz(quiz);
         quiz.getQuestions().add(question);
         return question;
     }
@@ -139,7 +140,6 @@ public class QuizRestController {
     private Answer addAnswer(Question question) {
         int answerSize = question.getAnswerOptions().size();
         Answer answer = new Answer("Answer " + (answerSize + 1));
-        answer.setQuestion(question);
         question.getAnswerOptions().add(answer);
         return answer;
     }

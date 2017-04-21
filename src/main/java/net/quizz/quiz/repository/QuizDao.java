@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,5 +112,19 @@ public class QuizDao {
         }
 
         return contacts;
+    }
+
+    public Quiz getQuiz(Question question) {
+        Integer quizId = (Integer) em.createNativeQuery("SELECT quiz_id FROM question ques WHERE ques.id = :questionId")
+                .setParameter("questionId", question.getId())
+                .getSingleResult();
+        return getQuiz(quizId);
+    }
+
+    public Question getQuestion(Answer answer) {
+        Integer questionId = (Integer) em.createNativeQuery("SELECT question_id FROM answer ans WHERE ans.id = :answerId")
+                .setParameter("answerId", answer.getId())
+                .getSingleResult();
+        return getQuestion(questionId);
     }
 }
