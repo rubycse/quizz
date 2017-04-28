@@ -72,4 +72,7 @@
         <property name="to" value="#{ T(net.quizz.common.utils.PropertyReader).getProperty('mail.to') }"/>
     </bean>
 
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
 </beans>

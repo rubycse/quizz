@@ -5,7 +5,7 @@
     <title>
         <c:out value="${quiz.quizTemplate.name}"/>
     </title>
-    <link href='<c:url value="/css/quizTemplate-1.0.0.css"/>' rel="stylesheet" type="text/css">
+    <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
     <script type="text/javascript">
         var countDownDate = new Date();
         countDownDate.setMinutes(countDownDate.getMinutes() + ${quiz.quizTemplate.maxDurationInMin});
@@ -49,18 +49,29 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10">
         <div class="well bs-component">
-            <c:forEach items="${quiz.questionTemplates}" var="questionTemplate">
-                <div class="questionTemplate">
-                    <h3><c:out value="${questionTemplate.label}"/></h3>
-                    <form:form commandName="questionTemplate" method="post">
-                        <input type="hidden" name="id" value="${questionTemplate.id}"/>
-                        <form:radiobuttons path="options" items="${questionTemplate.options}" itemValue="id" itemLabel="label"/>
-                        <input type="submit" value="Next"/>
-                    </form:form>
+            <form:form commandName="question" method="post" action="run">
+                <input type="hidden" name="quizId" value="${quiz.id}">
+                <input type="hidden" name="questionId" value="${question.id}">
+                <div class="question">
+                    <h3><c:out value="${question.label}"/></h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form:select id="answer"
+                                         path="answer"
+                                         class="form-control">
+                                <form:options items="${question.options}"
+                                              itemValue="id"
+                                              itemLabel="label"
+                                              htmlEscape="true"/>
+                            </form:select>
+                        </div>
+                    </div>
+                    <br/>
+                    <input class="btn btn-md btn-success" type="submit" value="Next"/>
                 </div>
-            </c:forEach>
+            </form:form>
         </div>
     </div>
 </div>

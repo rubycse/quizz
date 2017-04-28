@@ -74,7 +74,7 @@ public class QuizTemplateController {
     public String list(ModelMap model) {
         quizAccessManager.canCreate();
         User user = authService.getUser();
-        model.put("quizzes", quizDao.getUserQuizzes(user));
+        model.put("quizzes", quizDao.getUserQuizTemplates(user));
         model.put("myQuizzes", true);
         return "quizTemplate/myTemplates";
     }

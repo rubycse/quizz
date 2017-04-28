@@ -25,17 +25,10 @@ public class QuestionTemplate {
     private List<OptionTemplate> options;
 
     private int maxDurationInMin;
+
     private boolean required;
 
     public QuestionTemplate() {
-    }
-
-    public QuestionTemplate(QuestionTemplate questionTemplate) {
-        this.setLabel(questionTemplate.getLabel());
-        this.setOptions(new ArrayList<OptionTemplate>(questionTemplate.getOptions().size()));
-        for (OptionTemplate optionTemplate : questionTemplate.getOptions()) {
-            this.getOptions().add(new OptionTemplate(optionTemplate));
-        }
     }
 
     public QuestionTemplate(String label) {

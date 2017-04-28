@@ -40,7 +40,7 @@ public class QuizTemplateRestController {
 
     @RequestMapping(path = "/addOption", method = RequestMethod.POST)
     public OptionTemplate addOption(@RequestParam int questionId) {
-        QuestionTemplate questionTemplate = quizDao.getQuestion(questionId);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(questionId);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
 
         OptionTemplate optionTemplate = addOption(questionTemplate);
@@ -71,7 +71,7 @@ public class QuizTemplateRestController {
 
     @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuestionLabel(@RequestParam int id, @RequestParam String value) {
-        QuestionTemplate questionTemplate = quizDao.getQuestion(id);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(id);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
         questionTemplate.setLabel(value);
         quizDao.save(questionTemplate);
@@ -81,7 +81,7 @@ public class QuizTemplateRestController {
     @RequestMapping(path = "/updateOptionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateOptionLabel(@RequestParam int id, @RequestParam String value) {
         OptionTemplate optionTemplate = quizDao.getOption(id);
-        quizAccessManager.canEdit(quizDao.getQuizTemplate(quizDao.getQuestion(optionTemplate)));
+        quizAccessManager.canEdit(quizDao.getQuizTemplate(quizDao.getQuestionTemplate(optionTemplate)));
         optionTemplate.setLabel(value);
         quizDao.save(optionTemplate);
         return optionTemplate.getLabel();
@@ -89,7 +89,7 @@ public class QuizTemplateRestController {
 
     @RequestMapping(path = "/toggleRequired", method = RequestMethod.POST)
     public String toggleRequired(@RequestParam int questionId) {
-        QuestionTemplate questionTemplate = quizDao.getQuestion(questionId);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(questionId);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
         questionTemplate.setRequired(!questionTemplate.isRequired());
         quizDao.save(questionTemplate);
@@ -98,7 +98,7 @@ public class QuizTemplateRestController {
 
     @RequestMapping(path = "/deleteQuestion", method = RequestMethod.POST)
     public String deleteQuestion(@RequestParam int id) {
-        QuestionTemplate questionTemplate = quizDao.getQuestion(id);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(id);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
         quizDao.deleteQuestion(id);
         return "SUCCESS";
@@ -107,7 +107,7 @@ public class QuizTemplateRestController {
     @RequestMapping(path = "/deleteOption", method = RequestMethod.POST)
     public String deleteOption(@RequestParam int id) {
         OptionTemplate optionTemplate = quizDao.getOption(id);
-        QuestionTemplate questionTemplate = quizDao.getQuestion(optionTemplate);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(optionTemplate);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
         quizDao.deleteOption(id);
         return "SUCCESS";
@@ -116,7 +116,7 @@ public class QuizTemplateRestController {
     @RequestMapping(path = "/updateOption", method = RequestMethod.POST)
     public String updateOption(@RequestParam int id) {
         OptionTemplate optionTemplate = quizDao.getOption(id);
-        QuestionTemplate questionTemplate = quizDao.getQuestion(optionTemplate);
+        QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(optionTemplate);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
         questionTemplate.clearOption();
         optionTemplate.setRightAnswer(true);

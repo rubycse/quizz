@@ -19,18 +19,11 @@ public class OptionTemplate {
 
     private boolean rightAnswer;
 
-    private boolean answered;
-
     public OptionTemplate() {
     }
 
     public OptionTemplate(String label) {
         this.label = label;
-    }
-
-    public OptionTemplate(OptionTemplate optionTemplate) {
-        this.setLabel(optionTemplate.getLabel());
-        this.setRightAnswer(optionTemplate.isRightAnswer());
     }
 
     public int getId() {
@@ -55,13 +48,5 @@ public class OptionTemplate {
 
     public void setRightAnswer(boolean rightAnswer) {
         this.rightAnswer = rightAnswer;
-    }
-
-    public boolean isAnswered() {
-        return answered;
-    }
-
-    public void setAnswered(boolean answered) {
-        this.answered = answered;
     }
 }

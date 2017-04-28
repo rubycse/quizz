@@ -42,7 +42,6 @@ CREATE TABLE option_template
   id INT NOT NULL AUTO_INCREMENT,
   label VARCHAR(255) NOT NULL,
   right_answer BOOLEAN NOT NULL,
-  answered BOOLEAN NOT NULL,
   question_template_id INT NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (question_template_id) REFERENCES question_template(id)
@@ -63,6 +62,42 @@ CREATE TABLE publish_to
   publication_id INT NOT NULL,
   email VARCHAR(64) NOT NULL,
   FOREIGN KEY (publication_id) REFERENCES publication(id)
+);
+
+CREATE TABLE quiz
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  quiz_template_id INT NOT NULL,
+  answered_by_id INT NOT NULL,
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (quiz_template_id) REFERENCES quiz_template(id),
+  FOREIGN KEY (answered_by_id) REFERENCES user(id)
+);
+
+CREATE TABLE question
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255) NOT NULL,
+  max_duration_in_min INT,
+  required BOOLEAN NOT NULL,
+  quiz_id INT NOT NULL,
+  start_time TIMESTAMP NULL,
+  end_time TIMESTAMP NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (quiz_id) REFERENCES quiz(id)
+);
+
+CREATE TABLE ques_option
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255) NOT NULL,
+  right_answer BOOLEAN NOT NULL,
+  answered BOOLEAN NOT NULL,
+  question_id INT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
 insert into user values(1, 'rubycse', 'rubycse', 'Lutfun', 'Nahar', 'rubycse@gmail.com', '2014-12-01', 'FEMALE', null, 1, '0', 1);

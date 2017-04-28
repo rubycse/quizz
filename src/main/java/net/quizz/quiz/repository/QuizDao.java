@@ -1,7 +1,8 @@
 package net.quizz.quiz.repository;
 
 import net.quizz.auth.domain.User;
-import net.quizz.quiz.domain.*;
+import net.quizz.quiz.domain.quiz.Question;
+import net.quizz.quiz.domain.quiz.Quiz;
 import net.quizz.quiz.domain.template.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +37,13 @@ public class QuizDao {
         return em.find(QuizTemplate.class, quizId);
     }
 
-    public List<QuizTemplate> getUserQuizzes(User user) {
+    public List<QuizTemplate> getUserQuizTemplates(User user) {
         return em.createQuery("SELECT q FROM QuizTemplate q WHERE q.createdBy = :user", QuizTemplate.class)
                 .setParameter("user", user)
                 .getResultList();
     }
 
-    public QuestionTemplate getQuestion(int id) {
+    public QuestionTemplate getQuestionTemplate(int id) {
         return em.find(QuestionTemplate.class, id);
     }
 
@@ -67,7 +68,7 @@ public class QuizDao {
     }
 
     public void deleteQuestion(int id) {
-        em.remove(getQuestion(id));
+        em.remove(getQuestionTemplate(id));
     }
 
     public void deleteOption(int id) {
@@ -122,16 +123,16 @@ public class QuizDao {
         return getQuizTemplate(quizTemplateId);
     }
 
-    public QuestionTemplate getQuestion(OptionTemplate optionTemplate) {
+    public QuestionTemplate getQuestionTemplate(OptionTemplate optionTemplate) {
         Integer questionId = (Integer) em.createNativeQuery("SELECT question_template_id FROM option_template op WHERE op.id = :optionId")
                 .setParameter("optionId", optionTemplate.getId())
                 .getSingleResult();
-        return getQuestion(questionId);
+        return getQuestionTemplate(questionId);
     }
 
-    public Quiz getQuizAnswer(QuizTemplate quizTemplate, User answeredBy) {
+    public Quiz getQuiz(QuizTemplate quizTemplate, User answeredBy) {
         try {
-            String sql = "FROM QuizAnswer qa WHERE qa.quiz = :quiz AND qa.answeredBy = :answeredBy";
+            String sql = "FROM Quiz q WHERE q.quizTemplate = :quizTemplate AND q.answeredBy = :answeredBy";
             return em.createQuery(sql, Quiz.class)
                     .setParameter("quizTemplate", quizTemplate)
                     .setParameter("answeredBy", answeredBy)
@@ -140,4 +141,37 @@ public class QuizDao {
             return null;
         }
     }
+
+//    public Quiz getQuiz(Question question) {
+//        Integer quizId = (Integer) em.createNativeQuery("SELECT quiz_id FROM question ques WHERE ques.id = :questionId")
+//                .setParameter("questionId", question.getId())
+//                .getSingleResult();
+//        return getQuiz(quizId);
+//    }
+
+    public Quiz getQuiz(int quizId) {
+        return em.find(Quiz.class, quizId);
+    }
+
+    public Question getQuestion(int questionId) {
+        return em.find(Question.class, questionId);
+    }
+
+    public void save(Quiz quiz) {
+        if (quiz.getId() == 0) {
+            em.persist(quiz);
+        } else {
+            em.merge(quiz);
+        }
+    }
+
+    public void save(Question question) {
+        if (question.getId() == 0) {
+            em.persist(question);
+        } else {
+            em.merge(question);
+        }
+    }
+
+
 }
