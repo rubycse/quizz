@@ -14,6 +14,10 @@
         <property name="basename" value="messages" />
     </bean>
 
+    <bean id="msa" class="org.springframework.context.support.MessageSourceAccessor">
+        <constructor-arg ref="messageSource"/>
+    </bean>
+
     <!-- This produces a container-managed EntityManagerFactory;
          rather than application-managed EntityManagerFactory as in case of LocalEntityManagerFactoryBean-->
     <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
