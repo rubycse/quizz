@@ -53,6 +53,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="confirmPassword" class="col-lg-2 control-label">Confirm Password</label>
+                    <div class="col-lg-6">
+                        <form:input path="confirmPassword" type="password" cssClass="form-control" id="confirmPassword" placeholder="Confirm Password"/>
+                        <form:errors path="confirmPassword" cssClass="text-danger"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="email" class="col-lg-2 control-label">Email</label>
                     <div class="col-lg-6">
                         <form:input path="email" cssClass="form-control" id="email" placeholder="Email"/>
@@ -74,6 +82,7 @@
                         <form:select path="gender" cssClass="form-control" id="select">
                             <form:option value="" label="Please Select"/>
                             <form:options path="gender" items="${genders}" itemLabel="displayName" cssClass="form-control" id="gender"/>
+                            <form:errors path="gender" cssClass="text-danger"/>
                         </form:select>
                     </div>
                 </div>

@@ -3,19 +3,23 @@ package net.quizz.auth.controller;
 import net.quizz.auth.domain.Gender;
 import net.quizz.auth.domain.User;
 import net.quizz.auth.repositpry.UserDao;
+import net.quizz.auth.service.UserService;
+import net.quizz.auth.validator.SignupValidator;
 import net.quizz.common.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +34,18 @@ public class SignupController {
     private UserDao userDao;
 
     @Autowired
-    private MailService mailService;
+    private UserService userService;
+
+    @Autowired
+    private SignupValidator signupValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        SimpleDateFormat sf = new SimpleDateFormat("DD/MM/YYYY");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sf, true));
+        binder.addValidators(signupValidator);
+    }
 
     @RequestMapping(path = "/signup", method = RequestMethod.GET)
     public String signup(@ModelAttribute User user) {
@@ -43,11 +58,7 @@ public class SignupController {
             return "signup";
         }
 
-        String uuid = UUID.randomUUID().toString();
-        user.setEmailVerificationId(uuid);
-        user.setEmailVerified(false);
-        userDao.save(user);
-        sendEmail(user, uuid, getURLWithServletPath(request));
+        userService.signUpUser(user, request);
         model.put("email", user.getEmail());
 
         return "verifyEmail";
@@ -62,21 +73,8 @@ public class SignupController {
         return "emailVerified";
     }
 
-    private void sendEmail(User user, String emailVerificationId, String urlWithServletPath) {
-        String mailText = "Hi " + user.getFirstName() +
-                "\n\nHelp us secure your Quizz account by verifying your email address (" + user.getEmail() + ") by clicking following link:" +
-                "\n\n" + urlWithServletPath + "/verify-email/" + emailVerificationId +
-                "\n\nThis lets you access all of Quizz's features.\n";
-        mailService.sendMail(user.getEmail(), "[Quizz] Please verify your email address", mailText);
-    }
-
     @ModelAttribute("genders")
     public List<Gender> getGenders() {
         return Arrays.asList(Gender.values());
-    }
-
-    public static String getURLWithServletPath(HttpServletRequest request) {
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath() + request.getServletPath();
     }
 }

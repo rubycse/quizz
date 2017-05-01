@@ -1,6 +1,9 @@
 package net.quizz.auth.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -17,25 +20,32 @@ public class User {
     @GeneratedValue
     private int id;
 
+    @NotEmpty
     private String username;
 
 //    @Pattern(regexp = "^([a-zA-Z0-9]{6,18}?)$")
+    @NotEmpty
     private String password;
 
     @Transient
+    @NotEmpty
     private String confirmPassword;
 
+    @NotEmpty
     private String firstName;
 
+    @NotEmpty
     private String lastName;
 
+    @NotEmpty
     private String email;
 
-    @Past
+    @NotNull
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Gender gender;
 
     private String phone;
@@ -44,6 +54,7 @@ public class User {
 
     private boolean emailVerified;
 
+    @NotNull
     private boolean student;
 
     public int getId() {

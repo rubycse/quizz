@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -43,5 +45,17 @@ public class UserDao {
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
 
+    public boolean isUsernameExists(String username) {
+        long count = em.createQuery("SELECT COUNT(u.id) FROM User u WHERE u.username = :username", Long.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        return count > 0;
+    }
 
+    public boolean isEmailExists(String email) {
+        long count = em.createQuery("SELECT COUNT(u.id) FROM User u WHERE u.email = :email", Long.class)
+                .setParameter("email", email)
+                .getSingleResult();
+        return count > 0;
+    }
 }
