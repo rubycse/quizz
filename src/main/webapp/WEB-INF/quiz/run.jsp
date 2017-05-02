@@ -7,7 +7,8 @@
     </title>
     <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
     <script type="text/javascript">
-        var countDownDate = new Date();
+        //TODO: It takes 1 s to display the time after page loading. Reduce this time.
+        var countDownDate = new Date('${quiz.startTimeStr}');
         countDownDate.setMinutes(countDownDate.getMinutes() + ${quiz.quizTemplate.maxDurationInMin});
         var countDownTime = countDownDate.getTime();
 

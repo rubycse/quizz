@@ -6,6 +6,7 @@ import net.quizz.quiz.domain.template.QuizTemplate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,5 +125,10 @@ public class Quiz {
         }
 
         throw new IllegalArgumentException("Question id:" + question.getId() + " does not belong to this quiz.");
+    }
+
+    public String getStartTimeStr() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        return sdf.format(startTime);
     }
 }
