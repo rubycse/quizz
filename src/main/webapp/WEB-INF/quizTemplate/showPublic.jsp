@@ -19,7 +19,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="well bs-component">
-            This quizTemplate contains ${fn:length(quizTemplate.questionTemplates)} multiple choice questionTemplates and should be completed within ${quizTemplate.maxDurationInMin} minutes.
+            This quiz contains ${fn:length(quizTemplate.questionTemplates)} multiple choice question and should be completed within ${quizTemplate.maxDurationInMin} minutes.
             <br/><br/><a class="btn btn-md btn-success" href="<c:url value="/quiz/quiz/run?id=${quizTemplate.id}"/>">Start Quiz</a>
         </div>
     </div>

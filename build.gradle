@@ -36,6 +36,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
 
     compile 'jstl:jstl:1.2'
+    compile 'joda-time:joda-time:2.9.4'
 }
 
 war {

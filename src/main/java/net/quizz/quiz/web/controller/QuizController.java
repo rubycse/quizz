@@ -5,6 +5,7 @@ import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.quiz.Option;
 import net.quizz.quiz.domain.quiz.Question;
 import net.quizz.quiz.domain.quiz.Quiz;
+import net.quizz.quiz.domain.quiz.Result;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
@@ -101,15 +102,7 @@ public class QuizController {
     @RequestMapping(path = "/result", method = RequestMethod.GET)
     public String result(@RequestParam int quizId, ModelMap model) {
         Quiz quiz = quizDao.getQuiz(quizId);
-        int rightAnswerCount = 0;
-        for (Question question : quiz.getQuestions()) {
-            if (question.isRightAnswered()) {
-                rightAnswerCount++;
-            }
-        }
-
-        model.put("totalQuestionCount", quiz.getQuestions().size());
-        model.put("rightAnswerCount", rightAnswerCount);
+        model.put("result", quiz.getResult(quiz));
 
         return "quiz/result";
     }

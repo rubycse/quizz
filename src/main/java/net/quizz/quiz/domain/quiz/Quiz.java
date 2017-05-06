@@ -3,6 +3,7 @@ package net.quizz.quiz.domain.quiz;
 import net.quizz.auth.domain.User;
 import net.quizz.quiz.domain.template.QuestionTemplate;
 import net.quizz.quiz.domain.template.QuizTemplate;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -129,6 +130,27 @@ public class Quiz {
 
     public String getStartTimeStr() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-        return sdf.format(startTime);
+        return sdf.format(getStartTime());
+    }
+
+    public boolean isExpired() {
+        if (getStartTime() != null) {
+            DateTime startTime = new DateTime(getStartTime());
+            DateTime expectedEndTime = startTime.plusMinutes(getQuizTemplate().getMaxDurationInMin());
+            DateTime now = new DateTime();
+            if (expectedEndTime.isBefore(now)) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isCompleted() {
+        return getStartTime() != null && getEndTime() != null;
+    }
+
+    public Result getResult(Quiz quiz) {
+        return new Result(quiz);
     }
 }

@@ -100,5 +100,5 @@ CREATE TABLE ques_option
   FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
-insert into user values(1, 'rubycse', 'rubycse', 'Lutfun', 'Nahar', 'rubycse@gmail.com', '2014-12-01', 'FEMALE', null, 1, '0', 1);
-insert into user values(2, 'nahar', 'rubycse', 'Yamir', 'Khan', 'sayonto@gmail.com', '2014-12-01', 'MALE', null, 1, '0', 1);
+insert into user values(1, 'rubycse', 'rubycse', 'Teacher', 'Teacher', 'rubycse@gmail.com', '2014-12-01', 'FEMALE', null, 0, '0', 1);
+insert into user values(2, 'nahar', 'rubycse', 'Student', 'Student', 'rubycse@yahoo.com', '2014-12-01', 'FEMALE', null, 1, '0', 1);

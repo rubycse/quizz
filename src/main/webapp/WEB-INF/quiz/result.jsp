@@ -3,21 +3,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <html>
 <head>
-    <title><fmt:message key="quiz.participation.thanks"/></title>
+    <title><fmt:message key="quiz.result.title"/></title>
     <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-10">
-            <h1><fmt:message key="quiz.participation.thanks"/></h1>
+            <h1><fmt:message key="quiz.result.title"/></h1>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
         <div class="well bs-component">
-            Your Score is <b>${rightAnswerCount}/${totalQuestionCount}</b>
+            <fieldset>
+                <div class="row">
+                    <label class="col-md-2 control-label">Score</label>
+                    <div class="col-md-10">
+                        <c:out value="${result.rightAnswerCount}"/> / <c:out value="${result.totalQuestionCount}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-md-2 control-label">Duration</label>
+                    <div class="col-md-10">
+                        <c:out value="${result.duration}"/>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
 </div>

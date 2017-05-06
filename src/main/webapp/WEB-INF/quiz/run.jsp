@@ -2,41 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>
-        <c:out value="${quiz.quizTemplate.name}"/>
-    </title>
+    <title><c:out value="${quiz.quizTemplate.name}"/></title>
     <link href='<c:url value="/css/quiz-1.0.0.css"/>' rel="stylesheet" type="text/css">
-    <script type="text/javascript">
-        //TODO: It takes 1 s to display the time after page loading. Reduce this time.
-        var countDownDate = new Date('${quiz.startTimeStr}');
-        countDownDate.setMinutes(countDownDate.getMinutes() + ${quiz.quizTemplate.maxDurationInMin});
-        var countDownTime = countDownDate.getTime();
-
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-
-            // Get todays date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now an the count down date
-            var distance = countDownTime - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            document.getElementById("countDown").innerHTML = (hours == 0 ? '' : hours + ':')
-                    + minutes + ':' + seconds;
-
-            // If the count down is over, write some text
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countDown").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
 </head>
 <body>
 <div class="page-header" id="banner">
@@ -49,32 +16,56 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-10">
-        <div class="well bs-component">
-            <form:form commandName="question" method="post" action="run">
+
+<form:form commandName="question" method="post" action="run">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="well bs-component">
                 <input type="hidden" name="quizId" value="${quiz.id}">
                 <input type="hidden" name="questionId" value="${question.id}">
                 <div class="question">
                     <h3><c:out value="${question.label}"/></h3>
                     <div class="row">
-                        <div class="col-md-6">
-                            <form:select id="answer"
-                                         path="answer"
-                                         class="form-control">
-                                <form:options items="${question.options}"
-                                              itemValue="id"
-                                              itemLabel="label"
-                                              htmlEscape="true"/>
-                            </form:select>
+                        <div class="col-md-6 col-sm-offset-1">
+                            <form:radiobuttons id="answer"
+                                               path="answer"
+                                               items="${question.options}"
+                                               itemValue="id"
+                                               itemLabel="label"
+                                               element="div class='radio'"
+                                               htmlEscape="true"/>
                         </div>
                     </div>
-                    <br/>
-                    <input class="btn btn-md btn-success" type="submit" value="Next"/>
                 </div>
-            </form:form>
+            </div>
+            <input class="btn btn-md btn-success" type="submit" value="Next"/>
         </div>
     </div>
-</div>
+</form:form>
+
+<script type="text/javascript">
+    //TODO: It takes 1 s to display the time after page loading. Reduce this time.
+    var countDownDate = new Date('${quiz.startTimeStr}');
+    countDownDate.setMinutes(countDownDate.getMinutes() + ${quiz.quizTemplate.maxDurationInMin});
+    var countDownTime = countDownDate.getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+        var distance = countDownTime - new Date().getTime();
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var countDownDiv = document.getElementById("countDown");
+        countDownDiv.innerHTML = (hours == 0 ? '' : hours + ':') + minutes + ':' + seconds;
+
+        // If the count down is over, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            countDownDiv.innerHTML = "EXPIRED";
+        }
+    }, 1000);
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package net.quizz.quiz.web.controller;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
+import net.quizz.quiz.domain.quiz.Quiz;
 import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizDao;
@@ -67,12 +68,22 @@ public class QuizTemplateController {
     }
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
-    public String show(@RequestParam int id, ModelMap model) {
+    public String show(@RequestParam int id, ModelMap model, RedirectAttributes redirectAttributes) {
         QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
         User user = authService.getUser();
         model.put("quizTemplate", quizTemplate);
         boolean createdByUser = quizTemplate.getCreatedBy().getId() == user.getId();
-        return createdByUser ? (quizTemplate.isPublished() ? "quizTemplate/show" : "quizTemplate/edit") : "quizTemplate/showPublic";
+        if (createdByUser) {
+            return quizTemplate.isPublished() ? "quizTemplate/show" : "quizTemplate/edit";
+        }
+
+        Quiz quiz = quizDao.getQuiz(quizTemplate, user);
+        if (quiz != null && (quiz.isExpired() || quiz.isCompleted())) {
+            redirectAttributes.addAttribute("quizId", quiz.getId());
+            return "redirect:/quiz/quiz/result";
+        }
+
+        return "quizTemplate/showPublic";
     }
 
     @RequestMapping(path = "/myTemplates", method = RequestMethod.GET)
