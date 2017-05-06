@@ -1,4 +1,4 @@
-package net.quizz.quiz.controller.formatter;
+package net.quizz.quiz.web.formatter;
 
 import net.quizz.common.utils.Utils;
 import net.quizz.quiz.domain.quiz.Option;

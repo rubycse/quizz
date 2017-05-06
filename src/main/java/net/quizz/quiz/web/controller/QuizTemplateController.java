@@ -1,4 +1,4 @@
-package net.quizz.quiz.controller;
+package net.quizz.quiz.web.controller;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
@@ -6,6 +6,7 @@ import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
+import net.quizz.quiz.web.validator.QuizTemplateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,6 +37,9 @@ public class QuizTemplateController {
 
     @Autowired
     private QuizAccessManager quizAccessManager;
+
+    @Autowired
+    private QuizTemplateValidator quizTemplateValidator;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -91,5 +96,29 @@ public class QuizTemplateController {
             model.put("public", true);
         }
         return "quizTemplate/list";
+    }
+
+    @RequestMapping(path = "/checkPublishable", method = RequestMethod.POST)
+    public String checkPublishable(@ModelAttribute("quizTemplate") QuizTemplate quizTemplate, BindingResult errors,
+                                   ModelMap model, RedirectAttributes redirectAttributes) {
+        quizAccessManager.canCreate();
+
+        quizTemplate = quizDao.getQuizTemplate(quizTemplate.getId());
+
+        quizTemplateValidator.validateForPublication(quizTemplate, errors);
+
+        if (errors.hasErrors()) {
+            // As quizTemplate is not stored in session it need to be retrieved from DB and put
+            // in the model to render jsp. As ModelAttribute is changed, the associated BindingResult
+            // is lost too. So, the BindingResult is also put in the model, to render the error.
+            model.put("quizTemplate", quizTemplate);
+            model.put("errors", errors);
+
+            return "quizTemplate/edit";
+        }
+
+        redirectAttributes.addAttribute("quizId", quizTemplate.getId());
+
+        return "redirect:publish";
     }
 }

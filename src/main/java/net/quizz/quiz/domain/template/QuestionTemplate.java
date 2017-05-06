@@ -80,4 +80,14 @@ public class QuestionTemplate {
             optionTemplate.setRightAnswer(false);
         }
     }
+
+    public boolean hasRightAnswer() {
+        for (OptionTemplate optionTemplate : getOptions()) {
+            if (optionTemplate.isRightAnswer()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -80,21 +81,37 @@
     </script>
 </head>
 <body>
-<div class="page-header" id="banner">
-    <div class="row">
-        <div class="col-sm-10">
-            <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
-            Duration: <b class="quizDuration" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.maxDurationInMin}"/></b> Minute
-        </div>
-        <div class="col-sm-2">
-            <div class="verticalSpace">&nbsp;</div>
-            <c:url var="publishUrl" value='publish'>
-                <c:param name="quizId" value="${quizTemplate.id}"/>
-            </c:url>
-            <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>
+<form:form commandName="quizTemplate" method="post" action="checkPublishable" cssClass="form">
+    <input type="hidden" name="id" value="${quizTemplate.id}"/>
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-sm-10">
+                <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
+                Duration: <b class="quizDuration" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.maxDurationInMin}"/></b> Minute
+            </div>
+            <div class="col-sm-2">
+                <div class="verticalSpace">&nbsp;</div>
+                <input type="submit" class="btn btn-md btn-warning pull-right" value="Publish"/>
+            </div>
         </div>
     </div>
+</form:form>
+
+<div class="row">
+    <div class="col-sm-12">
+        <c:if test="${not empty errors.globalErrors}">
+            <div class="alert alert-danger">
+                <strong><s:message code="error.title"/></strong>
+                <ul class="list-unstyled" style="font-weight: normal">
+                    <c:forEach items="${errors.globalErrors}" var="errorMessage">
+                        <li><s:message message="${errorMessage}"/></li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:if>
+    </div>
 </div>
+
 <fieldset>
     <div class="well bs-component">
     <div id="questions" style="margin-bottom: 20px;">
@@ -106,7 +123,7 @@
                 <c:forEach items="${questionTemplate.options}" var="option">
                     <div class="option" onmouseover="showRemove('removeOption-${option.id}')" onmouseout="hideRemove('removeOption-${option.id}')" id="option-${option.id}">
                         <span id="removeOption-${option.id}" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(${option.id})"></span>
-                        <input type="radio" name="${questionTemplate.id}" onclick="updateAnswer(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                        <input type="radio" name="${questionTemplate.id}" onclick="updateOption(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                     </div>
                 </c:forEach>
                 </div>

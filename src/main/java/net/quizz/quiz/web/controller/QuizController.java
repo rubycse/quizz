@@ -1,4 +1,4 @@
-package net.quizz.quiz.controller;
+package net.quizz.quiz.web.controller;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
@@ -11,8 +11,6 @@ import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

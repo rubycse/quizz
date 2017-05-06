@@ -1,4 +1,4 @@
-package net.quizz.quiz.controller;
+package net.quizz.quiz.web.controller;
 
 import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.template.Publication;

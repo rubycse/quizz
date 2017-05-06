@@ -1,4 +1,4 @@
-package net.quizz.quiz.controller;
+package net.quizz.quiz.web.controller;
 
 import net.quizz.quiz.domain.template.OptionTemplate;
 import net.quizz.quiz.domain.template.QuestionTemplate;
@@ -126,7 +126,7 @@ public class QuizTemplateRestController {
 
     private QuestionTemplate addQuestion(QuizTemplate quizTemplate) {
         int questionSize = quizTemplate.getQuestionTemplates().size();
-        QuestionTemplate questionTemplate = new QuestionTemplate("QuestionTemplate " + (questionSize + 1));
+        QuestionTemplate questionTemplate = new QuestionTemplate("Question " + (questionSize + 1));
         questionTemplate.setOptions(new ArrayList<OptionTemplate>());
         addOption(questionTemplate);
         addOption(questionTemplate);

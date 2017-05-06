@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,10 @@ public class QuizTemplate {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "quiz_template_id", nullable = false)
     private List<QuestionTemplate> questionTemplates;
+
+    public QuizTemplate() {
+        questionTemplates = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
