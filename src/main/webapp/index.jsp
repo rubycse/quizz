@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Online Quiz Creator</title>
-</head>
-<body>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" session="false" %>
 
-</body>
-</html>
+<%
+    response.sendRedirect("quiz/entry");
+%>

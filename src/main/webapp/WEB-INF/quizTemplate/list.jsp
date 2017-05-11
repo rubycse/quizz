@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title>${param.sharedWithMe ? 'Shared With Me' : 'Quizzes'}</title>
+    <title>${sharedWithMe ? 'Shared With Me' : 'Public Quizzes'}</title>
 </head>
 <body>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-12">
-            <h1>${param.sharedWithMe ? 'Shared With Me' : 'Quizzes'}</h1>
+            <h1>${sharedWithMe ? 'Shared With Me' : 'Public Quizzes'}</h1>
         </div>
     </div>
 </div>

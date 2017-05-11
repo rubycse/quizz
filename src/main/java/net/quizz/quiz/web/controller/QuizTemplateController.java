@@ -91,21 +91,27 @@ public class QuizTemplateController {
         quizAccessManager.canCreate();
         User user = authService.getUser();
         model.put("quizzes", quizDao.getUserQuizTemplates(user));
-        model.put("myQuizzes", true);
+        model.put("myTemplates", true);
+
         return "quizTemplate/myTemplates";
     }
 
-    @RequestMapping(path = "/list", method = RequestMethod.GET)
-    public String sharedW(ModelMap model, @RequestParam(defaultValue = "false") boolean sharedWithMe) {
+    @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
+    public String sharedWithMe(ModelMap model) {
         User user = authService.getUser();
-        List<Publication> publications = sharedWithMe ? quizDao.getPublicationsSharedWithMe(user)
-                : quizDao.getAllPublicPublications();
+        List<Publication> publications = quizDao.getPublicationsSharedWithMe(user);
+
         model.put("publications", publications);
-        if (sharedWithMe) {
-            model.put("sharedWithMe", true);
-        } else {
-            model.put("public", true);
-        }
+        model.put("sharedWithMe", true);
+
+        return "quizTemplate/list";
+    }
+
+    @RequestMapping(path = "/publicTemplates", method = RequestMethod.GET)
+    public String sharedW(ModelMap model) {
+
+        model.put("publications", quizDao.getAllPublicPublications());
+
         return "quizTemplate/list";
     }
 

@@ -172,6 +172,4 @@ public class QuizDao {
             em.merge(question);
         }
     }
-
-
 }

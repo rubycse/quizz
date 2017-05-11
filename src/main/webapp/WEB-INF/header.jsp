@@ -15,9 +15,9 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <c:if test="${sessionScope.USER != null}">
-                    <li><a href="<c:url value='/quiz/template/list'/>">Public</a></li>
+                    <li><a href="<c:url value='/quiz/template/publicTemplates'/>">Public</a></li>
                     <c:if test="${sessionScope.USER.student}">
-                        <li><a href="<c:url value='/quiz/template/list?sharedWithMe=true'/>">Shared With Me</a></li>
+                        <li><a href="<c:url value='/quiz/template/sharedWithMe'/>">Shared With Me</a></li>
                     </c:if>
                     <c:if test="${!sessionScope.USER.student}">
                         <li><a href="<c:url value='/quiz/template/myTemplates'/>">My Quizzes</a></li>

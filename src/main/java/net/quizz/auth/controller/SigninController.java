@@ -47,7 +47,7 @@ public class SigninController {
         HttpSession session = request.getSession(true);
         session.setAttribute("USER", user);
 
-        return "redirect:/quiz/template/list";
+        return "redirect:/quiz/entry";
     }
 
     @RequestMapping(path = "/signout", method = RequestMethod.GET)
@@ -57,7 +57,7 @@ public class SigninController {
     }
 
     @InitBinder
-    public void initBinder(WebDataBinder binder, HttpServletRequest request) {
+    public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/DD/YYYY"), false));
     }
 }
