@@ -17,6 +17,14 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-sm-10">
+        <div class="index">
+            Question ${index + 1} of ${quiz.totalQuestion}
+        </div>
+    </div>
+</div>
+
 <form:form commandName="question" method="post" action="run">
     <div class="row">
         <div class="col-md-10">

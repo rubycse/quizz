@@ -183,10 +183,14 @@ public class Quiz {
     }
 
     public String getScore() {
-        return getRightAnswerCount() + " / " + getQuestions().size();
+        return getRightAnswerCount() + " / " + getTotalQuestion();
     }
 
     public boolean isResultPublished() {
         return !getPublication().getResultPublicationTime().after(new Date());
+    }
+
+    public int getTotalQuestion() {
+        return getQuestions().size();
     }
 }

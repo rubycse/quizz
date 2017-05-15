@@ -63,8 +63,7 @@ public class QuizController {
         question.setStartTime(new Date());
         quizDao.save(question);
 
-        model.put("quiz", quiz);
-        model.put("question", question);
+        setupReferenceData(model, quiz, question);
 
         return "quiz/run";
     }
@@ -88,14 +87,13 @@ public class QuizController {
 
         quizDao.save(question);
 
-        model.put("quiz", quiz);
 
         int index = quiz.getIndex(question);
         if (quiz.getQuestions().size() > (index + 1)) {
             Question nextQuestion =  quiz.getQuestion(index + 1);
             nextQuestion.setStartTime(new Date());
             quizDao.save(nextQuestion);
-            model.put("question", nextQuestion);
+            setupReferenceData(model, quiz, nextQuestion);
             return "quiz/run";
         }
 
@@ -112,5 +110,11 @@ public class QuizController {
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
 
         return "quiz/result";
+    }
+
+    private void setupReferenceData(ModelMap model, Quiz quiz, Question question) {
+        model.put("quiz", quiz);
+        model.put("question", question);
+        model.put("index", quiz.getIndex(question));
     }
 }
