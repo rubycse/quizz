@@ -45,7 +45,6 @@ public class QuizTemplateController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        binder.registerCustomEditor(Integer.class, null, new CustomNumberEditor(Integer.class, true));
     }
 
     @RequestMapping(path = "/create", method = RequestMethod.GET)
@@ -70,20 +69,9 @@ public class QuizTemplateController {
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model, RedirectAttributes redirectAttributes) {
         QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
-        User user = authService.getUser();
         model.put("quizTemplate", quizTemplate);
-        boolean createdByUser = quizTemplate.getCreatedBy().getId() == user.getId();
-        if (createdByUser) {
-            return quizTemplate.isPublished() ? "quizTemplate/show" : "quizTemplate/edit";
-        }
 
-        Quiz quiz = quizDao.getQuiz(quizTemplate, user);
-        if (quiz != null && (quiz.isExpired() || quiz.isCompleted())) {
-            redirectAttributes.addAttribute("quizId", quiz.getId());
-            return "redirect:/quiz/quiz/result";
-        }
-
-        return "quizTemplate/showPublic";
+        return quizTemplate.isPublished() ? "quizTemplate/show" : "quizTemplate/edit";
     }
 
     @RequestMapping(path = "/myTemplates", method = RequestMethod.GET)
@@ -94,25 +82,6 @@ public class QuizTemplateController {
         model.put("myTemplates", true);
 
         return "quizTemplate/myTemplates";
-    }
-
-    @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
-    public String sharedWithMe(ModelMap model) {
-        User user = authService.getUser();
-        List<Publication> publications = quizDao.getPublicationsSharedWithMe(user);
-
-        model.put("publications", publications);
-        model.put("sharedWithMe", true);
-
-        return "quizTemplate/list";
-    }
-
-    @RequestMapping(path = "/publicTemplates", method = RequestMethod.GET)
-    public String sharedW(ModelMap model) {
-
-        model.put("publications", quizDao.getAllPublicPublications());
-
-        return "quizTemplate/list";
     }
 
     @RequestMapping(path = "/checkPublishable", method = RequestMethod.POST)
@@ -136,6 +105,6 @@ public class QuizTemplateController {
 
         redirectAttributes.addAttribute("quizId", quizTemplate.getId());
 
-        return "redirect:publish";
+        return "redirect:/quiz/publication/publish";
     }
 }

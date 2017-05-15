@@ -2,11 +2,11 @@ package net.quizz.quiz.web.controller;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
+import net.quizz.common.utils.DateUtils;
 import net.quizz.quiz.domain.quiz.Option;
 import net.quizz.quiz.domain.quiz.Question;
 import net.quizz.quiz.domain.quiz.Quiz;
-import net.quizz.quiz.domain.quiz.Result;
-import net.quizz.quiz.domain.template.QuizTemplate;
+import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +38,22 @@ public class QuizController {
     @Autowired
     private QuizAccessManager quizAccessManager;
 
-    @RequestMapping(path = "/run", method = RequestMethod.GET)
-    public String run(@RequestParam int id, ModelMap model) {
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
+    @RequestMapping(path = "/myQuizzes", method = RequestMethod.GET)
+    public String myQuizzes(ModelMap model) {
         User user = authService.getUser();
-        quizAccessManager.canAnswer(quizTemplate);
-        Quiz quiz = quizDao.getQuiz(quizTemplate, user);
+        model.put("quizzes", quizDao.getQuizzes(user));
+        return "quiz/myQuizzes";
+    }
+
+    @RequestMapping(path = "/run", method = RequestMethod.GET)
+    public String run(@RequestParam int publicationId, ModelMap model) {
+        Publication publication = quizDao.getPublication(publicationId);
+        User user = authService.getUser();
+        quizAccessManager.canAnswer(publication);
+        Quiz quiz = quizDao.getQuiz(publication, user);
 
         if (quiz == null) {
-            quiz = new Quiz(quizTemplate);
+            quiz = new Quiz(publication);
             quiz.setStartTime(new Date());
             quiz.setAnsweredBy(user);
             quizDao.save(quiz);
@@ -101,8 +108,8 @@ public class QuizController {
 
     @RequestMapping(path = "/result", method = RequestMethod.GET)
     public String result(@RequestParam int quizId, ModelMap model) {
-        Quiz quiz = quizDao.getQuiz(quizId);
-        model.put("result", quiz.getResult(quiz));
+        model.put("quiz", quizDao.getQuiz(quizId));
+        model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
 
         return "quiz/result";
     }

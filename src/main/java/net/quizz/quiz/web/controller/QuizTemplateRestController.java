@@ -59,16 +59,6 @@ public class QuizTemplateRestController {
         return quizTemplate.getName();
     }
 
-    @RequestMapping(path = "/updateQuizDuration", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-    public String updateQuizDuration(@RequestParam int id, @RequestParam String value) {
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
-        quizAccessManager.canEdit(quizTemplate);
-
-        quizTemplate.setMaxDurationInMin(Integer.parseInt(value));
-        quizDao.save(quizTemplate);
-        return quizTemplate.getMaxDurationInMin().toString();
-    }
-
     @RequestMapping(path = "/updateQuestionLabel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String updateQuestionLabel(@RequestParam int id, @RequestParam String value) {
         QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(id);

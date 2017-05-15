@@ -130,11 +130,11 @@ public class QuizDao {
         return getQuestionTemplate(questionId);
     }
 
-    public Quiz getQuiz(QuizTemplate quizTemplate, User answeredBy) {
+    public Quiz getQuiz(Publication publication, User answeredBy) {
         try {
-            String sql = "FROM Quiz q WHERE q.quizTemplate = :quizTemplate AND q.answeredBy = :answeredBy";
+            String sql = "FROM Quiz q WHERE q.publication = :publication AND q.answeredBy = :answeredBy";
             return em.createQuery(sql, Quiz.class)
-                    .setParameter("quizTemplate", quizTemplate)
+                    .setParameter("publication", publication)
                     .setParameter("answeredBy", answeredBy)
                     .getSingleResult();
         } catch (NoResultException ex) {
@@ -171,5 +171,17 @@ public class QuizDao {
         } else {
             em.merge(question);
         }
+    }
+
+    public List<Quiz> getQuizzes(User user) {
+        String sql = "FROM Quiz q WHERE q.answeredBy = :answeredBy";
+        return em.createQuery(sql, Quiz.class)
+                .setParameter("answeredBy", user)
+                .getResultList();
+
+    }
+
+    public Publication getPublication(int id) {
+        return em.find(Publication.class, id);
     }
 }

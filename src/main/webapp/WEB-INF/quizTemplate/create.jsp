@@ -35,14 +35,6 @@
             </div>
 
             <div class="form-group">
-                <label for="maxDurationInMin" class="col-lg-2 control-label">Duration (Min)</label>
-                <div class="col-lg-4">
-                    <form:input path="maxDurationInMin" cssClass="form-control" id="maxDurationInMin"/>
-                    <form:errors path="maxDurationInMin" cssClass="text-danger"/>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="col-lg-6 col-lg-offset-2">
                     <input type="submit" class="btn btn-primary" name="save" value="Save"/>
                 </div>

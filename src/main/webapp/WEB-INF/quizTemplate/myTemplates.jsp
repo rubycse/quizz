@@ -19,7 +19,6 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Max Duration (Min)</th>
                     <th>Published</th>
                     <th>Publication</th>
                 </tr>
@@ -31,7 +30,6 @@
                             <c:param name="id" value="${quizTemplate.id}"/>
                         </c:url>
                         <td><a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a></td>
-                        <td><c:out value="${quizTemplate.maxDurationInMin}"/></td>
                         <td><c:out value="${quizTemplate.published ? 'Yes' : 'No'}"/></td>
                         <td>
                             <c:if test="${quizTemplate.published}">

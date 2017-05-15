@@ -1,6 +1,10 @@
 package net.quizz.quiz.domain.template;
 
+import net.quizz.auth.domain.User;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +33,30 @@ public class Publication {
     @Column(name = "email", length = 64)
     private List<String> publishToEmails;
 
+    @NotNull
+    @Min(1)
+    private int durationInMin;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date scheduleFrom;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date scheduleTo;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date resultPublicationTime;
+
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date publishedOn;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "published_by_id")
+    private User publishedBy;
 
     public Publication() {
         publishToEmails = new ArrayList<>();
@@ -68,11 +94,56 @@ public class Publication {
         this.publishToEmails = publishToEmails;
     }
 
+    public int getDurationInMin() {
+        return durationInMin;
+    }
+
+    public void setDurationInMin(int durationInMin) {
+        this.durationInMin = durationInMin;
+    }
+
+    public Date getScheduleFrom() {
+        return scheduleFrom;
+    }
+
+    public void setScheduleFrom(Date scheduleFrom) {
+        this.scheduleFrom = scheduleFrom;
+    }
+
+    public Date getScheduleTo() {
+        return scheduleTo;
+    }
+
+    public void setScheduleTo(Date scheduleTo) {
+        this.scheduleTo = scheduleTo;
+    }
+
+    public Date getResultPublicationTime() {
+        return resultPublicationTime;
+    }
+
+    public void setResultPublicationTime(Date resultPublicationTime) {
+        this.resultPublicationTime = resultPublicationTime;
+    }
+
+    public User getPublishedBy() {
+        return publishedBy;
+    }
+
+    public void setPublishedBy(User publishedBy) {
+        this.publishedBy = publishedBy;
+    }
+
     public Date getPublishedOn() {
         return publishedOn;
     }
 
     public void setPublishedOn(Date publishedOn) {
         this.publishedOn = publishedOn;
+    }
+
+    public boolean isOpen() {
+        Date now = new Date();
+        return !getScheduleFrom().after(now) && !getScheduleTo().before(now);
     }
 }

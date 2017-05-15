@@ -21,6 +21,6 @@ public class EntryController {
     @RequestMapping(path = "/entry", method = RequestMethod.GET)
     public String entry() {
         User user = authService.getUser();
-        return "redirect:/quiz/template/" + (user.isStudent() ? "sharedWithMe" : "myTemplates");
+        return "redirect:" + (user.isStudent() ? "/quiz/publication/sharedWithMe" : "/quiz/template/myTemplates");
     }
 }

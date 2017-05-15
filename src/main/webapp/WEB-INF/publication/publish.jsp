@@ -53,6 +53,7 @@
 
 <div class="row">
     <div class="well bs-component">
+        <div class="row">
 
         <form:form method="post" commandName="publication" cssClass="form-horizontal">
             <form:errors path="*">
@@ -63,6 +64,32 @@
             </form:errors>
 
             <fieldset>
+                <div class="form-group">
+                    <label for="durationInMin" class="col-lg-2 control-label">Duration (Min)</label>
+                    <div class="col-lg-4">
+                        <form:input path="durationInMin" cssClass="form-control" id="durationInMin"/>
+                        <form:errors path="durationInMin" cssClass="text-danger"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduleFrom" class="col-lg-2 control-label">Schedule</label>
+                    <div class="col-lg-10">
+                        <form:input path="scheduleFrom" cssClass="form-control" id="scheduleFrom" placeholder="From"/> To
+                        <form:input path="scheduleTo" cssClass="form-control" id="scheduleTo" placeholder="To"/>
+                        <form:errors path="scheduleFrom" cssClass="text-danger"/>
+                        <form:errors path="scheduleTo" cssClass="text-danger"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="resultPublicationTime" class="col-lg-2 control-label">Result Will Be Published On</label>
+                    <div class="col-lg-10">
+                        <form:input path="resultPublicationTime" cssClass="form-control" id="resultPublicationTime"/>
+                        <form:errors path="resultPublicationTime" cssClass="text-danger"/>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="publishFor" class="col-lg-2 control-label">Publish For</label>
                     <div class="col-lg-4">
@@ -91,6 +118,7 @@
                 </div>
             </fieldset>
         </form:form>
+        </div>
     </div>
 </div>
 

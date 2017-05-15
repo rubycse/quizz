@@ -2,6 +2,7 @@ package net.quizz.quiz.service;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
+import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class QuizAccessManager {
         }
     }
 
-    public void canAnswer(QuizTemplate quizTemplate) {
+    public void canAnswer(Publication publication) {
         User user = authService.getUser();
         //TODO: Implement method
     }

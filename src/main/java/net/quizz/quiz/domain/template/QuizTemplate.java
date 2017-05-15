@@ -25,10 +25,6 @@ public class QuizTemplate {
     @Size(max = 250)
     private String name;
 
-    @NotNull
-    @Min(1)
-    private Integer maxDurationInMin;
-
     private boolean published;
 
     @ManyToOne
@@ -57,14 +53,6 @@ public class QuizTemplate {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getMaxDurationInMin() {
-        return maxDurationInMin;
-    }
-
-    public void setMaxDurationInMin(Integer maxDurationInMin) {
-        this.maxDurationInMin = maxDurationInMin;
     }
 
     public boolean isPublished() {

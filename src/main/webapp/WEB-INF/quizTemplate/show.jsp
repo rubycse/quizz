@@ -13,11 +13,10 @@
     <div class="row">
         <div class="col-sm-10">
             <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
-            Duration: <c:out value="${quizTemplate.maxDurationInMin}"/> Minute
         </div>
         <div class="col-sm-2">
             <div class="verticalSpace">&nbsp;</div>
-            <c:url var="publishUrl" value='publish'>
+            <c:url var="publishUrl" value='/quiz/publication/publish'>
                 <c:param name="quizId" value="${quizTemplate.id}"/>
             </c:url>
             <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>

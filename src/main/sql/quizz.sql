@@ -19,7 +19,6 @@ CREATE TABLE quiz_template
 (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  max_duration_in_min INT,
   created_by_id INT NOT NULL,
   published BOOLEAN NOT NULL,
   PRIMARY KEY (ID),
@@ -52,9 +51,15 @@ CREATE TABLE publication
   id INT NOT NULL AUTO_INCREMENT,
   quiz_template_id INT NOT NULL,
   publish_for VARCHAR(20) NOT NULL,
-  published_on TIMESTAMP NOT NULL,
+  duration_in_min INT NOT NULL,
+  schedule_from TIMESTAMP NULL,
+  schedule_to TIMESTAMP NULL,
+  result_publication_time TIMESTAMP NULL,
+  published_on TIMESTAMP NULL,
+  published_by_id INT NOT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (quiz_template_id) REFERENCES quiz_template(id)
+  FOREIGN KEY (quiz_template_id) REFERENCES quiz_template(id),
+  FOREIGN KEY (published_by_id) REFERENCES user(id)
 );
 
 CREATE TABLE publish_to
@@ -67,6 +72,7 @@ CREATE TABLE publish_to
 CREATE TABLE quiz
 (
   id INT NOT NULL AUTO_INCREMENT,
+  publication_id INT NOT NULL,
   quiz_template_id INT NOT NULL,
   answered_by_id INT NOT NULL,
   start_time TIMESTAMP NOT NULL,

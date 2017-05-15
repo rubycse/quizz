@@ -1,9 +1,11 @@
 package net.quizz.quiz.domain.quiz;
 
 import net.quizz.auth.domain.User;
+import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.QuestionTemplate;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,10 @@ public class Quiz {
     private QuizTemplate quizTemplate;
 
     @ManyToOne
+    @JoinColumn(name = "publication_id")
+    private Publication publication;
+
+    @ManyToOne
     @JoinColumn(name = "answered_by_id")
     private User answeredBy;
 
@@ -47,7 +53,9 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(QuizTemplate quizTemplate) {
+    public Quiz(Publication publication) {
+        this.setPublication(publication);
+        QuizTemplate quizTemplate = publication.getQuizTemplate();
         this.setQuizTemplate(quizTemplate);
         this.setQuestions(new ArrayList<Question>(quizTemplate.getQuestionTemplates().size()));
         for (QuestionTemplate questionTemplate : quizTemplate.getQuestionTemplates()) {
@@ -69,6 +77,14 @@ public class Quiz {
 
     public void setQuizTemplate(QuizTemplate quizTemplate) {
         this.quizTemplate = quizTemplate;
+    }
+
+    public Publication getPublication() {
+        return publication;
+    }
+
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 
     public User getAnsweredBy() {
@@ -136,7 +152,7 @@ public class Quiz {
     public boolean isExpired() {
         if (getStartTime() != null) {
             DateTime startTime = new DateTime(getStartTime());
-            DateTime expectedEndTime = startTime.plusMinutes(getQuizTemplate().getMaxDurationInMin());
+            DateTime expectedEndTime = startTime.plusMinutes(publication.getDurationInMin());
             DateTime now = new DateTime();
             if (expectedEndTime.isBefore(now)) {
                 return false;
@@ -150,7 +166,27 @@ public class Quiz {
         return getStartTime() != null && getEndTime() != null;
     }
 
-    public Result getResult(Quiz quiz) {
-        return new Result(quiz);
+    private int getRightAnswerCount() {
+        int rightAnswerCount = 0;
+        for (Question question : getQuestions()) {
+            if (question.isRightAnswered()) {
+                rightAnswerCount++;
+            }
+        }
+
+        return rightAnswerCount;
+    }
+
+    public String getDuration() {
+        Period period = new Period(new DateTime(getStartTime()), new DateTime(getEndTime()));
+        return String.valueOf(period.getMinutes()) + " Min";
+    }
+
+    public String getScore() {
+        return getRightAnswerCount() + " / " + getQuestions().size();
+    }
+
+    public boolean isResultPublished() {
+        return !getPublication().getResultPublicationTime().after(new Date());
     }
 }

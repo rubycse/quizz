@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title><fmt:message key="quiz.result.title"/></title>
@@ -18,19 +18,26 @@
     <div class="col-md-6">
         <div class="well bs-component">
             <fieldset>
-                <div class="row">
-                    <label class="col-md-2 control-label">Score</label>
-                    <div class="col-md-10">
-                        <c:out value="${result.rightAnswerCount}"/> / <c:out value="${result.totalQuestionCount}"/>
-                    </div>
-                </div>
+                <c:choose>
+                    <c:when test="${quiz.resultPublished}">
+                        <div class="row">
+                            <label class="col-md-2 control-label">Score</label>
+                            <div class="col-md-10">
+                                <c:out value="${quiz.score}"/>
+                            </div>
+                        </div>
 
-                <div class="row">
-                    <label class="col-md-2 control-label">Duration</label>
-                    <div class="col-md-10">
-                        <c:out value="${result.duration}"/>
-                    </div>
-                </div>
+                        <div class="row">
+                            <label class="col-md-2 control-label">Duration</label>
+                            <div class="col-md-10">
+                                <c:out value="${quiz.duration}"/>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        Result will be published on <strong><fmt:formatDate value="${quiz.publication.resultPublicationTime}" pattern="${datePattern}"/></strong>.
+                    </c:otherwise>
+                </c:choose>
             </fieldset>
         </div>
     </div>
