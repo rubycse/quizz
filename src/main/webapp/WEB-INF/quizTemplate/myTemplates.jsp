@@ -33,7 +33,7 @@
                         <td><c:out value="${quizTemplate.published ? 'Yes' : 'No'}"/></td>
                         <td>
                             <c:if test="${quizTemplate.published}">
-                                <c:url var="publishUrl" value='publish'>
+                                <c:url var="publishUrl" value='/quiz/publication/publish'>
                                     <c:param name="quizId" value="${quizTemplate.id}"/>
                                 </c:url>
                                 <a href="${publishUrl}">Publication</a>

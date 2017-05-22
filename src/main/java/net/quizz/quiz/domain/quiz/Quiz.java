@@ -166,7 +166,7 @@ public class Quiz {
         return getStartTime() != null && getEndTime() != null;
     }
 
-    private int getRightAnswerCount() {
+    public int getRightAnswerCount() {
         int rightAnswerCount = 0;
         for (Question question : getQuestions()) {
             if (question.isRightAnswered()) {

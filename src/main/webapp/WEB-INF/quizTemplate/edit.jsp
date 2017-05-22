@@ -113,29 +113,29 @@
 <fieldset>
     <div class="well bs-component">
     <div id="questions" style="margin-bottom: 20px;">
-        <c:forEach items="${quizTemplate.questionTemplates}" var="questionTemplate">
-            <div class="question" id="question-${questionTemplate.id}">
-                <div id="${questionTemplate.id}" class="questionLabel" style="display: inline">${questionTemplate.label}</div>
+        <c:forEach items="${quizTemplate.questionTemplates}" var="question">
+            <div class="question" id="question-${question.id}">
+                <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
                 <br/>
-                <div id="options-${questionTemplate.id}">
-                <c:forEach items="${questionTemplate.options}" var="option">
+                <div id="options-${question.id}">
+                <c:forEach items="${question.options}" var="option">
                     <div class="option" onmouseover="showRemove('removeOption-${option.id}')" onmouseout="hideRemove('removeOption-${option.id}')" id="option-${option.id}">
                         <span id="removeOption-${option.id}" class="removeOption glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteOption(${option.id})"></span>
-                        <input type="radio" name="${questionTemplate.id}" onclick="updateOption(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
+                        <input type="radio" name="${question.id}" onclick="updateOption(${option.id})" <c:if test="${option.rightAnswer}">checked</c:if>/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                     </div>
                 </c:forEach>
                 </div>
                 <div class="option">
                     <span class="removeOption glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(${questionTemplate.id});">Add Option</a>
+                    <input type="radio"/>&nbsp;&nbsp;<a class="addOption" onclick="addOption(${question.id});">Add Option</a>
                 </div>
                 <div class="questionFooter">
                     <span class="questionRequired pull-right">
-                        <input type="checkbox" onclick="toggleRequired(${questionTemplate.id})" <c:if test="${questionTemplate.required}">checked</c:if> />&nbsp;Required
+                        <input type="checkbox" onclick="toggleRequired(${question.id})" <c:if test="${question.required}">checked</c:if> />&nbsp;Required
                     </span>
                     <span class="verticalBar pull-right">&nbsp;</span>
                     <span class="questionDelete pull-right">
-                        <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(${questionTemplate.id});"></a>
+                        <a class="glyphicon glyphicon-trash grey" onclick="deleteQuestion(${question.id});"></a>
                     </span>
                 </div>
             </div>

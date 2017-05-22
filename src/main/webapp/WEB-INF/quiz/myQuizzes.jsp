@@ -20,19 +20,28 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Started</th>
-                    <th>Ended</th>
+                    <th>Completed On</th>
+                    <th>Result</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${quizzes}" var="quiz">
                     <tr>
-                        <c:url var="quizUrl" value="result">
+                        <c:url var="quizUrl" value="show">
                             <c:param name="quizId" value="${quiz.id}"/>
                         </c:url>
                         <td><a href="${quizUrl}"><c:out value="${quiz.quizTemplate.name}"/></a></td>
-                        <td><fmt:formatDate value="${quiz.startTime}" pattern="MM/dd/yyyy hh:mm"/></td>
-                        <td><fmt:formatDate value="${quiz.endTime}" pattern="MM/dd/yyyy hh:mm"/></td>
+                        <td><fmt:formatDate value="${quiz.endTime}" pattern="${datePattern}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${quiz.resultPublished}">
+                                    Published
+                                </c:when>
+                                <c:otherwise>
+                                    Due on <fmt:formatDate value="${quiz.publication.resultPublicationTime}" pattern="${datePattern}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

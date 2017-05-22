@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,8 @@ public class QuizController {
     public String myQuizzes(ModelMap model) {
         User user = authService.getUser();
         model.put("quizzes", quizDao.getQuizzes(user));
+        model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
+
         return "quiz/myQuizzes";
     }
 
@@ -101,15 +105,59 @@ public class QuizController {
         quizDao.save(quiz);
         redirectAttributes.addAttribute("quizId", quiz.getId());
 
-        return "redirect:result";
+        return "redirect:show";
     }
 
-    @RequestMapping(path = "/result", method = RequestMethod.GET)
-    public String result(@RequestParam int quizId, ModelMap model) {
-        model.put("quiz", quizDao.getQuiz(quizId));
+    @RequestMapping(path = "/show", method = RequestMethod.GET)
+    public String show(@RequestParam int quizId, ModelMap model) {
+        Quiz quiz = quizDao.getQuiz(quizId);
+        model.put("quiz", quiz);
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
 
-        return "quiz/result";
+        if (quiz.isResultPublished()) {
+            List<Quiz> quizzes = quizDao.getQuizzes(quiz.getPublication());
+
+            model.put("highestScore", getHighestScore(quizzes));
+            model.put("position", getPosition(quizzes, quiz));
+        }
+
+        return "quiz/show";
+    }
+
+    private int getPosition(List<Quiz> quizzes, Quiz quiz) {
+        Collections.sort(quizzes, new Comparator<Quiz>() {
+            @Override
+            public int compare(Quiz quiz1, Quiz quiz2) {
+                return quiz2.getRightAnswerCount() - quiz1.getRightAnswerCount();
+            }
+        });
+
+        int position = 1;
+        int score = quizzes.get(0).getRightAnswerCount();
+        for (Quiz q : quizzes) {
+            if (score != q.getRightAnswerCount()) {
+                score = q.getRightAnswerCount();
+                position++;
+            }
+            if (q.getRightAnswerCount() == quiz.getRightAnswerCount()) {
+                return position;
+            }
+        }
+
+        return position;
+    }
+
+    private String getHighestScore(List<Quiz> quizzes) {
+        int highestRightAnswerCount = 0;
+        Quiz highestScoreQuiz = null;
+        for (Quiz tempQuiz : quizzes) {
+            if (tempQuiz.getRightAnswerCount() >= highestRightAnswerCount) {
+                highestRightAnswerCount = tempQuiz.getRightAnswerCount();
+                highestScoreQuiz = tempQuiz;
+            }
+        }
+
+        return highestScoreQuiz != null ? highestScoreQuiz.getScore() : "";
     }
 
     private void setupReferenceData(ModelMap model, Quiz quiz, Question question) {

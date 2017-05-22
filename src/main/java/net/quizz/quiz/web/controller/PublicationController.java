@@ -114,7 +114,7 @@ public class PublicationController {
         Quiz quiz = quizDao.getQuiz(publication, user);
         if (quiz != null && (quiz.isExpired() || quiz.isCompleted())) {
             redirectAttributes.addAttribute("quizId", quiz.getId());
-            return "redirect:/quiz/quiz/result";
+            return "redirect:/quiz/quiz/show";
         }
 
         model.put("publication", publication);

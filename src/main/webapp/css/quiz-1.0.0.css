@@ -4,13 +4,15 @@
 
 .questionLabel {
     padding-top: 5px;
+    padding-bottom: 5px;
     padding-left: 2px;
     font-size: 18px;
     font-weight: bold;
 }
 
 .option {
-    padding-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     padding-left: 5px;
     font-size: 12px;
 }
@@ -77,4 +79,16 @@
 
 .index {
     padding-bottom: 5px;
+}
+
+.readonly.row {
+    padding-bottom: 15px !important;
+}
+
+.correctOption {
+    color: #d43f3a;
+    font-size: 10px;
+    padding: 2px;
+    background: #ebccd1;
+    border: 1px solid #ebadb5;
 }

@@ -184,4 +184,10 @@ public class QuizDao {
     public Publication getPublication(int id) {
         return em.find(Publication.class, id);
     }
+
+    public List<Quiz> getQuizzes(Publication publication) {
+        return em.createQuery("FROM Quiz q WHERE q.publication = :publication", Quiz.class)
+                .setParameter("publication", publication)
+                .getResultList();
+    }
 }

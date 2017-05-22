@@ -26,12 +26,12 @@
 <fieldset>
     <div class="well bs-component">
     <div id="questionTemplates" style="margin-bottom: 20px;">
-        <c:forEach items="${quizTemplate.questionTemplates}" var="questionTemplate">
+        <c:forEach items="${quizTemplate.questionTemplates}" var="question">
             <div class="question">
-                <div id="${questionTemplate.id}" class="questionLabel" style="display: inline">${questionTemplate.label}</div>
+                <div id="${question.id}" class="questionLabel" style="display: inline">${question.label}</div>
                 <br/>
                 <div>
-                    <c:forEach items="${questionTemplate.options}" var="option">
+                    <c:forEach items="${question.options}" var="option">
                         <div class="option">
                             <input type="radio" <c:if test="${option.rightAnswer}">checked</c:if> disabled/><span id="${option.id}" class="optionLabel" style="display: inline">${option.label}</span>
                         </div>
