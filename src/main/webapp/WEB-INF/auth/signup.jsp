@@ -3,6 +3,20 @@
 <html>
 <head>
     <title>Create Your Quizz Account</title>
+    <script type="text/javascript">
+        $(function () {
+            $('#birthDate_picker').datetimepicker({
+                format: 'DD/MM/YYYY',
+                useStrict: true,
+                keepInvalid: true
+            }).on('dp.error', function () {
+                $('#birthDate_dateTimePickerError').removeClass('hidden');
+            }).on('dp.change', function () {
+                $('#birthDate_dateTimePickerError').addClass('hidden');
+            });
+        });
+    </script>
+
 </head>
 <body>
 <div class="page-header" id="banner">
@@ -70,11 +84,20 @@
 
                 <div class="form-group">
                     <label for="birthDate" class="col-lg-2 control-label">Birth Date</label>
-                    <div class="col-lg-6">
-                        <form:input path="birthDate" cssClass="form-control" id="birthDate" placeholder="Birth Date"/>
+                    <div class="col-lg-4">
+                        <div class="input-group" id="birthDate_picker">
+                            <form:input id="birthDate" path="birthDate" class="form-control"
+                                        placeholder="DD/MM/YYYY"
+                                        maxlength="10" htmlEscape="true"/>
+                            <span class="input-group-addon" style="cursor: pointer">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                        </div>
+                        <div id="birthDate_dateTimePickerError" class="text-danger hidden">Invalid!</div>
                         <form:errors path="birthDate" cssClass="text-danger"/>
                     </div>
                 </div>
+
 
                 <div class="form-group">
                     <label for="gender" class="col-lg-2 control-label">Gender</label>

@@ -10,9 +10,12 @@
     <title>Quizz&nbsp;::&nbsp;<decorator:title/></title>
 
     <link href='<c:url value="/images/favicon.ico"/>' rel="icon" type="image/x-icon">
-
+    <link href='<c:url value="/css/bootstrap-datetimepicker.min-4.17.42.css"/>' rel="stylesheet" type="text/css">
     <link href='<c:url value="/bootstrap/3.3.6/standstone/bootstrap.min.css"/>' rel="stylesheet" type="text/css">
+
     <script src="<c:url value="/js/jquery-1.11.3.min.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/js/moment-2.18.1.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/js/bootstrap-datetimepicker.min-4.17.42.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/bootstrap/3.3.6/js/bootstrap.min.js"/>" type="text/javascript"></script>
 
     <decorator:head/>

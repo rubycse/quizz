@@ -6,6 +6,7 @@ import net.quizz.auth.repositpry.UserDao;
 import net.quizz.auth.service.UserService;
 import net.quizz.auth.validator.SignupValidator;
 import net.quizz.common.service.MailService;
+import net.quizz.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -42,7 +43,7 @@ public class SignupController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        SimpleDateFormat sf = new SimpleDateFormat("DD/MM/YYYY");
+        SimpleDateFormat sf = new SimpleDateFormat(DateUtils.DATE_FORMAT);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sf, true));
         binder.addValidators(signupValidator);
     }

@@ -46,7 +46,7 @@ public class PublicationController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Integer.class, null, new CustomNumberEditor(Integer.class, true));
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(DateUtils.DATE_FORMAT), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(DateUtils.DATE_TIME_FORMAT_12H), true));
     }
 
     @RequestMapping(path = "/publish", method = RequestMethod.GET)
@@ -127,5 +127,6 @@ public class PublicationController {
         model.put("publication", publication);
         model.put("publishOptions", PublishFor.values());
         model.put("contacts", quizDao.getUserContacts(authService.getUser()));
+        model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
     }
 }

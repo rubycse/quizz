@@ -55,9 +55,4 @@ public class SigninController {
         session.invalidate();
         return "redirect:signin";
     }
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/DD/YYYY"), false));
-    }
 }

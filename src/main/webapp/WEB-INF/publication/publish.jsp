@@ -36,7 +36,44 @@
                 }
             }
         });
+
+        $(function () {
+            $('#scheduleFrom_picker').datetimepicker({
+                format: 'DD/MM/YYYY hh:mm a',
+                useStrict: true,
+                keepInvalid: true
+            }).on('dp.error', function () {
+                $('#scheduleFrom_dateTimePickerError').removeClass('hidden');
+            }).on('dp.change', function () {
+                $('#scheduleFrom_dateTimePickerError').addClass('hidden');
+            });
+
+            $('#scheduleTo_picker').datetimepicker({
+                format: 'DD/MM/YYYY hh:mm a',
+                useStrict: true,
+                keepInvalid: true
+            }).on('dp.error', function () {
+                $('#scheduleTo_dateTimePickerError').removeClass('hidden');
+            }).on('dp.change', function () {
+                $('#scheduleTo_dateTimePickerError').addClass('hidden');
+            });
+
+            $('#resultPublicationTime_picker').datetimepicker({
+                format: 'DD/MM/YYYY hh:mm a',
+                useStrict: true,
+                keepInvalid: true
+            }).on('dp.error', function () {
+                $('#resultPublicationTime_dateTimePickerError').removeClass('hidden');
+            }).on('dp.change', function () {
+                $('#resultPublicationTime_dateTimePickerError').addClass('hidden');
+            });
+
+            function escapeDots(value) {
+                return value.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+            }
+        });
     </script>
+
 </head>
 <body>
 <div class="page-header" id="banner">
@@ -65,34 +102,59 @@
 
                 <fieldset>
                     <div class="form-group">
-                        <label for="durationInMin" class="col-lg-2 control-label">Duration (Min)</label>
-                        <div class="col-lg-4">
+                        <label for="durationInMin" class="col-md-2 control-label">Duration (Min)</label>
+                        <div class="col-md-4">
                             <form:input path="durationInMin" cssClass="form-control" id="durationInMin"/>
                             <form:errors path="durationInMin" cssClass="text-danger"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="scheduleFrom" class="col-lg-2 control-label">Schedule</label>
-                        <div class="col-lg-10">
-                            <form:input path="scheduleFrom" cssClass="form-control" id="scheduleFrom" placeholder="From"/> To
-                            <form:input path="scheduleTo" cssClass="form-control" id="scheduleTo" placeholder="To"/>
+                        <label for="scheduleFrom" class="col-md-2 control-label">Schedule From</label>
+                        <div class="col-md-4">
+                            <div class="input-group" id="scheduleFrom_picker">
+                                <form:input id="scheduleFrom" path="scheduleFrom" class="form-control" placeholder="DD/MM/YYYY hh:mm a"
+                                            maxlength="19" htmlEscape="true"/>
+                                <span class="input-group-addon" style="cursor: pointer">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <div id="scheduleFrom_dateTimePickerError" class="text-danger hidden">Invalid!</div>
                             <form:errors path="scheduleFrom" cssClass="text-danger"/>
+                        </div>
+                        <label for="scheduleTo" class="col-md-1 control-label"><span class="text-center">To</span></label>
+                        <div class="col-md-4">
+                            <div class="input-group" id="scheduleTo_picker">
+                                <form:input id="scheduleTo" path="scheduleTo" class="form-control" placeholder="DD/MM/YYYY hh:mm a"
+                                            maxlength="19" htmlEscape="true"/>
+                                <span class="input-group-addon" style="cursor: pointer">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <div id="scheduleTo_dateTimePickerError" class="text-danger hidden">Invalid!</div>
                             <form:errors path="scheduleTo" cssClass="text-danger"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="resultPublicationTime" class="col-lg-2 control-label">Result Will Be Published On</label>
-                        <div class="col-lg-10">
-                            <form:input path="resultPublicationTime" cssClass="form-control" id="resultPublicationTime"/>
+                        <label for="resultPublicationTime" class="col-md-2 control-label">Result Will Be Published On</label>
+                        <div class="col-md-4">
+                            <div class="input-group" id="resultPublicationTime_picker">
+                                <form:input id="resultPublicationTime" path="resultPublicationTime" class="form-control"
+                                            placeholder="DD/MM/YYYY hh:mm a"
+                                            maxlength="19" htmlEscape="true"/>
+                                <span class="input-group-addon" style="cursor: pointer">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <div id="resultPublicationTime_dateTimePickerError" class="text-danger hidden">Invalid!</div>
                             <form:errors path="resultPublicationTime" cssClass="text-danger"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="publishFor" class="col-lg-2 control-label">Publish For</label>
-                        <div class="col-lg-4">
+                        <label for="publishFor" class="col-md-2 control-label">Publish For</label>
+                        <div class="col-md-4">
                             <form:select id="publishFor" path="publishFor" cssClass="form-control">
                                 <form:option value=""/>
                                 <form:options items="${publishOptions}" itemLabel="label"/>
@@ -102,8 +164,8 @@
                     </div>
 
                     <div class="form-group" id="publishToEmailsDiv">
-                        <label for="publishToEmails" class="col-lg-2 control-label">Publish To</label>
-                        <div class="col-lg-10">
+                        <label for="publishToEmails" class="col-md-2 control-label">Publish To</label>
+                        <div class="col-md-10">
                             <form:select id="publishToEmails" path="publishToEmails" cssClass="form-control" multiple="multiple">
                                 <form:options items="${contacts}"/>
                             </form:select>
@@ -112,7 +174,7 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-lg-6 col-lg-offset-2">
+                        <div class="col-md-6 col-md-offset-2">
                             <input type="submit" class="btn btn-primary" name="save" value="Publish"/>
                         </div>
                     </div>
