@@ -1,6 +1,7 @@
 package net.quizz.quiz.domain.quiz;
 
 import net.quizz.auth.domain.User;
+import net.quizz.common.utils.DateUtils;
 import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.QuestionTemplate;
 import net.quizz.quiz.domain.template.QuizTemplate;
@@ -145,7 +146,7 @@ public class Quiz {
     }
 
     public String getStartTimeStr() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.DATE_TIME_FORMAT_JAVASCRIPT);
         return sdf.format(getStartTime());
     }
 

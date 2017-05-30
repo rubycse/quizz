@@ -12,4 +12,5 @@ public class DateUtils {
     public static final String DATE_TIME_FORMAT_12H = "dd/MM/yyyy hh:mm a";
     public static final String DATE_TIME_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_TIME_FORMAT_READABLE = "d MMM yyyy hh:mm a";
+    public static final String DATE_TIME_FORMAT_JAVASCRIPT = "yyyy-MM-dd HH:mm:ss.S";
 }

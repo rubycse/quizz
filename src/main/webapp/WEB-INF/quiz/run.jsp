@@ -66,7 +66,9 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         var countDownDiv = document.getElementById("countDown");
-        countDownDiv.innerHTML = (hours == 0 ? '' : hours + ':') + minutes + ':' + seconds;
+        countDownDiv.innerHTML = (hours == 0 ? '' : hours + ':')
+                + (minutes < 10 ? '0' + minutes : minutes) + ':'
+                + (seconds < 10 ? '0' + seconds : seconds);
 
         // If the count down is over, write some text
         if (distance < 0) {
