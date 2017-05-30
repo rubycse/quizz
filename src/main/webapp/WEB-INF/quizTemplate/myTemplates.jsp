@@ -19,7 +19,7 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Published</th>
+                    <th>Complete</th>
                     <th>Publication</th>
                 </tr>
                 </thead>
@@ -30,11 +30,11 @@
                             <c:param name="id" value="${quizTemplate.id}"/>
                         </c:url>
                         <td><a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a></td>
-                        <td><c:out value="${quizTemplate.published ? 'Yes' : 'No'}"/></td>
+                        <td><c:out value="${quizTemplate.complete ? 'Yes' : 'No'}"/></td>
                         <td>
-                            <c:if test="${quizTemplate.published}">
-                                <c:url var="publishUrl" value='/quiz/publication/publish'>
-                                    <c:param name="quizId" value="${quizTemplate.id}"/>
+                            <c:if test="${quizTemplate.complete}">
+                                <c:url var="publishUrl" value='/quiz/publication/list'>
+                                    <c:param name="quizTemplateId" value="${quizTemplate.id}"/>
                                 </c:url>
                                 <a href="${publishUrl}">Publication</a>
                             </c:if>

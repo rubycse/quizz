@@ -3,13 +3,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title>${sharedWithMe ? 'Shared With Me' : 'Public Quizzes'}</title>
+    <title>
+        <c:set var="title" value="${sharedWithMe ? 'Shared With Me' : (forQuizTemplate ? 'Publications For Quiz'  : 'Public Quizzes')}"/>
+        ${title}
+    </title>
 </head>
 <body>
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-12">
-            <h1>${sharedWithMe ? 'Shared With Me' : 'Public Quizzes'}</h1>
+            <h1>${title}</h1>
+            <c:if test="${forQuizTemplate}">
+                <c:url var="quizUrl" value="show">
+                    <c:param name="id" value="${quizTemplate.id}"/>
+                </c:url>
+                <strong>Quiz:</strong>&nbsp;<a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a>
+            </c:if>
         </div>
     </div>
 </div>
@@ -19,7 +28,7 @@
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Quiz Name</th>
                     <th>Published On</th>
                     <th>Published By</th>
                 </tr>

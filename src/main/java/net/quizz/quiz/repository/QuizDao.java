@@ -190,4 +190,10 @@ public class QuizDao {
                 .setParameter("publication", publication)
                 .getResultList();
     }
+
+    public List<Publication> getPublications(QuizTemplate quizTemplate) {
+        return em.createQuery("FROM Publication p WHERE p.quizTemplate = :quizTemplate", Publication.class)
+                .setParameter("quizTemplate", quizTemplate)
+                .getResultList();
+    }
 }

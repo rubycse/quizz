@@ -17,7 +17,7 @@
         <div class="col-sm-2">
             <div class="verticalSpace">&nbsp;</div>
             <c:url var="publishUrl" value='/quiz/publication/publish'>
-                <c:param name="quizId" value="${quizTemplate.id}"/>
+                <c:param name="quizTemplateId" value="${quizTemplate.id}"/>
             </c:url>
             <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>
         </div>

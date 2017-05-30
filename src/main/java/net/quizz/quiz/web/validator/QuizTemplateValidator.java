@@ -14,7 +14,7 @@ import org.springframework.validation.BindingResult;
 @Component
 public class QuizTemplateValidator {
 
-    public void validateForPublication(QuizTemplate quizTemplate, BindingResult errors) {
+    public void validateForCompletion(QuizTemplate quizTemplate, BindingResult errors) {
         for (QuestionTemplate questionTemplate : quizTemplate.getQuestionTemplates()) {
             if (!questionTemplate.hasRightAnswer()) {
                 errors.reject("error.quizTemplate.correctAnswerNotSet",

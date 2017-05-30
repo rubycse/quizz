@@ -36,4 +36,11 @@ public class QuizAccessManager {
         User user = authService.getUser();
         //TODO: Implement method
     }
+
+    public void canPublish(QuizTemplate quizTemplate) {
+        User user = authService.getUser();
+        if (user.isStudent() || quizTemplate.getCreatedBy().getId() != user.getId() || !quizTemplate.isComplete()) {
+            throw new IllegalAccessError("Illegal Access");
+        }
+    }
 }

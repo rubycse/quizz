@@ -25,7 +25,7 @@ public class QuizTemplate {
     @Size(max = 250)
     private String name;
 
-    private boolean published;
+    private boolean complete;
 
     @ManyToOne
     @JoinColumn(name = "created_by_id")
@@ -55,12 +55,12 @@ public class QuizTemplate {
         this.name = name;
     }
 
-    public boolean isPublished() {
-        return published;
+    public boolean isComplete() {
+        return complete;
     }
 
-    public void setPublished(boolean published) {
-        this.published = published;
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 
     public User getCreatedBy() {

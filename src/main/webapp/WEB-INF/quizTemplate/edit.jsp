@@ -80,7 +80,7 @@
     </script>
 </head>
 <body>
-<form:form commandName="quizTemplate" method="post" action="checkPublishable" cssClass="form">
+<form:form commandName="quizTemplate" method="post" action="complete" cssClass="form">
     <input type="hidden" name="id" value="${quizTemplate.id}"/>
     <div class="page-header" id="banner">
         <div class="row">
@@ -89,7 +89,7 @@
             </div>
             <div class="col-sm-2">
                 <div class="verticalSpace">&nbsp;</div>
-                <input type="submit" class="btn btn-md btn-warning pull-right" value="Publish"/>
+                <input type="submit" class="btn btn-md btn-warning pull-right" value="Complete"/>
             </div>
         </div>
     </div>

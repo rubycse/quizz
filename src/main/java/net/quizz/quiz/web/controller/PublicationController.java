@@ -50,9 +50,9 @@ public class PublicationController {
     }
 
     @RequestMapping(path = "/publish", method = RequestMethod.GET)
-    public String show(ModelMap model, @RequestParam int quizId) {
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizId);
-        quizAccessManager.canEdit(quizTemplate);
+    public String show(ModelMap model, @RequestParam int quizTemplateId) {
+        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizTemplateId);
+        quizAccessManager.canPublish(quizTemplate);
         Publication publication = quizDao.getPublicationByQuiz(quizTemplate);
 
         if (publication == null) {
@@ -68,17 +68,26 @@ public class PublicationController {
 
     @RequestMapping(path = "/publish", method = RequestMethod.POST)
     public String publish(@ModelAttribute Publication publication) {
-        QuizTemplate quizTemplate = publication.getQuizTemplate();
-        quizAccessManager.canEdit(quizTemplate);
-        publication.setPublishedOn(new Date());
+        quizAccessManager.canPublish(publication.getQuizTemplate());
 
-        if (!quizTemplate.isPublished()) {
-            quizTemplate.setPublished(true);
-            quizDao.save(quizTemplate);
-        }
+        publication.setPublishedOn(new Date());
         quizDao.save(publication);
 
         return "redirect:/quiz/template/myTemplates";
+    }
+
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
+    public String list(@RequestParam int quizTemplateId, ModelMap model) {
+        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizTemplateId);
+        quizAccessManager.canPublish(quizTemplate);
+
+        List<Publication> publications = quizDao.getPublications(quizTemplate);
+
+        model.put("publications", publications);
+        model.put("forQuizTemplate", true);
+        model.put("quizTemplate", quizTemplate);
+
+        return "publication/list";
     }
 
     @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
@@ -93,7 +102,7 @@ public class PublicationController {
     }
 
     @RequestMapping(path = "/public", method = RequestMethod.GET)
-    public String sharedW(ModelMap model) {
+    public String publicList(ModelMap model) {
 
         model.put("publications", quizDao.getAllPublicPublications());
 

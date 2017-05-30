@@ -20,7 +20,7 @@ CREATE TABLE quiz_template
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   created_by_id INT NOT NULL,
-  published BOOLEAN NOT NULL,
+  complete BOOLEAN NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (created_by_id) REFERENCES user(id)
 );
