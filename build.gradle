@@ -1,12 +1,23 @@
-
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: "jetty"
-apply plugin: "idea"
+apply plugin: 'idea'
+apply plugin: 'org.akhikhl.gretty'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.4.0'
+    }
+}
 
 ext.springVersion='4.2.5.RELEASE'
 ext.hibernateVersion='4.3.11.Final'
@@ -43,10 +54,10 @@ war {
     baseName = 'quizz'
 }
 
+gretty {
+    httpPort = 8090
+    servletContainer = 'tomcat8'
+}
+
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-
-httpPort = 8090
-stopPort = 9090
-stopKey = "stopKey"
-
