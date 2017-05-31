@@ -136,6 +136,7 @@ public class PublicationController {
         model.put("publication", publication);
         model.put("publishOptions", PublishFor.values());
         model.put("contacts", quizDao.getUserContacts(authService.getUser()));
+        model.put("studentGroups", quizDao.getStudentGroups(authService.getUser()));
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
     }
 }

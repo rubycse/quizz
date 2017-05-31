@@ -51,6 +51,7 @@ CREATE TABLE publication
   id INT NOT NULL AUTO_INCREMENT,
   quiz_template_id INT NOT NULL,
   publish_for VARCHAR(20) NOT NULL,
+  student_group_id INT,
   duration_in_min INT NOT NULL,
   schedule_from TIMESTAMP NULL,
   schedule_to TIMESTAMP NULL,
@@ -58,6 +59,7 @@ CREATE TABLE publication
   published_on TIMESTAMP NULL,
   published_by_id INT NOT NULL,
   PRIMARY KEY (ID),
+  FOREIGN KEY (student_group_id) REFERENCES student_group(id),
   FOREIGN KEY (quiz_template_id) REFERENCES quiz_template(id),
   FOREIGN KEY (published_by_id) REFERENCES user(id)
 );
@@ -67,6 +69,22 @@ CREATE TABLE publish_to
   publication_id INT NOT NULL,
   email VARCHAR(64) NOT NULL,
   FOREIGN KEY (publication_id) REFERENCES publication(id)
+);
+
+CREATE TABLE student_group
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  created_by_id INT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (created_by_id) REFERENCES user(id)
+);
+
+CREATE TABLE group_email
+(
+  group_id INT NOT NULL,
+  email VARCHAR(64) NOT NULL,
+  FOREIGN KEY (group_id) REFERENCES student_group(id)
 );
 
 CREATE TABLE quiz

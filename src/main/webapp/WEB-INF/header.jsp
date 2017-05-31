@@ -22,6 +22,7 @@
                     </c:if>
                     <c:if test="${!sessionScope.USER.student}">
                         <li><a href="<c:url value='/quiz/template/myTemplates'/>">My Quizzes</a></li>
+                        <li><a href="<c:url value='/quiz/group/list'/>">My Groups</a></li>
                     </c:if>
                 </c:if>
             </ul>
@@ -54,6 +55,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="<c:url value='/quiz/template/create'/>">Create Quiz</a></li>
+                                <li><a href="<c:url value='/quiz/group/show'/>">Create Group</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<c:url value='/auth/myProfile'/>">My Profile</a></li>
                                 <li><a href="<c:url value='/auth/changePassword'/>">Change Password</a></li>

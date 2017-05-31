@@ -92,7 +92,8 @@ public class QuizDao {
     }
 
     public List<Publication> getPublicationsSharedWithMe(User user) {
-        return em.createQuery("FROM Publication p WHERE :email IN elements(p.publishToEmails)", Publication.class)
+        return em.createQuery("FROM Publication p WHERE :email IN elements(p.publishToEmails)" +
+                " OR :email IN elements(p.studentGroup.emails)", Publication.class)
                 .setParameter("email", user.getEmail())
                 .getResultList();
     }
@@ -178,7 +179,6 @@ public class QuizDao {
         return em.createQuery(sql, Quiz.class)
                 .setParameter("answeredBy", user)
                 .getResultList();
-
     }
 
     public Publication getPublication(int id) {
@@ -194,6 +194,25 @@ public class QuizDao {
     public List<Publication> getPublications(QuizTemplate quizTemplate) {
         return em.createQuery("FROM Publication p WHERE p.quizTemplate = :quizTemplate", Publication.class)
                 .setParameter("quizTemplate", quizTemplate)
+                .getResultList();
+    }
+
+    public StudentGroup getStudentGroup(int id) {
+        return em.find(StudentGroup.class, id);
+    }
+
+    public void save(StudentGroup studentGroup) {
+        if (studentGroup.getId() == 0) {
+            em.persist(studentGroup);
+        } else {
+            em.merge(studentGroup);
+        }
+    }
+
+    public List<StudentGroup> getStudentGroups(User user) {
+        String sql = "FROM StudentGroup g WHERE g.createdBy = :createdBy";
+        return em.createQuery(sql, StudentGroup.class)
+                .setParameter("createdBy", user)
                 .getResultList();
     }
 }

@@ -29,10 +29,17 @@
             });
 
             function showHidePublishTo() {
-                if ($("#publishFor").val() == 'SELECTED_USER') {
-                    $("#publishToEmailsDiv").show();
-                } else {
-                    $("#publishToEmailsDiv").hide();
+                var $publishToEmailsDiv = $("#publishToEmailsDiv");
+                var $studentGroupDiv = $("#studentGroupDiv");
+                var $publishFor = $("#publishFor").val();
+
+                $publishToEmailsDiv.hide();
+                $studentGroupDiv.hide();
+
+                if ($publishFor == 'SELECTED_USER') {
+                    $publishToEmailsDiv.show();
+                } else if ($publishFor == 'GROUP') {
+                    $studentGroupDiv.show();
                 }
             }
         });
@@ -170,6 +177,17 @@
                                 <form:options items="${contacts}"/>
                             </form:select>
                             <form:errors path="publishToEmails" cssClass="text-danger"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="studentGroupDiv">
+                        <label for="studentGroup" class="col-md-2 control-label">Group</label>
+                        <div class="col-md-4">
+                            <form:select path="studentGroup" cssClass="form-control">
+                                <form:option value="" label=""/>
+                                <form:options items="${studentGroups}" itemLabel="name" itemValue="id"/>
+                            </form:select>
+                            <form:errors path="studentGroup" cssClass="text-danger"/>
                         </div>
                     </div>
 

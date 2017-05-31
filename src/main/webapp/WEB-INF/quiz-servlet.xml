@@ -25,6 +25,7 @@
         <property name="formatters">
             <set>
                 <ref bean="optionFormatter"/>
+                <ref bean="studentGroupFormatter"/>
             </set>
         </property>
     </bean>

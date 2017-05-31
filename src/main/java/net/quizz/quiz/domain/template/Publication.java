@@ -33,6 +33,10 @@ public class Publication {
     @Column(name = "email", length = 64)
     private List<String> publishToEmails;
 
+    @ManyToOne
+    @JoinColumn(name = "student_group_id")
+    private StudentGroup studentGroup;
+
     @NotNull
     @Min(1)
     private int durationInMin;
@@ -92,6 +96,14 @@ public class Publication {
 
     public void setPublishToEmails(List<String> publishToEmails) {
         this.publishToEmails = publishToEmails;
+    }
+
+    public StudentGroup getStudentGroup() {
+        return studentGroup;
+    }
+
+    public void setStudentGroup(StudentGroup studentGroup) {
+        this.studentGroup = studentGroup;
     }
 
     public int getDurationInMin() {

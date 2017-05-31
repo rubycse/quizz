@@ -4,9 +4,12 @@ package net.quizz.quiz.domain.template;
  * @author lutfun
  * @since 10/3/16
  */
+
 public enum PublishFor {
+
     EVERYBODY("Everybody"),
-    SELECTED_USER("Selected User");
+    SELECTED_USER("Selected User"),
+    GROUP("Group");
 
     private String label;
 
