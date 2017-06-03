@@ -3,11 +3,13 @@ package net.quizz.quiz.web.controller;
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
 import net.quizz.common.utils.DateUtils;
-import net.quizz.quiz.domain.quiz.Quiz;
 import net.quizz.quiz.domain.template.Publication;
 import net.quizz.quiz.domain.template.PublishFor;
 import net.quizz.quiz.domain.template.QuizTemplate;
+import net.quizz.quiz.repository.PublicationDao;
 import net.quizz.quiz.repository.QuizDao;
+import net.quizz.quiz.repository.QuizTemplateDao;
+import net.quizz.quiz.repository.StudentGroupDao;
 import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -34,7 +36,16 @@ import java.util.List;
 public class PublicationController {
 
     @Autowired
+    private PublicationDao publicationDao;
+
+    @Autowired
+    private QuizTemplateDao quizTemplateDao;
+
+    @Autowired
     private QuizDao quizDao;
+
+    @Autowired
+    private StudentGroupDao studentGroupDao;
 
     @Autowired
     private AuthService authService;
@@ -57,10 +68,10 @@ public class PublicationController {
         Publication publication;
         if (id == 0) {
             publication = new Publication();
-            publication.setQuizTemplate(quizDao.getQuizTemplate(quizTemplateId));
+            publication.setQuizTemplate(quizTemplateDao.getQuizTemplate(quizTemplateId));
             publication.setPublishedBy(authService.getUser());
         } else {
-            publication = quizDao.getPublication(id);
+            publication = publicationDao.getPublication(id);
         }
 
         quizAccessManager.canPublish(publication.getQuizTemplate());
@@ -77,7 +88,7 @@ public class PublicationController {
         quizAccessManager.canPublish(publication.getQuizTemplate());
 
         publication.setPublishedOn(new Date());
-        quizDao.save(publication);
+        publicationDao.save(publication);
 
         redirectAttributes.addAttribute("quizTemplateId", publication.getQuizTemplate().getId());
 
@@ -87,10 +98,10 @@ public class PublicationController {
     @RequestMapping(path = "/quizPublications", method = RequestMethod.GET)
     public String list(@RequestParam int quizTemplateId, ModelMap model) {
 
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizTemplateId);
+        QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(quizTemplateId);
         quizAccessManager.canPublish(quizTemplate);
 
-        List<Publication> publications = quizDao.getPublications(quizTemplate);
+        List<Publication> publications = publicationDao.getPublications(quizTemplate);
 
         model.put("publications", publications);
         model.put("quizTemplate", quizTemplate);
@@ -102,7 +113,7 @@ public class PublicationController {
     @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
     public String sharedWithMe(ModelMap model) {
         User user = authService.getUser();
-        List<Publication> publications = quizDao.getPublicationsSharedWithMe(user);
+        List<Publication> publications = publicationDao.getPublicationsSharedWithMe(user);
 
         model.put("publications", publications);
         model.put("sharedWithMe", true);
@@ -113,7 +124,7 @@ public class PublicationController {
     @RequestMapping(path = "/public", method = RequestMethod.GET)
     public String publicList(ModelMap model) {
 
-        model.put("publications", quizDao.getAllPublicPublications());
+        model.put("publications", publicationDao.getAllPublicPublications());
 
         return "publication/list";
     }
@@ -121,7 +132,7 @@ public class PublicationController {
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model, RedirectAttributes redirectAttributes) {
 
-        Publication publication = quizDao.getPublication(id);
+        Publication publication = publicationDao.getPublication(id);
         User user = authService.getUser();
         boolean createdByUser = publication.getQuizTemplate().getCreatedBy().getId() == user.getId();
 
@@ -140,8 +151,8 @@ public class PublicationController {
     private void setupReferenceData(ModelMap model, Publication publication) {
         model.put("publication", publication);
         model.put("publishOptions", PublishFor.values());
-        model.put("contacts", quizDao.getUserContacts(authService.getUser()));
-        model.put("studentGroups", quizDao.getStudentGroups(authService.getUser()));
+        model.put("contacts", publicationDao.getUserContacts(authService.getUser()));
+        model.put("studentGroups", studentGroupDao.getStudentGroups(authService.getUser()));
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
     }
 }

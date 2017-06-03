@@ -7,6 +7,7 @@ import net.quizz.quiz.domain.quiz.Option;
 import net.quizz.quiz.domain.quiz.Question;
 import net.quizz.quiz.domain.quiz.Quiz;
 import net.quizz.quiz.domain.template.Publication;
+import net.quizz.quiz.repository.PublicationDao;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class QuizController {
     private QuizDao quizDao;
 
     @Autowired
+    private PublicationDao publicationDao;
+
+    @Autowired
     private AuthService authService;
 
     @Autowired
@@ -51,7 +55,7 @@ public class QuizController {
 
     @RequestMapping(path = "/run", method = RequestMethod.GET)
     public String run(@RequestParam int publicationId, ModelMap model) {
-        Publication publication = quizDao.getPublication(publicationId);
+        Publication publication = publicationDao.getPublication(publicationId);
         User user = authService.getUser();
         quizAccessManager.canAnswer(publication);
         Quiz quiz = quizDao.getQuiz(publication, user);

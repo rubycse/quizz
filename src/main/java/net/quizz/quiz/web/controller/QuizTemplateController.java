@@ -3,9 +3,8 @@ package net.quizz.quiz.web.controller;
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.template.QuizTemplate;
-import net.quizz.quiz.repository.QuizDao;
+import net.quizz.quiz.repository.QuizTemplateDao;
 import net.quizz.quiz.service.QuizAccessManager;
-import net.quizz.quiz.utils.QuizUtils;
 import net.quizz.quiz.web.validator.QuizTemplateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -15,8 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 import static net.quizz.quiz.utils.QuizUtils.createQuizTemplate;
 
@@ -30,7 +27,7 @@ import static net.quizz.quiz.utils.QuizUtils.createQuizTemplate;
 public class QuizTemplateController {
 
     @Autowired
-    private QuizDao quizDao;
+    private QuizTemplateDao quizTemplateDao;
 
     @Autowired
     private AuthService authService;
@@ -52,7 +49,7 @@ public class QuizTemplateController {
         User user = authService.getUser();
         QuizTemplate quizTemplate = createQuizTemplate();
         quizTemplate.setCreatedBy(user);
-        quizDao.save(quizTemplate);
+        quizTemplateDao.save(quizTemplate);
         model.put("id", quizTemplate.getId());
         return "redirect:show";
     }
@@ -61,7 +58,7 @@ public class QuizTemplateController {
     public String list(ModelMap model) {
         quizAccessManager.canCreate();
         User user = authService.getUser();
-        model.put("quizzes", quizDao.getUserQuizTemplates(user));
+        model.put("quizzes", quizTemplateDao.getUserQuizTemplates(user));
         model.put("myTemplates", true);
 
         return "quizTemplate/myTemplates";
@@ -69,7 +66,7 @@ public class QuizTemplateController {
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model) {
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
+        QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(id);
         model.put("quizTemplate", quizTemplate);
 
         return quizTemplate.isComplete() ? "quizTemplate/show" : "quizTemplate/edit";
@@ -80,7 +77,7 @@ public class QuizTemplateController {
                                    ModelMap model, RedirectAttributes redirectAttributes) {
         quizAccessManager.canCreate();
 
-        quizTemplate = quizDao.getQuizTemplate(quizTemplate.getId());
+        quizTemplate = quizTemplateDao.getQuizTemplate(quizTemplate.getId());
 
         quizTemplateValidator.validateForCompletion(quizTemplate, errors);
 
@@ -95,7 +92,7 @@ public class QuizTemplateController {
         }
 
         quizTemplate.setComplete(true);
-        quizDao.save(quizTemplate);
+        quizTemplateDao.save(quizTemplate);
 
         redirectAttributes.addAttribute("id", quizTemplate.getId());
 
@@ -105,9 +102,9 @@ public class QuizTemplateController {
     @RequestMapping(path = "/show", method = RequestMethod.POST, params = "delete")
     public String delete(@RequestParam int id) {
 
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(id);
+        QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(id);
         quizAccessManager.canDelete(quizTemplate);
-        quizDao.delete(quizTemplate);
+        quizTemplateDao.delete(quizTemplate);
 
         return "redirect:/quiz/template/myTemplates";
     }

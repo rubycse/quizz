@@ -1,10 +1,9 @@
 package net.quizz.quiz.web.controller;
 
 import net.quizz.auth.domain.User;
-import net.quizz.auth.repositpry.UserDao;
 import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.template.StudentGroup;
-import net.quizz.quiz.repository.QuizDao;
+import net.quizz.quiz.repository.StudentGroupDao;
 import net.quizz.quiz.service.QuizAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudentGroupController {
 
     @Autowired
-    private QuizDao quizDao;
+    private StudentGroupDao studentGroupDao;
 
     @Autowired
     private AuthService authService;
@@ -40,7 +39,7 @@ public class StudentGroupController {
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(ModelMap model, @RequestParam(defaultValue = "0") int id) {
 
-        StudentGroup studentGroup = id == 0 ? new StudentGroup() : quizDao.getStudentGroup(id);
+        StudentGroup studentGroup = id == 0 ? new StudentGroup() : studentGroupDao.getStudentGroup(id);
 
         model.put("studentGroup", studentGroup);
 
@@ -54,7 +53,7 @@ public class StudentGroupController {
             studentGroup.setCreatedBy(authService.getUser());
         }
 
-        quizDao.save(studentGroup);
+        studentGroupDao.save(studentGroup);
 
         model.put("studentGroup", studentGroup);
 
@@ -66,7 +65,7 @@ public class StudentGroupController {
 
         User user = authService.getUser();
 
-        model.put("studentGroups", quizDao.getStudentGroups(user));
+        model.put("studentGroups", studentGroupDao.getStudentGroups(user));
 
         return "studentGroup/list";
     }
