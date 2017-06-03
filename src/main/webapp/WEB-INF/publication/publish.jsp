@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>
-        Publish Quiz
+        Publication of <c:out value="${publication.quizTemplate.name}"/>
     </title>
 
     <script src='<c:url value="/js/select2.min.js"/>' type="text/javascript"></script>
@@ -86,11 +86,10 @@
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-12">
-            <h1>Publish Quiz</h1>
             <c:url var="quizUrl" value="show">
                 <c:param name="id" value="${publication.quizTemplate.id}"/>
             </c:url>
-            <strong>Quiz:</strong>&nbsp;<a href="${quizUrl}"><c:out value="${publication.quizTemplate.name}"/></a>
+            <h1>Publication of <a href="${quizUrl}"><c:out value="${publication.quizTemplate.name}"/></a></h1>
         </div>
     </div>
 </div>
@@ -172,7 +171,7 @@
 
                     <div class="form-group" id="publishToEmailsDiv">
                         <label for="publishToEmails" class="col-md-2 control-label">Publish To</label>
-                        <div class="col-md-10">
+                        <div class="col-md-9">
                             <form:select id="publishToEmails" path="publishToEmails" cssClass="form-control" multiple="multiple">
                                 <form:options items="${contacts}"/>
                             </form:select>

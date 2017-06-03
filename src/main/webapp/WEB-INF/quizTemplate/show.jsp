@@ -11,15 +11,13 @@
 <body>
 <div class="page-header" id="banner">
     <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-9">
             <h1><span class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></span></h1>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <div class="verticalSpace">&nbsp;</div>
-            <c:url var="publishUrl" value='/quiz/publication/publish'>
-                <c:param name="quizTemplateId" value="${quizTemplate.id}"/>
-            </c:url>
-            <a class="btn btn-md btn-warning pull-right" href="${publishUrl}">Publish</a>
+            <a class="btn btn-md btn-warning pull-right" href="<c:url value='/quiz/publication/publish?quizTemplateId=${quizTemplate.id}'/>">Publish</a>
+            <a class="topLink pull-right" href="<c:url value='/quiz/publication/quizPublications?quizTemplateId=${quizTemplate.id}'/>">See Publications</a>
         </div>
     </div>
 </div>

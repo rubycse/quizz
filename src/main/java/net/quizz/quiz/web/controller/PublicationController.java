@@ -50,16 +50,20 @@ public class PublicationController {
     }
 
     @RequestMapping(path = "/publish", method = RequestMethod.GET)
-    public String show(ModelMap model, @RequestParam int quizTemplateId) {
-        QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizTemplateId);
-        quizAccessManager.canPublish(quizTemplate);
-        Publication publication = quizDao.getPublicationByQuiz(quizTemplate);
+    public String show(ModelMap model,
+                       @RequestParam(defaultValue = "0") int quizTemplateId,
+                       @RequestParam(defaultValue = "0") int id) {
 
-        if (publication == null) {
+        Publication publication;
+        if (id == 0) {
             publication = new Publication();
-            publication.setQuizTemplate(quizTemplate);
+            publication.setQuizTemplate(quizDao.getQuizTemplate(quizTemplateId));
             publication.setPublishedBy(authService.getUser());
+        } else {
+            publication = quizDao.getPublication(id);
         }
+
+        quizAccessManager.canPublish(publication.getQuizTemplate());
 
         setupReferenceData(model, publication);
 
@@ -67,27 +71,32 @@ public class PublicationController {
     }
 
     @RequestMapping(path = "/publish", method = RequestMethod.POST)
-    public String publish(@ModelAttribute Publication publication) {
+    public String publish(@ModelAttribute Publication publication,
+                          RedirectAttributes redirectAttributes) {
+
         quizAccessManager.canPublish(publication.getQuizTemplate());
 
         publication.setPublishedOn(new Date());
         quizDao.save(publication);
 
-        return "redirect:/quiz/template/myTemplates";
+        redirectAttributes.addAttribute("quizTemplateId", publication.getQuizTemplate().getId());
+
+        return "redirect:quizPublications";
     }
 
-    @RequestMapping(path = "/list", method = RequestMethod.GET)
+    @RequestMapping(path = "/quizPublications", method = RequestMethod.GET)
     public String list(@RequestParam int quizTemplateId, ModelMap model) {
+
         QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizTemplateId);
         quizAccessManager.canPublish(quizTemplate);
 
         List<Publication> publications = quizDao.getPublications(quizTemplate);
 
         model.put("publications", publications);
-        model.put("forQuizTemplate", true);
         model.put("quizTemplate", quizTemplate);
+        model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
 
-        return "publication/list";
+        return "publication/quizPublication";
     }
 
     @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
@@ -111,21 +120,17 @@ public class PublicationController {
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model, RedirectAttributes redirectAttributes) {
-        Publication publication = quizDao.getPublication(id);
 
+        Publication publication = quizDao.getPublication(id);
         User user = authService.getUser();
         boolean createdByUser = publication.getQuizTemplate().getCreatedBy().getId() == user.getId();
+
         if (createdByUser) {
-            redirectAttributes.addAttribute("id", publication.getQuizTemplate().getId());
-            return "redirect:/quiz/template/show";
+            redirectAttributes.addAttribute("id", id);
+            return "redirect:publish";
         }
 
-        Quiz quiz = quizDao.getQuiz(publication, user);
-        if (quiz != null && (quiz.isExpired() || quiz.isCompleted())) {
-            redirectAttributes.addAttribute("quizId", quiz.getId());
-            return "redirect:/quiz/quiz/show";
-        }
-
+        model.put("quiz", quizDao.getQuiz(publication, user));
         model.put("publication", publication);
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
 

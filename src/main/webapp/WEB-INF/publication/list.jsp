@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>
-        <c:set var="title" value="${sharedWithMe ? 'Shared With Me' : (forQuizTemplate ? 'Publications For Quiz'  : 'Public Quizzes')}"/>
+        <c:set var="title" value="${sharedWithMe ? 'Shared With Me' : 'Public Quizzes'}"/>
         ${title}
     </title>
 </head>
@@ -13,12 +13,6 @@
     <div class="row">
         <div class="col-sm-12">
             <h1>${title}</h1>
-            <c:if test="${forQuizTemplate}">
-                <c:url var="quizUrl" value="show">
-                    <c:param name="id" value="${quizTemplate.id}"/>
-                </c:url>
-                <strong>Quiz:</strong>&nbsp;<a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a>
-            </c:if>
         </div>
     </div>
 </div>
