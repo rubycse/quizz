@@ -53,9 +53,7 @@
 
 <script type="text/javascript">
     //TODO: It takes 1 s to display the time after page loading. Reduce this time.
-    var countDownDate = new Date('${quiz.startTimeStr}');
-    countDownDate.setMinutes(countDownDate.getMinutes() + ${quiz.publication.durationInMin});
-    var countDownTime = countDownDate.getTime();
+    var countDownTime = new Date('${quiz.endTimeStr}').getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {

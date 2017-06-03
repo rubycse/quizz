@@ -145,9 +145,16 @@ public class Quiz {
         throw new IllegalArgumentException("Question id:" + question.getId() + " does not belong to this quiz.");
     }
 
-    public String getStartTimeStr() {
+    public String getEndTimeStr() {
+        DateTime startTime = new DateTime(getStartTime());
+        DateTime endTime = startTime.plusMinutes(getPublication().getDurationInMin());
+
+        DateTime scheduleEnds = new DateTime(getPublication().getScheduleTo());
+        DateTime maxEndTime = scheduleEnds.isBefore(endTime) ? scheduleEnds : endTime;
+
         SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.DATE_TIME_FORMAT_JAVASCRIPT);
-        return sdf.format(getStartTime());
+
+        return sdf.format(maxEndTime.toDate());
     }
 
     public boolean isExpired() {
