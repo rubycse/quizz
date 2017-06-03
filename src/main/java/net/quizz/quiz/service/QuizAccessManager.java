@@ -43,4 +43,11 @@ public class QuizAccessManager {
             throw new IllegalAccessError("Illegal Access");
         }
     }
+
+    public void canDelete(QuizTemplate quizTemplate) {
+        User user = authService.getUser();
+        if (user.isStudent() || quizTemplate.getCreatedBy().getId() != user.getId() || quizTemplate.isComplete()) {
+            throw new IllegalAccessError("Illegal Access");
+        }
+    }
 }

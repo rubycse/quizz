@@ -80,20 +80,22 @@
     </script>
 </head>
 <body>
-<form:form commandName="quizTemplate" method="post" action="complete" cssClass="form">
-    <input type="hidden" name="id" value="${quizTemplate.id}"/>
     <div class="page-header" id="banner">
         <div class="row">
-            <div class="col-sm-10">
-                <h1><b class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></b></h1>
+            <div class="col-md-9">
+                <h1><span class="quizName" id="${quizTemplate.id}" style="display: inline"><c:out value="${quizTemplate.name}"/></></h1>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-3">
                 <div class="verticalSpace">&nbsp;</div>
-                <input type="submit" class="btn btn-md btn-warning pull-right" value="Complete"/>
+                <form:form method="post" cssClass="form">
+                    <input type="hidden" name="id" value="${quizTemplate.id}"/>
+                    <input name="complete" type="submit" class="btn btn-md btn-warning pull-right" value="Complete"/>
+                    <span class="pull-right">&nbsp;</span>
+                    <input name="delete" type="submit" class="btn btn-md pull-right" value="Delete" onclick="confirm('Are you sure you want to delete this quiz?')"/>
+                </form:form>
             </div>
         </div>
     </div>
-</form:form>
 
 <div class="row">
     <div class="col-sm-12">

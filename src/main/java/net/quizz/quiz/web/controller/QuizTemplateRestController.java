@@ -5,6 +5,7 @@ import net.quizz.quiz.domain.template.QuestionTemplate;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.service.QuizAccessManager;
+import net.quizz.quiz.utils.QuizUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,7 @@ public class QuizTemplateRestController {
     public QuestionTemplate addQuestion(@RequestParam int quizId) {
         QuizTemplate quizTemplate = quizDao.getQuizTemplate(quizId);
         quizAccessManager.canEdit(quizTemplate);
-        QuestionTemplate questionTemplate = addQuestion(quizTemplate);
+        QuestionTemplate questionTemplate = QuizUtils.addQuestion(quizTemplate);
         quizDao.save(questionTemplate);
 
         return questionTemplate;
@@ -43,7 +44,7 @@ public class QuizTemplateRestController {
         QuestionTemplate questionTemplate = quizDao.getQuestionTemplate(questionId);
         quizAccessManager.canEdit(quizDao.getQuizTemplate(questionTemplate));
 
-        OptionTemplate optionTemplate = addOption(questionTemplate);
+        OptionTemplate optionTemplate = QuizUtils.addOption(questionTemplate);
         quizDao.save(optionTemplate);
 
         return optionTemplate;
@@ -112,22 +113,5 @@ public class QuizTemplateRestController {
         optionTemplate.setRightAnswer(true);
         quizDao.save(questionTemplate);
         return "SUCCESS";
-    }
-
-    private QuestionTemplate addQuestion(QuizTemplate quizTemplate) {
-        int questionSize = quizTemplate.getQuestionTemplates().size();
-        QuestionTemplate questionTemplate = new QuestionTemplate("Question " + (questionSize + 1));
-        questionTemplate.setOptions(new ArrayList<OptionTemplate>());
-        addOption(questionTemplate);
-        addOption(questionTemplate);
-        quizTemplate.getQuestionTemplates().add(questionTemplate);
-        return questionTemplate;
-    }
-
-    private OptionTemplate addOption(QuestionTemplate questionTemplate) {
-        int optionSize = questionTemplate.getOptions().size();
-        OptionTemplate optionTemplate = new OptionTemplate("Option " + (optionSize + 1));
-        questionTemplate.getOptions().add(optionTemplate);
-        return optionTemplate;
     }
 }

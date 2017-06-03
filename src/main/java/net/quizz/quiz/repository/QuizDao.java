@@ -215,4 +215,8 @@ public class QuizDao {
                 .setParameter("createdBy", user)
                 .getResultList();
     }
+
+    public void delete(QuizTemplate quizTemplate) {
+        em.remove(quizTemplate);
+    }
 }
