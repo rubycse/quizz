@@ -1,6 +1,7 @@
 package net.quizz.quiz.domain.template;
 
 import net.quizz.auth.domain.User;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class StudentGroup {
     @GeneratedValue
     private int id;
 
+    @NotEmpty
     private String name;
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)

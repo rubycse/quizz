@@ -7,10 +7,14 @@ import net.quizz.quiz.repository.StudentGroupDao;
 import net.quizz.quiz.service.StudentGroupAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author lutfun
@@ -55,15 +59,34 @@ public class StudentGroupController {
     }
 
     @RequestMapping(path = "/show", method = RequestMethod.POST)
-    public String save(ModelMap model, @ModelAttribute StudentGroup studentGroup) {
+    public String save(ModelMap model, @Valid @ModelAttribute StudentGroup studentGroup, BindingResult result) {
 
         studentGroupAccessManager.canEdit(studentGroup);
+
+        if (result.hasErrors()) {
+            return "studentGroup/show";
+        }
 
         studentGroupDao.save(studentGroup);
 
         model.put("studentGroup", studentGroup);
 
         return "studentGroup/show";
+    }
+
+    @RequestMapping(path = "/show", method = RequestMethod.POST, params = "delete")
+    public String delete(ModelMap model, @Valid @ModelAttribute StudentGroup studentGroup, BindingResult errors) {
+
+        studentGroupAccessManager.canEdit(studentGroup);
+
+        try {
+            studentGroupDao.delete(studentGroup);
+        } catch (DataIntegrityViolationException ex) {
+            errors.reject("student.group.cannotBeDeleted");
+            return "studentGroup/show";
+        }
+
+        return "redirect:list";
     }
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)

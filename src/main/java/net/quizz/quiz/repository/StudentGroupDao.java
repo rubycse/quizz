@@ -39,4 +39,8 @@ public class StudentGroupDao {
                 .setParameter("createdBy", user)
                 .getResultList();
     }
+
+    public void delete(StudentGroup studentGroup) {
+        em.remove(getStudentGroup(studentGroup.getId()));
+    }
 }
