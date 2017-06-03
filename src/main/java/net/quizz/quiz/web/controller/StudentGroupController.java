@@ -4,7 +4,7 @@ import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.template.StudentGroup;
 import net.quizz.quiz.repository.StudentGroupDao;
-import net.quizz.quiz.service.QuizAccessManager;
+import net.quizz.quiz.service.StudentGroupAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class StudentGroupController {
     private AuthService authService;
 
     @Autowired
-    private QuizAccessManager quizAccessManager;
+    private StudentGroupAccessManager studentGroupAccessManager;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -39,7 +39,15 @@ public class StudentGroupController {
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(ModelMap model, @RequestParam(defaultValue = "0") int id) {
 
-        StudentGroup studentGroup = id == 0 ? new StudentGroup() : studentGroupDao.getStudentGroup(id);
+        StudentGroup studentGroup;
+        if (id == 0) {
+            studentGroup = new StudentGroup();
+            studentGroup.setCreatedBy(authService.getUser());
+        } else {
+            studentGroup = studentGroupDao.getStudentGroup(id);
+        }
+
+        studentGroupAccessManager.canEdit(studentGroup);
 
         model.put("studentGroup", studentGroup);
 
@@ -49,9 +57,7 @@ public class StudentGroupController {
     @RequestMapping(path = "/show", method = RequestMethod.POST)
     public String save(ModelMap model, @ModelAttribute StudentGroup studentGroup) {
 
-        if (studentGroup.getId() == 0) {
-            studentGroup.setCreatedBy(authService.getUser());
-        }
+        studentGroupAccessManager.canEdit(studentGroup);
 
         studentGroupDao.save(studentGroup);
 
@@ -62,6 +68,8 @@ public class StudentGroupController {
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public String list(ModelMap model) {
+
+        studentGroupAccessManager.canCreate();
 
         User user = authService.getUser();
 

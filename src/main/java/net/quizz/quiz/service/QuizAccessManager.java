@@ -2,8 +2,9 @@ package net.quizz.quiz.service;
 
 import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
+import net.quizz.quiz.domain.quiz.Quiz;
 import net.quizz.quiz.domain.template.Publication;
-import net.quizz.quiz.domain.template.QuizTemplate;
+import net.quizz.quiz.domain.template.PublishFor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,41 +14,34 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class QuizAccessManager {
+public class QuizAccessManager extends AccessManager {
 
     @Autowired
     private AuthService authService;
 
-    public void canEdit(QuizTemplate quizTemplate) {
-        User user = authService.getUser();
-        if (user.getId() != quizTemplate.getCreatedBy().getId()) {
-            throw new IllegalAccessError("Illegal Access");
-        }
+    public void canAnswer() {
+        throwExceptionIf(!authService.getUser().isStudent());
     }
 
-    public void canCreate() {
-        User user = authService.getUser();
-        if (user.isStudent()) {
-            throw new IllegalAccessError("Illegal Access");
-        }
+    public void canView(Quiz quiz) {
+        throwExceptionIf(!isCurrentStudent(quiz.getAnsweredBy())
+                && !isCurrentTeacher(quiz.getPublication().getPublishedBy()));
+    }
+
+    public void canAnswer(Quiz quiz) {
+        throwExceptionIf(!isCurrentStudent(quiz.getAnsweredBy()));
     }
 
     public void canAnswer(Publication publication) {
         User user = authService.getUser();
-        //TODO: Implement method
-    }
 
-    public void canPublish(QuizTemplate quizTemplate) {
-        User user = authService.getUser();
-        if (user.isStudent() || quizTemplate.getCreatedBy().getId() != user.getId() || !quizTemplate.isComplete()) {
-            throw new IllegalAccessError("Illegal Access");
-        }
-    }
-
-    public void canDelete(QuizTemplate quizTemplate) {
-        User user = authService.getUser();
-        if (user.isStudent() || quizTemplate.getCreatedBy().getId() != user.getId() || quizTemplate.isComplete()) {
-            throw new IllegalAccessError("Illegal Access");
+        switch (publication.getPublishFor()) {
+            case SELECTED_USER:
+                throwExceptionIf(!publication.getPublishToEmails().contains(user.getEmail()));
+                break;
+            case GROUP:
+                throwExceptionIf(!publication.getStudentGroup().getEmails().contains(user.getEmail()));
+                break;
         }
     }
 }

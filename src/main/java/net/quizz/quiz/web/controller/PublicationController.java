@@ -11,6 +11,7 @@ import net.quizz.quiz.repository.QuizDao;
 import net.quizz.quiz.repository.QuizTemplateDao;
 import net.quizz.quiz.repository.StudentGroupDao;
 import net.quizz.quiz.service.QuizAccessManager;
+import net.quizz.quiz.service.QuizTemplateAccessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -51,6 +52,9 @@ public class PublicationController {
     private AuthService authService;
 
     @Autowired
+    private QuizTemplateAccessManager quizTemplateAccessManager;
+
+    @Autowired
     private QuizAccessManager quizAccessManager;
 
     @InitBinder
@@ -74,7 +78,7 @@ public class PublicationController {
             publication = publicationDao.getPublication(id);
         }
 
-        quizAccessManager.canPublish(publication.getQuizTemplate());
+        quizTemplateAccessManager.canPublish(publication.getQuizTemplate());
 
         setupReferenceData(model, publication);
 
@@ -85,7 +89,7 @@ public class PublicationController {
     public String publish(@ModelAttribute Publication publication,
                           RedirectAttributes redirectAttributes) {
 
-        quizAccessManager.canPublish(publication.getQuizTemplate());
+        quizTemplateAccessManager.canPublish(publication.getQuizTemplate());
 
         publication.setPublishedOn(new Date());
         publicationDao.save(publication);
@@ -99,7 +103,7 @@ public class PublicationController {
     public String list(@RequestParam int quizTemplateId, ModelMap model) {
 
         QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(quizTemplateId);
-        quizAccessManager.canPublish(quizTemplate);
+        quizTemplateAccessManager.canPublish(quizTemplate);
 
         List<Publication> publications = publicationDao.getPublications(quizTemplate);
 
@@ -112,6 +116,8 @@ public class PublicationController {
 
     @RequestMapping(path = "/sharedWithMe", method = RequestMethod.GET)
     public String sharedWithMe(ModelMap model) {
+
+        quizAccessManager.canAnswer();
         User user = authService.getUser();
         List<Publication> publications = publicationDao.getPublicationsSharedWithMe(user);
 
@@ -134,12 +140,13 @@ public class PublicationController {
 
         Publication publication = publicationDao.getPublication(id);
         User user = authService.getUser();
-        boolean createdByUser = publication.getQuizTemplate().getCreatedBy().getId() == user.getId();
 
-        if (createdByUser) {
+        if (publication.getPublishedBy().getId() == user.getId()) {
             redirectAttributes.addAttribute("id", id);
             return "redirect:publish";
         }
+
+        quizAccessManager.canAnswer(publication);
 
         model.put("quiz", quizDao.getQuiz(publication, user));
         model.put("publication", publication);

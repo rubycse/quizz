@@ -46,6 +46,9 @@ public class QuizController {
 
     @RequestMapping(path = "/myQuizzes", method = RequestMethod.GET)
     public String myQuizzes(ModelMap model) {
+
+        quizAccessManager.canAnswer();
+
         User user = authService.getUser();
         model.put("quizzes", quizDao.getQuizzes(user));
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
@@ -55,9 +58,11 @@ public class QuizController {
 
     @RequestMapping(path = "/run", method = RequestMethod.GET)
     public String run(@RequestParam int publicationId, ModelMap model) {
+
         Publication publication = publicationDao.getPublication(publicationId);
-        User user = authService.getUser();
         quizAccessManager.canAnswer(publication);
+
+        User user = authService.getUser();
         Quiz quiz = quizDao.getQuiz(publication, user);
 
         if (quiz == null) {
@@ -84,6 +89,8 @@ public class QuizController {
                         ModelMap model) {
 
         Quiz quiz = quizDao.getQuiz(quizId);
+        quizAccessManager.canAnswer(quiz);
+
         if (questionId != quiz.getCurrentQuestion().getId()) {
             throw new IllegalAccessError("This question is not accessible, questionId=" + questionId
                     + ", currentQuestionId:" + quiz.getCurrentQuestion().getId());
@@ -94,7 +101,6 @@ public class QuizController {
         question.updateAnswer(answer);
 
         quizDao.save(question);
-
 
         int index = quiz.getIndex(question);
         if (quiz.getQuestions().size() > (index + 1)) {
@@ -114,7 +120,10 @@ public class QuizController {
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int quizId, ModelMap model) {
+
         Quiz quiz = quizDao.getQuiz(quizId);
+        quizAccessManager.canView(quiz);
+
         model.put("quiz", quiz);
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_READABLE);
 

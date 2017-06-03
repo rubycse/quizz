@@ -4,7 +4,7 @@ import net.quizz.auth.domain.User;
 import net.quizz.common.service.AuthService;
 import net.quizz.quiz.domain.template.QuizTemplate;
 import net.quizz.quiz.repository.QuizTemplateDao;
-import net.quizz.quiz.service.QuizAccessManager;
+import net.quizz.quiz.service.QuizTemplateAccessManager;
 import net.quizz.quiz.web.validator.QuizTemplateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -33,7 +33,7 @@ public class QuizTemplateController {
     private AuthService authService;
 
     @Autowired
-    private QuizAccessManager quizAccessManager;
+    private QuizTemplateAccessManager quizTemplateAccessManager;
 
     @Autowired
     private QuizTemplateValidator quizTemplateValidator;
@@ -45,19 +45,22 @@ public class QuizTemplateController {
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public String save(ModelMap model) {
-        quizAccessManager.canCreate();
+        quizTemplateAccessManager.canCreate();
         User user = authService.getUser();
         QuizTemplate quizTemplate = createQuizTemplate();
         quizTemplate.setCreatedBy(user);
         quizTemplateDao.save(quizTemplate);
         model.put("id", quizTemplate.getId());
+
         return "redirect:show";
     }
 
     @RequestMapping(path = "/myTemplates", method = RequestMethod.GET)
     public String list(ModelMap model) {
-        quizAccessManager.canCreate();
+
+        quizTemplateAccessManager.canCreate();
         User user = authService.getUser();
+
         model.put("quizzes", quizTemplateDao.getUserQuizTemplates(user));
         model.put("myTemplates", true);
 
@@ -66,7 +69,10 @@ public class QuizTemplateController {
 
     @RequestMapping(path = "/show", method = RequestMethod.GET)
     public String show(@RequestParam int id, ModelMap model) {
+
         QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(id);
+        quizTemplateAccessManager.canView(quizTemplate);
+
         model.put("quizTemplate", quizTemplate);
 
         return quizTemplate.isComplete() ? "quizTemplate/show" : "quizTemplate/edit";
@@ -74,10 +80,11 @@ public class QuizTemplateController {
 
     @RequestMapping(path = "/show", method = RequestMethod.POST, params = "_complete")
     public String complete(@ModelAttribute("quizTemplate") QuizTemplate quizTemplate, BindingResult errors,
-                                   ModelMap model, RedirectAttributes redirectAttributes) {
-        quizAccessManager.canCreate();
+                           ModelMap model, RedirectAttributes redirectAttributes) {
 
         quizTemplate = quizTemplateDao.getQuizTemplate(quizTemplate.getId());
+
+        quizTemplateAccessManager.canComplete(quizTemplate);
 
         quizTemplateValidator.validateForCompletion(quizTemplate, errors);
 
@@ -103,7 +110,7 @@ public class QuizTemplateController {
     public String delete(@RequestParam int id) {
 
         QuizTemplate quizTemplate = quizTemplateDao.getQuizTemplate(id);
-        quizAccessManager.canDelete(quizTemplate);
+        quizTemplateAccessManager.canDelete(quizTemplate);
         quizTemplateDao.delete(quizTemplate);
 
         return "redirect:/quiz/template/myTemplates";
