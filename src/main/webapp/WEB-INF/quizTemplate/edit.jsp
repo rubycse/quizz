@@ -89,7 +89,7 @@
                 <div class="verticalSpace">&nbsp;</div>
                 <form:form method="post" cssClass="form">
                     <input type="hidden" name="id" value="${quizTemplate.id}"/>
-                    <input name="complete" type="submit" class="btn btn-md btn-warning pull-right" value="Complete"/>
+                    <input name="_complete" type="submit" class="btn btn-md btn-warning pull-right" value="Complete"/>
                     <span class="pull-right">&nbsp;</span>
                     <input name="delete" type="submit" class="btn btn-md pull-right" value="Delete" onclick="confirm('Are you sure you want to delete this quiz?')"/>
                 </form:form>

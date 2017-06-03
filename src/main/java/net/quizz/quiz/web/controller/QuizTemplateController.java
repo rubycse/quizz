@@ -72,7 +72,7 @@ public class QuizTemplateController {
         return quizTemplate.isComplete() ? "quizTemplate/show" : "quizTemplate/edit";
     }
 
-    @RequestMapping(path = "/show", method = RequestMethod.POST, params = "complete")
+    @RequestMapping(path = "/show", method = RequestMethod.POST, params = "_complete")
     public String complete(@ModelAttribute("quizTemplate") QuizTemplate quizTemplate, BindingResult errors,
                                    ModelMap model, RedirectAttributes redirectAttributes) {
         quizAccessManager.canCreate();
