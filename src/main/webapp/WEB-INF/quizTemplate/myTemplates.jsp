@@ -26,10 +26,10 @@
                 <tbody>
                 <c:forEach items="${quizzes}" var="quizTemplate">
                     <tr>
-                        <c:url var="quizUrl" value="show">
+                        <c:url var="quizTemplateUrl" value="show">
                             <c:param name="id" value="${quizTemplate.id}"/>
                         </c:url>
-                        <td><a href="${quizUrl}"><c:out value="${quizTemplate.name}"/></a></td>
+                        <td><a href="${quizTemplateUrl}"><c:out value="${quizTemplate.name}"/></a></td>
                         <td><c:out value="${quizTemplate.complete ? 'Yes' : 'No'}"/></td>
                         <td>
                             <c:if test="${quizTemplate.complete}">

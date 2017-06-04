@@ -155,7 +155,16 @@ public class Publication {
     }
 
     public boolean isOpen() {
+        return !isDue() && !isOverDue();
+    }
+
+    public boolean isDue() {
         Date now = new Date();
-        return !getScheduleFrom().after(now) && !getScheduleTo().before(now);
+        return getScheduleFrom().after(now);
+    }
+
+    public boolean isOverDue() {
+        Date now = new Date();
+        return getScheduleTo().before(now);
     }
 }

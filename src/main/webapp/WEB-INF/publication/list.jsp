@@ -30,10 +30,10 @@
                 <tbody>
                 <c:forEach items="${publications}" var="publication">
                     <tr>
-                        <c:url var="quizUrl" value="show">
+                        <c:url var="publicationUrl" value="show">
                             <c:param name="id" value="${publication.id}"/>
                         </c:url>
-                        <td><a href="${quizUrl}"><c:out value="${publication.quizTemplate.name}"/></a></td>
+                        <td><a href="${publicationUrl}"><c:out value="${publication.quizTemplate.name}"/></a></td>
                         <td><fmt:formatDate value="${publication.publishedOn}"/></td>
                         <td><c:out value="${publication.quizTemplate.createdBy.name}"/></td>
                     </tr>

@@ -86,10 +86,10 @@
 <div class="page-header" id="banner">
     <div class="row">
         <div class="col-sm-12">
-            <c:url var="quizUrl" value="show">
+            <c:url var="quizTemplateUrl" value="show">
                 <c:param name="id" value="${publication.quizTemplate.id}"/>
             </c:url>
-            <h1>Publication of <a href="${quizUrl}"><c:out value="${publication.quizTemplate.name}"/></a></h1>
+            <h1>Publication of <a href="${quizTemplateUrl}"><c:out value="${publication.quizTemplate.name}"/></a></h1>
         </div>
     </div>
 </div>

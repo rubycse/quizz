@@ -27,10 +27,10 @@
                 <tbody>
                 <c:forEach items="${quizzes}" var="quiz">
                     <tr>
-                        <c:url var="quizUrl" value="show">
+                        <c:url var="quizTemplateUrl" value="show">
                             <c:param name="quizId" value="${quiz.id}"/>
                         </c:url>
-                        <td><a href="${quizUrl}"><c:out value="${quiz.quizTemplate.name}"/></a></td>
+                        <td><a href="${quizTemplateUrl}"><c:out value="${quiz.quizTemplate.name}"/></a></td>
                         <td><fmt:formatDate value="${quiz.endTime}" pattern="${datePattern}"/></td>
                         <td>
                             <c:choose>
