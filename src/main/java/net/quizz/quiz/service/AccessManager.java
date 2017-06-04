@@ -1,6 +1,7 @@
 package net.quizz.quiz.service;
 
 import net.quizz.auth.domain.User;
+import net.quizz.common.exception.InsufficientPrivilegeException;
 import net.quizz.common.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class AccessManager {
 
     protected void throwExceptionIf(boolean condition) {
         if (condition) {
-            throw new IllegalAccessError("Illegal Access");
+            throw new InsufficientPrivilegeException();
         }
     }
 }
