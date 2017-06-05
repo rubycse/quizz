@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -96,15 +97,20 @@
 
 <div class="row">
     <div class="col-md-12">
+        <s:hasBindErrors name="publication">
+            <div class="alert alert-danger">
+                <strong><s:message code="error.title"/></strong>
+                <ul class="list-unstyled" style="font-weight: normal">
+                    <c:forEach items="${errors.globalErrors}" var="errorMessage">
+                        <li><s:message message="${errorMessage}"/></li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </s:hasBindErrors>
+
         <div class="well bs-component">
 
             <form:form method="post" commandName="publication" cssClass="form-horizontal">
-                <form:errors path="*">
-                    <div id="div_global_error" align="center">
-                        <h1><s:message code="error.title"/></h1>
-                        <s:message code="common.error.see"/>
-                    </div>
-                </form:errors>
 
                 <fieldset>
                     <div class="form-group">

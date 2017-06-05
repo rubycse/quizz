@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Sign In To Quizz Account</title>
@@ -12,17 +13,25 @@
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="col-md-6">
+
+        <s:hasBindErrors name="credential">
+            <div class="alert alert-danger">
+                <strong><s:message code="error.title"/></strong>
+                <ul class="list-unstyled" style="font-weight: normal">
+                    <c:forEach items="${errors.globalErrors}" var="errorMessage">
+                        <li><s:message message="${errorMessage}"/></li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </s:hasBindErrors>
+
         <div class="well bs-component">
 
             <form:form method="post" commandName="credential" cssClass="form-horizontal">
-                <form:errors path="*">
-                    <div id="div_global_error" align="center">
-                        <h1><s:message code="error.title"/></h1>
-                        <s:message code="common.error.see"/>
-                    </div>
-                </form:errors>
 
                 <fieldset>
                     <div class="col-xs-12" style="height: 50px"></div>
