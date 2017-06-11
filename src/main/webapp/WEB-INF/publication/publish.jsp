@@ -134,7 +134,10 @@
                             <div id="scheduleFrom_dateTimePickerError" class="text-danger hidden">Invalid!</div>
                             <form:errors path="scheduleFrom" cssClass="text-danger"/>
                         </div>
-                        <label for="scheduleTo" class="col-md-1 control-label"><span class="text-center">To</span></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scheduleTo" class="col-md-2 control-label"><span class="text-center">Schedule To</span></label>
                         <div class="col-md-4">
                             <div class="input-group" id="scheduleTo_picker">
                                 <form:input id="scheduleTo" path="scheduleTo" class="form-control" placeholder="DD/MM/YYYY hh:mm a"
@@ -149,7 +152,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="resultPublicationTime" class="col-md-2 control-label">Result Will Be Published On</label>
+                        <label for="resultPublicationTime" class="col-md-2 control-label">Result Publication</label>
                         <div class="col-md-4">
                             <div class="input-group" id="resultPublicationTime_picker">
                                 <form:input id="resultPublicationTime" path="resultPublicationTime" class="form-control"

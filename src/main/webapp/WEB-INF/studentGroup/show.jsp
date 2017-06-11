@@ -49,8 +49,8 @@
             <form:form method="post" commandName="studentGroup" cssClass="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label for="name" class="col-lg-2 control-label">Name</label>
-                        <div class="col-lg-6">
+                        <label for="name" class="col-md-2 control-label">Name</label>
+                        <div class="col-md-6">
                             <form:input path="name" cssClass="form-control" id="name"/>
                             <form:errors path="name" cssClass="text-danger"/>
                         </div>
@@ -58,7 +58,7 @@
 
                     <div class="form-group">
                         <label for="emails" class="col-md-2 control-label">Emails</label>
-                        <div class="col-md-10">
+                        <div class="col-md-6">
                             <form:select id="emails" path="emails" cssClass="form-control" multiple="multiple">
                                 <form:options items="${studentGroup.emails}"/>
                             </form:select>
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-lg-6 col-lg-offset-2">
+                        <div class="col-md-6 col-md-offset-2">
                             <input type="submit" class="btn btn-primary" name="save" value="Save"/>
                             <input type="submit" class="btn" name="delete" value="Delete" onclick="confirm('Are you sure you want to delete this group?')"/>
                         </div>
