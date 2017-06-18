@@ -46,6 +46,9 @@ dependencies {
     runtime 'jstl:jstl:1.2'
     compile 'joda-time:joda-time:2.9.4'
     compile 'ch.qos.logback:logback-classic:1.0.13'
+    compile 'com.lowagie:itext:2.1.0'
+    compile 'org.xhtmlrenderer:core-renderer:R8'
+    compile 'net.sf.jtidy:jtidy:r938'
 }
 
 war {
