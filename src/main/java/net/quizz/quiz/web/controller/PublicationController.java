@@ -18,10 +18,12 @@ import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -86,10 +88,17 @@ public class PublicationController {
     }
 
     @RequestMapping(path = "/publish", method = RequestMethod.POST)
-    public String publish(@ModelAttribute Publication publication,
-                          RedirectAttributes redirectAttributes) {
+    public String publish(@Valid @ModelAttribute Publication publication,
+                          BindingResult result,
+                          RedirectAttributes redirectAttributes,
+                          ModelMap model) {
 
         quizTemplateAccessManager.canPublish(publication.getQuizTemplate());
+
+        if (result.hasErrors()) {
+            setupReferenceData(model, publication);
+            return "publication/publish";
+        }
 
         publication.setPublishedOn(new Date());
         publicationDao.save(publication);
@@ -108,7 +117,7 @@ public class PublicationController {
         List<Publication> publications = publicationDao.getPublications(quizTemplate);
 
         model.put("publications", publications);
-        model.put("quizTemplate", quizTemplate);
+        //model.put("quizTemplate", quizTemplate);
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
 
         return "publication/quizPublication";
