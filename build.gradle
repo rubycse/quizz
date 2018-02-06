@@ -57,6 +57,7 @@ war {
 gretty {
     httpPort = 8090
     servletContainer = 'tomcat8'
+    managedClassReload = true
 }
 
 sourceCompatibility = 1.7
