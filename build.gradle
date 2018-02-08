@@ -1,9 +1,7 @@
 repositories {
-    jcenter()
     mavenCentral()
 }
 
-apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'org.akhikhl.gretty'
@@ -11,7 +9,6 @@ apply plugin: 'org.akhikhl.gretty'
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
     }
 
     dependencies {
@@ -46,7 +43,7 @@ dependencies {
     compile 'opensymphony:sitemesh:2.4.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
 
-    compile 'jstl:jstl:1.2'
+    runtime 'jstl:jstl:1.2'
     compile 'joda-time:joda-time:2.9.4'
     compile 'ch.qos.logback:logback-classic:1.0.13'
 }
@@ -56,7 +53,6 @@ war {
 }
 
 gretty {
-    httpPort = 8090
     servletContainer = 'tomcat8'
     managedClassReload = true
 }
