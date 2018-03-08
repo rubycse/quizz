@@ -1,0 +1,11 @@
+DROP TABLE ques_option;
+DROP TABLE question;
+DROP TABLE quiz;
+DROP TABLE group_email;
+DROP TABLE publish_to;
+DROP TABLE publication;
+DROP TABLE student_group;
+DROP TABLE option_template;
+DROP TABLE question_template;
+DROP TABLE quiz_template;
+DROP TABLE user;

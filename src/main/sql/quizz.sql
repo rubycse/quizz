@@ -46,6 +46,15 @@ CREATE TABLE option_template
   FOREIGN KEY (question_template_id) REFERENCES question_template(id)
 );
 
+CREATE TABLE student_group
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  created_by_id INT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (created_by_id) REFERENCES user(id)
+);
+
 CREATE TABLE publication
 (
   id INT NOT NULL AUTO_INCREMENT,
@@ -69,15 +78,6 @@ CREATE TABLE publish_to
   publication_id INT NOT NULL,
   email VARCHAR(64) NOT NULL,
   FOREIGN KEY (publication_id) REFERENCES publication(id)
-);
-
-CREATE TABLE student_group
-(
-  id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  created_by_id INT NOT NULL,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (created_by_id) REFERENCES user(id)
 );
 
 CREATE TABLE group_email
