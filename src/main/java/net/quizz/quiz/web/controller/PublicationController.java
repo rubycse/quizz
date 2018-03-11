@@ -117,7 +117,7 @@ public class PublicationController {
         List<Publication> publications = publicationDao.getPublications(quizTemplate);
 
         model.put("publications", publications);
-        //model.put("quizTemplate", quizTemplate);
+        model.put("quizTemplate", quizTemplate);
         model.put("datePattern", DateUtils.DATE_TIME_FORMAT_12H);
 
         return "publication/quizPublication";
