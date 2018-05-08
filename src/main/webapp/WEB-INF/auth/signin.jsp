@@ -18,6 +18,8 @@
 <div class="row">
     <div class="col-md-6">
 
+        <div class="well bs-component">
+
         <s:hasBindErrors name="credential">
             <div class="alert alert-danger">
                 <strong><s:message code="error.title"/></strong>
@@ -28,8 +30,6 @@
                 </ul>
             </div>
         </s:hasBindErrors>
-
-        <div class="well bs-component">
 
             <form:form method="post" commandName="credential" cssClass="form-horizontal">
 

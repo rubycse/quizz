@@ -110,6 +110,17 @@
 
         <div class="well bs-component">
 
+            <s:hasBindErrors name="publication">
+                <div class="alert alert-danger">
+                    <strong><s:message code="error.title"/></strong>
+                    <ul class="list-unstyled" style="font-weight: normal">
+                        <c:forEach items="${errors.globalErrors}" var="errorMessage">
+                            <li><s:message message="${errorMessage}"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </s:hasBindErrors>
+
             <form:form method="post" commandName="publication" cssClass="form-horizontal">
 
                 <fieldset>
