@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -54,12 +55,12 @@ public class SignupController {
     }
 
     @RequestMapping(path = "/signup", method = RequestMethod.POST)
-    public String saveUser(@Valid @ModelAttribute User user, BindingResult result, ModelMap model, HttpServletRequest request) {
+    public String saveUser(@Valid @ModelAttribute User user, BindingResult result, ModelMap model, UriComponentsBuilder ucb) {
         if (result.hasErrors()) {
             return "signup";
         }
 
-        userService.signUpUser(user, request);
+        userService.signUpUser(user, ucb);
         model.put("email", user.getEmail());
 
         return "verifyEmail";
