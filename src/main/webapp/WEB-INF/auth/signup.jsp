@@ -111,11 +111,11 @@
                     <div class="form-group">
                         <label for="gender" class="col-lg-2 control-label">Gender</label>
                         <div class="col-lg-6">
-                            <form:select path="gender" cssClass="form-control" id="select">
+                            <form:select path="gender" cssClass="form-control" id="gender">
                                 <form:option value="" label="Please Select"/>
-                                <form:options path="gender" items="${genders}" itemLabel="displayName" cssClass="form-control" id="gender"/>
-                                <form:errors path="gender" cssClass="text-danger"/>
+                                <form:options items="${genders}" itemLabel="displayName"/>
                             </form:select>
+                            <form:errors path="gender" cssClass="text-danger"/>
                         </div>
                     </div>
 
