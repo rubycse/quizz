@@ -88,8 +88,8 @@ public class QuizTemplateController {
         model.put("quizTemplate", quizTemplate);
 
         if (pdf) {
-                Utils.writeToResponse(quizTemplate, quizTemplate.getClass(), "quizTemplate", response);
-                return null;
+            Utils.writeToResponse(quizTemplate, quizTemplate.getClass(), "quizTemplate", response);
+            return null;
         }
 
         System.out.println(Utils.getXml(quizTemplate, QuizTemplate.class));

@@ -1,5 +1,6 @@
 package net.quizz.common.service;
 
+import net.quizz.common.utils.PropertyReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,19 +16,12 @@ public class MailService {
     @Autowired
     private MailSender mailSender;
 
-    @Autowired
-    private SimpleMailMessage mailMessage;
-
-    public void sendMail(String subject, String text) {
-        mailMessage.setSubject(subject);
-        mailMessage.setText(text);
-        mailSender.send(mailMessage);
-    }
-
     public void sendMail(String to, String subject, String text) {
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(text);
-        mailSender.send(mailMessage);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(PropertyReader.getProperty("mail.from"));
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
     }
 }
